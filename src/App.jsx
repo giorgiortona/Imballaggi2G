@@ -1,24 +1,46 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import Home from './pages/Home';
-import Products from './pages/Products';
-import Quote from './pages/Quote';
-import Media from './pages/Media';
-import Contacts from './pages/Contacts';
+import { useEffect, useState } from 'react';
+import './styles/site.css';
+import { initSmoothScroll, destroySmoothScroll, initScrollFX, ScrollTrigger } from './lib/motion';
+import Preloader from './components/Preloader';
+import Header from './components/Header';
+import Hero from './sections/Hero';
+import Products from './sections/Products';
+import Story from './sections/Story';
+import Sustainability from './sections/Sustainability';
+import Certifications from './sections/Certifications';
+import Contact from './sections/Contact';
+import Footer from './components/Footer';
 
 function App() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    initSmoothScroll();
+    return () => destroySmoothScroll();
+  }, []);
+
+  // Reveal e parallax globali partono solo a intro conclusa
+  useEffect(() => {
+    if (!ready) return undefined;
+    const cleanup = initScrollFX();
+    ScrollTrigger.refresh();
+    return cleanup;
+  }, [ready]);
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="prodotti" element={<Products />} />
-          <Route path="preventivo" element={<Quote />} />
-          <Route path="media" element={<Media />} />
-          <Route path="contatti" element={<Contacts />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      {!ready && <Preloader onDone={() => setReady(true)} />}
+      <Header />
+      <main>
+        <Hero ready={ready} />
+        <Products />
+        <Story />
+        <Sustainability />
+        <Certifications />
+        <Contact />
+      </main>
+      <Footer />
+    </>
   );
 }
 
