@@ -39,10 +39,10 @@
   var introTimer, entryTimer;
   function finishIntro(){clearTimeout(introTimer);if(intro){intro.classList.remove('is-playing');intro.classList.add('finished');}root.style.setProperty('--intro','0s');}
   function finishEntry(){clearTimeout(entryTimer);if(entry)entry.classList.remove('is-playing');root.style.setProperty('--entry-delay','0s');}
-  function playIntro(){if(!intro||reduced.matches)return;finishIntro();intro.classList.remove('finished');void intro.offsetWidth;intro.classList.add('is-playing');introTimer=setTimeout(finishIntro,2250);}
+  function playIntro(){if(!intro||reduced.matches)return;finishIntro();intro.classList.remove('finished');void intro.offsetWidth;intro.classList.add('is-playing');introTimer=setTimeout(finishIntro,3850);}
   var navType=performance.getEntriesByType('navigation')[0];
-  if(intro && !reduced.matches && !remembered('2g-intro-v16') && (!navType||navType.type!=='back_forward') && !location.hash){
-    remember('2g-intro-v16','1');root.style.setProperty('--intro','1.6s');playIntro();
+  if(intro && !reduced.matches && !remembered('2g-intro-v17') && (!navType||navType.type!=='back_forward') && !location.hash){
+    remember('2g-intro-v17','1');root.style.setProperty('--intro','1.6s');playIntro();
   }else finishIntro();
   if(entry&&!reduced.matches&&(!navType||navType.type!=='back_forward')&&!location.hash){
     entry.classList.add('is-playing');root.style.setProperty('--entry-delay',entry.dataset.scene==='sostenibilita'?'1.1s':'.55s');entryTimer=setTimeout(finishEntry,entry.dataset.scene==='sostenibilita'?1800:1150);

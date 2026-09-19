@@ -785,3 +785,48 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 @media(max-width:760px){.editorial-split,.material-note,.compression-story,.zero-detail,.eco-pair,.annex-view,.certificate-facts{grid-template-columns:1fr;gap:30px}.editorial-head{margin-bottom:30px}.editorial-head .display{font-size:clamp(32px,8.5vw,50px)}.editorial-head .eyebrow{font-size:12px}.editorial-split .lead{font-size:18px}.brochure-gallery{grid-template-columns:1fr 1fr;gap:28px 16px;margin-top:35px}.brochure-gallery figcaption{font-size:14px}.brochure-gallery img{aspect-ratio:1}.portrait-photo{max-width:500px}.material-note{margin-top:35px}.material-note p,.compression-story p,.zero-detail p{font-size:17px}.material-list span{font-size:17px}.compression-story{padding:24px;margin-top:40px}.compression-story>div:first-child .editorial-photo img{aspect-ratio:1.6}.large-measure{font-size:110px}.zero-detail{margin:35px 0}.zero-detail .editorial-photo img{height:260px}.technical-data{padding:22px 0;margin-top:30px}.table-scroll table{font-size:14px;min-width:530px}th,td{padding:14px}.bubble-tools{grid-template-columns:1fr auto;gap:10px 20px}.bubble-tools input{grid-column:1/3;grid-row:2}.bubble-tools output{grid-column:2;grid-row:1;text-align:right}.bubble-tools .motion-replay{grid-column:1/3;justify-self:start;margin-top:6px}.bubble-caption{left:15px;bottom:15px;font-size:12px;padding:8px 12px}.eco-caption{display:block}.eco-caption p{font-size:17px}.eco-caption button{margin-top:16px}.cycle-steps{gap:12px}.cycle-steps h3{font-size:17px}.cycle-steps p{font-size:14px}.audience-grid{gap:28px 20px;margin-top:40px}.audience-grid h3{font-size:23px}.audience-grid p{font-size:16px}.carbon-measure{font-size:100px}.source-note{font-size:14px!important}.certificate-facts dl{font-size:14px}.study-window{height:330px}}
 @media(prefers-reduced-motion:reduce){.bubble-photo{will-change:auto}.eco-cloud,.eco-traveller,.eco-sweep,.bubble-light{display:none}.bubble-study.in .bubble-window{animation:none}.editorial-photo:hover img{transform:none}.js .line-in{transform:none}}
 @media print{.intro,.section-entry,.header,.menu,.grain,.scroll-progress,.to-top,.onward,.motion-replay{display:none!important}.js .reveal,.js [data-stagger]>*{opacity:1!important;transform:none!important}.js .line-in{transform:none!important}.block{break-inside:auto}.brochure-gallery{grid-template-columns:repeat(3,1fr)}}
+
+/* v17 — an articulated swimmer, no progress metaphor. */
+.js .intro.is-playing{animation:introOceanExit .65s var(--ease) 3.15s both}
+.intro-sheet{background:radial-gradient(ellipse at 80% 60%,#cfe3d6 0%,#edf1e8 35%,var(--paper) 72%)}
+.intro-stage{width:min(92vw,1000px);position:relative}
+.intro-lock{width:100%;position:relative}
+.intro-word{width:77%;clip-path:none;animation:largeLogoArrive 1.15s var(--ease) .4s both}
+.intro-turtle{left:78%;top:50%;width:25%;opacity:1;transform:translateY(-50%);animation:turtleArrival 2.65s cubic-bezier(.25,.5,.35,1) .05s both;filter:drop-shadow(0 18px 20px #1d503329)}
+.sea-turtle{display:block;width:100%;height:auto;overflow:visible}
+.sea-turtle .turtle-body{transform-origin:50% 50%;animation:turtleBuoyancy 1.6s ease-in-out infinite}
+.flipper{transform-box:view-box}
+.flipper-front-top{transform-origin:157px 78px;animation:flipperTop 1.1s ease-in-out infinite}
+.flipper-front-bottom{transform-origin:155px 128px;animation:flipperBottom 1.1s ease-in-out -.18s infinite}
+.flipper-back-top{transform-origin:72px 82px;animation:rearPaddle 1.1s ease-in-out -.35s infinite}
+.flipper-back-bottom{transform-origin:72px 123px;animation:rearPaddle 1.1s ease-in-out -.7s infinite reverse}
+.intro-tag{text-align:left;margin-left:1%;margin-top:26px;font-size:clamp(12px,1.2vw,15px);letter-spacing:.34em;animation:tagIn .8s var(--ease) 1.55s both}
+.intro-water{position:absolute;inset:-70vh -50vw;z-index:-1;pointer-events:none;overflow:hidden;transform:rotate(-22deg)}
+.intro-water i{position:absolute;width:90%;height:26%;border-radius:50%;background:radial-gradient(ellipse,#b3d7c126,transparent 70%);filter:blur(20px);animation:waterDrift 3.8s ease-in-out both}
+.intro-water i:nth-child(1){left:5%;top:15%}.intro-water i:nth-child(2){left:0;top:45%;animation-delay:.25s}.intro-water i:nth-child(3){left:25%;top:65%;animation-delay:.5s}
+@keyframes flipperTop{0%,100%{transform:rotate(-17deg) scaleY(.91)}50%{transform:rotate(24deg) scaleY(1.06)}}
+@keyframes flipperBottom{0%,100%{transform:rotate(18deg) scaleY(.92)}50%{transform:rotate(-24deg) scaleY(1.05)}}
+@keyframes rearPaddle{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(12deg)}}
+@keyframes turtleBuoyancy{0%,100%{transform:translateY(2px) rotate(-2deg)}50%{transform:translateY(-4px) rotate(2deg)}}
+@keyframes turtleArrival{0%{transform:translate(-105vw,28vh) rotate(-24deg) scale(1.3);opacity:0}8%{opacity:1}48%{transform:translate(-40vw,8vh) rotate(-14deg) scale(1.12)}78%{transform:translate(-6vw,-65%) rotate(-8deg)}100%{transform:translate(0,-50%) rotate(0);opacity:1}}
+@keyframes largeLogoArrive{from{opacity:0;filter:blur(8px);transform:translateY(18px) scale(.96)}to{opacity:1;filter:blur(0);transform:none}}
+@keyframes waterDrift{from{opacity:0;transform:translateX(-15%) scale(.8)}45%{opacity:1}to{opacity:.4;transform:translateX(18%) scale(1.2)}}
+@keyframes introOceanExit{to{opacity:0;transform:scale(1.035);visibility:hidden}}
+.entry-sostenibilita .entry-turtle{width:clamp(140px,20vw,270px);animation:entrySwimmer 1.65s cubic-bezier(.2,.55,.4,1) both}
+.entry-sostenibilita .entry-line{display:none}
+@keyframes entrySwimmer{from{transform:translateX(-110%) rotate(-12deg);opacity:0}20%{opacity:1}80%{opacity:1}to{left:100%;transform:translateX(10%) rotate(-6deg);opacity:0}}
+[data-page="sostenibilita"] .page-hero{background:#0a2a20}
+[data-page="sostenibilita"] .page-hero img{object-position:65% 50%;filter:none}
+.slat[href="sostenibilita.html"] .slat-media img{object-position:62% 50%}
+.eco-world{object-position:65% 50%;filter:none}
+@media(max-width:760px){.intro-word{width:82%}.intro-turtle{width:29%;left:72%;top:105%}.intro-tag{margin-top:22px;font-size:12px}.entry-sostenibilita .entry-turtle{width:170px}}
+@media(prefers-reduced-motion:reduce){.sea-turtle .turtle-body,.sea-turtle .flipper{animation:none}.js .intro.is-playing{display:none}.entry-sostenibilita .entry-turtle{animation:none}}
+[data-page="sostenibilita"] .ph-shade{background:linear-gradient(90deg,#061c17c9,transparent 85%),linear-gradient(180deg,#051b1870,transparent 30%,#061c1780)}
+[data-page="sostenibilita"] .page-hero em{color:#b3d9c1}
+.eco-traveller{width:clamp(130px,18vw,240px);transform:none}
+.eco-story.in .eco-traveller{animation:entrySwimmer 2.8s var(--ease) .3s both}
+@media(max-width:760px){
+ [data-page="sostenibilita"] .page-hero{padding-top:340px}
+ [data-page="sostenibilita"] .ph-media{inset:0 0 auto;height:440px}
+ [data-page="sostenibilita"] .ph-shade{background:linear-gradient(180deg,#061c1740 0,transparent 20%,#0a2a20 54%)}
+}

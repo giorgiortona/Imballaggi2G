@@ -89,3 +89,7 @@ Nessuna affermazione nuova sull'azienda. La gamma e' stata distribuita su pagine
 
 ## Integrazione brochure e movimento — revisione 16
 Le immagini originali e i contenuti sono tracciati in `brochure-assets.json` e `COPERTURA-BROCHURE.md`. Per Zerovirgolacinque le percentuali confrontano il riferimento simulato da 0,5 mm, non il PE da 1 mm; le unità mancanti nella brochure non sono inventate. Il riconoscimento PSV Puglia è distinto dalla certificazione di prodotto IPPR. L'animazione della tartaruga è un racconto visivo, non una misura di impatto ambientale.
+
+
+## Immagine marina — revisione 17
+`assets/turtle-ocean-v17.png`: immagine generata con imagegen per la direzione artistica della sostenibilità. Non tratta dalla brochure e non fotografia di iniziative aziendali. La tartaruga articolata in `turtle_art.py` è un'illustrazione originale per le animazioni, distinta dal logo e dai marchi di certificazione.

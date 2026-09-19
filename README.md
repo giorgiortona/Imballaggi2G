@@ -71,3 +71,7 @@ Restano in cartella gli originali con fondo bianco (`logo.webp`, `mark.webp`, `t
 Vedere `FONTI-E-REVISIONE.md` per le incongruenze dei documenti e le informazioni ancora da confermare. Mancano partita IVA e dati societari completi per il piede definitivo e un'informativa privacy approvata: non sono stati inventati. Nessun modulo di contatto, nessun analytics.
 
 `.backup/v2/` e `.backup/v3/` conservano le versioni precedenti (pagina unica a scorrimento e pagina unica a pannelli); non fanno parte di `dist/` e non vengono pubblicate.
+
+
+## Revisione 17 — tartaruga protagonista
+Caricamento senza barra: logo ingrandito e tartaruga originale SVG articolata (`turtle_art.py`), con pinne indipendenti e arrivo curvo a fianco del logo. Copertina sostenibilità, fascia 06 e scena marina aggiornate con `turtle-ocean-v17.png`, immagine evocativa generata con AI, non fotografia aziendale o documentazione scientifica. Il marchio ufficiale resta invariato.

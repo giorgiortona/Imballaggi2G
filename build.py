@@ -12,9 +12,10 @@ anche modificare a mano, ma poi la parte comune va risincronizzata.
 
 from pathlib import Path
 from brochure_sections import enrich
+from turtle_art import turtle_art
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "16"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "17"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -73,15 +74,15 @@ def page_footer(current):
 def shell(current, title, description, body, body_class=""):
     intro = ""
     if current is None:
-        intro = """
+        intro = f"""
 <div class="intro" aria-hidden="true">
   <div class="intro-sheet"></div>
   <div class="intro-stage">
     <div class="intro-lock">
       <img class="intro-word" src="assets/logo-ink.webp" width="520" height="149" alt="">
-      <span class="intro-turtle"><img src="assets/turtle-mark.webp" width="301" height="366" alt=""></span>
+      <span class="intro-turtle">{turtle_art("intro")}</span>
     </div>
-    <div class="intro-halo" aria-hidden="true"></div><div class="intro-rule"></div>
+    <div class="intro-water" aria-hidden="true"><i></i><i></i><i></i></div>
     <p class="intro-tag">KEEP IT SAFE</p>
   </div>
 </div>"""
@@ -92,7 +93,7 @@ def shell(current, title, description, body, body_class=""):
         entry = f'''<div class="section-entry entry-{current}" data-scene="{current}" aria-hidden="true">
           <div class="entry-wash"></div><div class="entry-texture"></div>
           <div class="entry-content"><span class="entry-number">{section[2]}</span><span class="entry-title">{section[3]}</span><span class="entry-line"></span></div>
-          <img class="entry-turtle" src="assets/turtle-mark-light.webp" alt="" width="301" height="366">
+          <span class="entry-turtle">{turtle_art("entry")}</span>
         </div>'''
     cls = f' class="{body_class}" data-page="{current or "home"}"'
 
@@ -179,7 +180,7 @@ NAV_ITEMS = [
     ("protezioni",   "Un cuscino d’aria fra il prodotto e il viaggio.", "bubble.webp"),
     ("buste",        "Chiudere bene, alla prima.",                      "film-texture.webp"),
     ("macchine",     "Nastri, reggette, movimentazione.",               "machines.webp"),
-    ("sostenibilita","La materia non finisce al primo utilizzo.",       None),
+    ("sostenibilita","La materia non finisce al primo utilizzo.",       "turtle-ocean-v17.png"),
     ("azienda",      "Una storia di famiglia, dal Salento.",            "warehouse.webp"),
 ]
 
@@ -497,7 +498,7 @@ SOSTENIBILITA = page_hero(
     "sostenibilita",
     "Proteggere oggi.<br><em>Pensare al domani.</em>",
     "Il valore della materia non finisce al primo utilizzo. Con le linee certificate Plastica Seconda Vita portiamo il riciclo dentro il mondo dell’imballaggio.",
-    None,
+    "turtle-ocean-v17.png",
     tone="green",
 ) + """
 <section class="block dark-block" aria-labelledby="so-turtle">
