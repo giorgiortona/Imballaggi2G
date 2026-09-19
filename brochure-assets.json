@@ -1,0 +1,440 @@
+[
+  {
+    "file": "foam-protezione-lampada.webp",
+    "source_asset": "foam-p01-image01.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 1,
+    "width": 1440,
+    "height": 1800
+  },
+  {
+    "file": "famiglia-giuri-storia.webp",
+    "source_asset": "foam-p02-image02.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 2,
+    "width": 1057,
+    "height": 1800
+  },
+  {
+    "file": "foam-struttura-impermeabilita.webp",
+    "source_asset": "foam-p04-image01.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 4,
+    "width": 1704,
+    "height": 1136
+  },
+  {
+    "file": "foam-sfera-protetta.webp",
+    "source_asset": "foam-p04-image02.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 4,
+    "width": 1613,
+    "height": 1448
+  },
+  {
+    "file": "foam-ceramica-protetta.webp",
+    "source_asset": "foam-p04-image03.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 4,
+    "width": 1200,
+    "height": 1800
+  },
+  {
+    "file": "foam-dettaglio-ceramica.webp",
+    "source_asset": "foam-p05-image03.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 5,
+    "width": 1800,
+    "height": 1200
+  },
+  {
+    "file": "foam-bicchiere-cristallo.webp",
+    "source_asset": "foam-p05-image04.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 5,
+    "width": 1200,
+    "height": 1800
+  },
+  {
+    "file": "foam-piatti.webp",
+    "source_asset": "foam-p06-image01.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 6,
+    "width": 1800,
+    "height": 1200
+  },
+  {
+    "file": "foam-profilo-mobile.webp",
+    "source_asset": "foam-p06-image02.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 6,
+    "width": 1406,
+    "height": 1060
+  },
+  {
+    "file": "foam-piatto-ceramica.webp",
+    "source_asset": "foam-p06-image03.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 6,
+    "width": 992,
+    "height": 662
+  },
+  {
+    "file": "foam-serramento.webp",
+    "source_asset": "foam-p06-image04.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 6,
+    "width": 1450,
+    "height": 1710
+  },
+  {
+    "file": "foam-pallone.webp",
+    "source_asset": "foam-p06-image05.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 6,
+    "width": 1059,
+    "height": 1588
+  },
+  {
+    "file": "foam-tessuto-protettivo.webp",
+    "source_asset": "foam-p06-image06.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 6,
+    "width": 1474,
+    "height": 983
+  },
+  {
+    "file": "applicazione-acustica.webp",
+    "source_asset": "foam-p07-image01.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 660,
+    "height": 440
+  },
+  {
+    "file": "applicazione-logistica.webp",
+    "source_asset": "foam-p07-image02.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 639,
+    "height": 852
+  },
+  {
+    "file": "applicazione-edilizia.webp",
+    "source_asset": "foam-p07-image03.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 750,
+    "height": 466
+  },
+  {
+    "file": "applicazione-utensili.webp",
+    "source_asset": "foam-p07-image04.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 840,
+    "height": 840
+  },
+  {
+    "file": "applicazione-meccanica.webp",
+    "source_asset": "foam-p07-image05.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 646,
+    "height": 485
+  },
+  {
+    "file": "applicazione-automotive.webp",
+    "source_asset": "foam-p07-image06.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 639,
+    "height": 639
+  },
+  {
+    "file": "applicazione-protezione-sport.webp",
+    "source_asset": "foam-p07-image07.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 500,
+    "height": 500
+  },
+  {
+    "file": "applicazione-gioielli.webp",
+    "source_asset": "foam-p07-image08.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 379,
+    "height": 437
+  },
+  {
+    "file": "applicazione-fitness.webp",
+    "source_asset": "foam-p07-image10.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 661,
+    "height": 441
+  },
+  {
+    "file": "applicazione-nautica.webp",
+    "source_asset": "foam-p07-image11.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 1200,
+    "height": 675
+  },
+  {
+    "file": "applicazione-giocattoli.webp",
+    "source_asset": "foam-p07-image12.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 645,
+    "height": 645
+  },
+  {
+    "file": "applicazione-arredamento.webp",
+    "source_asset": "foam-p07-image13.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 7,
+    "width": 700,
+    "height": 466
+  },
+  {
+    "file": "xtracell-diagramma-compressione.webp",
+    "source_asset": "foam-p08-image01.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 8,
+    "width": 1800,
+    "height": 368
+  },
+  {
+    "file": "bolle-aria-diagramma-compressione.webp",
+    "source_asset": "foam-p08-image02.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 8,
+    "width": 1800,
+    "height": 368
+  },
+  {
+    "file": "xtracell-ceramica.webp",
+    "source_asset": "foam-p08-image03.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 8,
+    "width": 1511,
+    "height": 1008
+  },
+  {
+    "file": "xtracell-struttura.webp",
+    "source_asset": "foam-p08-image04.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 8,
+    "width": 659,
+    "height": 440
+  },
+  {
+    "file": "zerovirgolacinque-bicchiere.webp",
+    "source_asset": "foam-p09-image01.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 9,
+    "width": 1200,
+    "height": 1800
+  },
+  {
+    "file": "zerovirgolacinque-bottiglia.webp",
+    "source_asset": "foam-p09-image02.webp",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 9,
+    "width": 1684,
+    "height": 1123
+  },
+  {
+    "file": "tiger-film-bobine.webp",
+    "source_asset": "psv-p04-image01.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 4,
+    "width": 480,
+    "height": 361
+  },
+  {
+    "file": "tiger-film-bobine-verde.webp",
+    "source_asset": "psv-p04-image03.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 4,
+    "width": 480,
+    "height": 361
+  },
+  {
+    "file": "tiger-film-bobina.webp",
+    "source_asset": "psv-p04-image04.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 4,
+    "width": 392,
+    "height": 261
+  },
+  {
+    "file": "tiger-film-manuale.webp",
+    "source_asset": "psv-p04-image05.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 4,
+    "width": 351,
+    "height": 234
+  },
+  {
+    "file": "economia-lineare-circolare.webp",
+    "source_asset": "psv-p05-image01.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 5,
+    "width": 1052,
+    "height": 623
+  },
+  {
+    "file": "economia-circolare-mano.webp",
+    "source_asset": "psv-p06-image01.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 6,
+    "width": 843,
+    "height": 563
+  },
+  {
+    "file": "cam-marchio.webp",
+    "source_asset": "psv-p07-image01.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 7,
+    "width": 140,
+    "height": 140
+  },
+  {
+    "file": "ambiente-energia-risorse.webp",
+    "source_asset": "psv-p07-image02.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 7,
+    "width": 1172,
+    "height": 360
+  },
+  {
+    "file": "certificato-psv-3040-2024.webp",
+    "source_asset": "psv-p08-image01.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 8,
+    "width": 827,
+    "height": 1154
+  },
+  {
+    "file": "certificato-psv-allegato-prodotti.webp",
+    "source_asset": "psv-p09-image01.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 9,
+    "width": 819,
+    "height": 1076
+  },
+  {
+    "file": "biodiversita-mondo-puzzle.webp",
+    "source_asset": "psv-p10-image01.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 10,
+    "width": 477,
+    "height": 477
+  },
+  {
+    "file": "biodiversita-tartaruga.webp",
+    "source_asset": "psv-p11-image01.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 339,
+    "height": 222
+  },
+  {
+    "file": "biodiversita-leopardo.webp",
+    "source_asset": "psv-p11-image02.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 284,
+    "height": 240
+  },
+  {
+    "file": "biodiversita-orso.webp",
+    "source_asset": "psv-p11-image03.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 388,
+    "height": 237
+  },
+  {
+    "file": "biodiversita-orango.webp",
+    "source_asset": "psv-p11-image04.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 227,
+    "height": 291
+  },
+  {
+    "file": "biodiversita-tigre.webp",
+    "source_asset": "psv-p11-image05.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 186,
+    "height": 172
+  },
+  {
+    "file": "biodiversita-gorilla.webp",
+    "source_asset": "psv-p11-image06.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 282,
+    "height": 173
+  },
+  {
+    "file": "biodiversita-cetaceo.webp",
+    "source_asset": "psv-p11-image07.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 230,
+    "height": 176
+  },
+  {
+    "file": "biodiversita-mammifero-bosco.webp",
+    "source_asset": "psv-p11-image08.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 150,
+    "height": 111
+  },
+  {
+    "file": "biodiversita-elefante.webp",
+    "source_asset": "psv-p11-image09.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 247,
+    "height": 175
+  },
+  {
+    "file": "biodiversita-stambecco.webp",
+    "source_asset": "psv-p11-image10.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 240,
+    "height": 178
+  },
+  {
+    "file": "biodiversita-farfalla.webp",
+    "source_asset": "psv-p11-image11.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 395,
+    "height": 240
+  },
+  {
+    "file": "biodiversita-rapace.webp",
+    "source_asset": "psv-p11-image12.webp",
+    "pdf": "Presentazione Imballaggi 2 G Plastica Seconda Vita.pdf",
+    "page": 11,
+    "width": 228,
+    "height": 178
+  },
+  {
+    "file": "eco-innovazione-bottiglia.webp",
+    "source_asset": "foam-page-03.png crop",
+    "pdf": "2G FOAM BROCHURE.pdf",
+    "page": 3
+  }
+]
