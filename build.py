@@ -15,7 +15,7 @@ from brochure_sections import enrich
 from turtle_art import turtle_art
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "17"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "18"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -80,10 +80,7 @@ def shell(current, title, description, body, body_class=""):
   <div class="intro-stage">
     <div class="intro-lock">
       <img class="intro-word" src="assets/logo-ink.webp" width="520" height="149" alt="">
-      <span class="intro-turtle">{turtle_art("intro")}</span>
     </div>
-    <div class="intro-water" aria-hidden="true"><i></i><i></i><i></i></div>
-    <p class="intro-tag">KEEP IT SAFE</p>
   </div>
 </div>"""
 

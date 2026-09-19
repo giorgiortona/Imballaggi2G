@@ -830,3 +830,16 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
  [data-page="sostenibilita"] .ph-media{inset:0 0 auto;height:440px}
  [data-page="sostenibilita"] .ph-shade{background:linear-gradient(180deg,#061c1740 0,transparent 20%,#0a2a20 54%)}
 }
+
+/* v18 — only the original mark, quietly revealed. */
+.js .intro.is-playing{animation:minimalIntroExit .45s ease 1.7s both}
+.intro-sheet{background:var(--paper);animation:none}
+.intro-stage{width:min(82vw,760px);animation:none}
+.intro-lock{width:100%}
+.intro-word{width:100%;clip-path:none;transform:none;filter:none;
+ -webkit-mask-image:linear-gradient(90deg,#000 40%,transparent 60%);mask-image:linear-gradient(90deg,#000 40%,transparent 60%);
+ -webkit-mask-size:250% 100%;mask-size:250% 100%;
+ animation:minimalLogoReveal 1.35s cubic-bezier(.22,.61,.36,1) .1s both}
+@keyframes minimalLogoReveal{from{-webkit-mask-position:100% 0;mask-position:100% 0}to{-webkit-mask-position:0 0;mask-position:0 0}}
+@keyframes minimalIntroExit{to{opacity:0;visibility:hidden}}
+@media(prefers-reduced-motion:reduce){.js .intro.is-playing{display:none}.intro-word{animation:none;-webkit-mask-image:none;mask-image:none}}

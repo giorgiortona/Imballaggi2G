@@ -75,3 +75,7 @@ Vedere `FONTI-E-REVISIONE.md` per le incongruenze dei documenti e le informazion
 
 ## Revisione 17 — tartaruga protagonista
 Caricamento senza barra: logo ingrandito e tartaruga originale SVG articolata (`turtle_art.py`), con pinne indipendenti e arrivo curvo a fianco del logo. Copertina sostenibilità, fascia 06 e scena marina aggiornate con `turtle-ocean-v17.png`, immagine evocativa generata con AI, non fotografia aziendale o documentazione scientifica. Il marchio ufficiale resta invariato.
+
+
+## Revisione 18 — intro minimale
+Solo il logo grande, centrato su fondo carta uniforme. Rivelazione morbida da sinistra a destra e breve dissolvenza. Rimossi dall’intro tartaruga, testo aggiuntivo ed effetti ambientali.
