@@ -15,7 +15,7 @@ from brochure_sections import enrich
 from turtle_art import turtle_art
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "18"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "19"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
