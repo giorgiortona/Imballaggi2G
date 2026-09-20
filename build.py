@@ -12,10 +12,10 @@ anche modificare a mano, ma poi la parte comune va risincronizzata.
 
 from pathlib import Path
 from brochure_sections import enrich
-from turtle_art import turtle_art
+from section_motion import section_motion
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "19"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "20"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -87,10 +87,11 @@ def shell(current, title, description, body, body_class=""):
     entry = ""
     if current:
         section = BY_KEY[current]
-        entry = f'''<div class="section-entry entry-{current}" data-scene="{current}" aria-hidden="true">
-          <div class="entry-wash"></div><div class="entry-texture"></div>
-          <div class="entry-content"><span class="entry-number">{section[2]}</span><span class="entry-title">{section[3]}</span><span class="entry-line"></span></div>
-          <span class="entry-turtle">{turtle_art("entry")}</span>
+        entry = f'''<div class="section-entry entry-minimal entry-{current}" data-scene="{current}" aria-hidden="true">
+          <div class="section-signature">
+            <img class="section-logo" src="assets/logo-ink.webp" width="1200" height="344" alt="">
+            <div class="section-object">{section_motion(current)}</div>
+          </div>
         </div>'''
     cls = f' class="{body_class}" data-page="{current or "home"}"'
 

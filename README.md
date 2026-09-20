@@ -79,3 +79,7 @@ Caricamento senza barra: logo ingrandito e tartaruga originale SVG articolata (`
 
 ## Revisione 18 — intro minimale
 Solo il logo grande, centrato su fondo carta uniforme. Rivelazione morbida da sinistra a destra e breve dissolvenza. Rimossi dall’intro tartaruga, testo aggiuntivo ed effetti ambientali.
+
+
+## Revisione 20 — ingressi delle sezioni
+Sfondo bianco, logo e illustrazione originale a tratto in `section_motion.py`: coprispalla, bobina, bolle, busta, confezionatrice, tartaruga, sede, messaggio. Nessuna patina o fotografia sovrapposta. Durata inferiore a due secondi, interruzione immediata con input e rispetto di movimento ridotto.
