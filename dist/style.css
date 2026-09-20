@@ -881,3 +881,10 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 @keyframes contactDot{0%{opacity:0;transform:translateY(4px)}60%{opacity:1;transform:translateY(-3px)}100%{opacity:1;transform:none}}
 @media(max-width:760px){.section-signature{width:min(78vw,400px);gap:20px}.section-object{width:96px;height:96px}}
 @media(prefers-reduced-motion:reduce){.section-entry.entry-minimal.is-playing{display:none}.section-signature *{animation:none!important}}
+
+/* Coprispalla: the cover settles over its hanger. */
+.motion-hanger{stroke-dasharray:1;stroke-dashoffset:1;animation:sketchDraw .6s ease .1s forwards}
+.motion-shoulder-cover{animation:shoulderCoverSettle 1s cubic-bezier(.2,.7,.25,1) .35s both}
+@keyframes shoulderCoverSettle{from{opacity:0;transform:translateY(-30px)}35%{opacity:1}to{opacity:1;transform:translateY(0)}}
+[data-page="coprispalla"] .technical-preview{background:#fff;border:1px solid #e8ebe8}
+[data-page="coprispalla"] .technical-preview::after{display:none}

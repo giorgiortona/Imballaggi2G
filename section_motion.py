@@ -1,7 +1,7 @@
 """Small, original line illustrations for the white section entrances."""
 def section_motion(key):
     scenes = {
-        'coprispalla': '<path class="motion-trace" d="M72 43c0-14 20-14 20-2 0 7-12 9-12 18L34 83q-6 4 1 7h90q7-3 1-7L80 59"/><path class="motion-drape" d="M57 70 38 82l-5 43h94l-5-43-19-12"/>',
+        'coprispalla': '<path class="motion-hanger" pathLength="1" d="M73 35c0-12 16-12 16-2 0 6-9 8-9 14v9L39 80q-4 3 1 5h80q5-2 1-5L80 56"/><g class="motion-shoulder-cover"><path d="M70 48h20v12l36 22v46H34V82l36-22Z" fill="#fafafa" fill-opacity=".65"/><path d="m39 86 35-22m12 0 35 22M40 119h80" opacity=".45"/></g>',
         'bobine': '<g class="motion-reel"><circle cx="59" cy="75" r="29"/><circle cx="59" cy="75" r="9"/><path d="M59 46v10m29 19H78m-19 29V94M30 75h10"/></g><path class="motion-film" d="M59 104h62q10 0 10-10V74"/>',
         'protezioni': ''.join(f'<circle class="motion-bubble" style="--n:{i}" cx="{52+(i%3)*28}" cy="{47+(i//3)*28}" r="10"/>' for i in range(9)),
         'buste': '<path class="motion-trace" d="M43 56v64h74V56"/><path class="motion-fold" d="M43 56h74L80 79Z"/><path class="motion-seam" d="M52 108h56"/>',
