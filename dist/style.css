@@ -903,3 +903,7 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 @keyframes bubbleSheetOpen{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
 @keyframes bubbleEdgeOpen{0%{left:-12%;opacity:0}12%{opacity:1}82%{opacity:.7}100%{left:100%;opacity:0}}
 @media(prefers-reduced-motion:reduce){.bubble-study.in .bubble-photo{animation:none;clip-path:none}.bubble-fold,.bubble-light{display:none}}
+
+/* Native high-resolution editorial photography; retain natural colour and detail. */
+.biodiversity-gallery .editorial-photo img,.application-gallery .editorial-photo img{filter:none}
+.nature-photo img{aspect-ratio:1.3;object-fit:cover}

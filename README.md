@@ -83,3 +83,7 @@ Solo il logo grande, centrato su fondo carta uniforme. Rivelazione morbida da si
 
 ## Revisione 20 — ingressi delle sezioni
 Sfondo bianco, logo e illustrazione originale a tratto in `section_motion.py`: coprispalla, bobina, bolle, busta, confezionatrice, tartaruga, sede, messaggio. Nessuna patina o fotografia sovrapposta. Durata inferiore a due secondi, interruzione immediata con input e rispetto di movimento ridotto.
+
+
+## Revisione 23 — fotografie nitide
+Sostituite 27 immagini generiche: 12 animali, 12 settori applicativi e 3 immagini ambientali. Fonti, autori e risoluzioni in `CREDITI-FOTO.md` e `editorial-sources.json`. Immagini responsive WebP, senza upscaling, ritagli controllati. Gli originali dei prodotti e dei documenti aziendali restano invariati.

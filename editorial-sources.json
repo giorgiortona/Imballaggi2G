@@ -1,0 +1,380 @@
+[
+  {
+    "name": "biodiversita-leopardo",
+    "source": "https://www.pexels.com/photo/close-up-portrait-of-a-relaxed-leopard-in-nature-36669773/",
+    "download": "https://images.pexels.com/photos/36669773/pexels-photo-36669773.jpeg",
+    "author": "Mohamed Olwy",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      5760,
+      3840
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-orso",
+    "source": "https://www.pexels.com/photo/brown-bear-in-nature-18504891/",
+    "download": "https://images.pexels.com/photos/18504891/pexels-photo-18504891.jpeg",
+    "author": "Simone Cappellari",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      5168,
+      3710
+    ],
+    "width": 2400,
+    "height": 1723,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-orango",
+    "source": "https://www.pexels.com/photo/portrait-of-orangutan-26926253/",
+    "download": "https://images.pexels.com/photos/26926253/pexels-photo-26926253.jpeg",
+    "author": "Florian Kriechbaumer",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      2578,
+      1938
+    ],
+    "width": 2400,
+    "height": 1804,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-tigre",
+    "source": "https://www.pexels.com/photo/tiger-on-grass-15509632/",
+    "download": "https://images.pexels.com/photos/15509632/pexels-photo-15509632.jpeg",
+    "author": "Denys Gromov",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      4014,
+      2676
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-gorilla",
+    "source": "https://www.pexels.com/photo/close-up-photo-of-black-gorilla-7202608/",
+    "download": "https://images.pexels.com/photos/7202608/pexels-photo-7202608.jpeg",
+    "author": "Harvey Sapir",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      4104,
+      2736
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-cetaceo",
+    "source": "https://www.pexels.com/photo/humpback-whale-underwater-7206869/",
+    "download": "https://images.pexels.com/photos/7206869/pexels-photo-7206869.jpeg",
+    "author": "Elianne Dipp",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      1975,
+      3489
+    ],
+    "width": 1359,
+    "height": 2400,
+    "smallWidth": 453
+  },
+  {
+    "name": "biodiversita-mammifero-bosco",
+    "source": "https://www.pexels.com/photo/wild-deer-in-forested-environment-36725436/",
+    "download": "https://images.pexels.com/photos/36725436/pexels-photo-36725436.jpeg",
+    "author": "Carlo Giovanni Ghiardelli",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      3343,
+      4024
+    ],
+    "width": 1994,
+    "height": 2400,
+    "smallWidth": 665
+  },
+  {
+    "name": "biodiversita-elefante",
+    "source": "https://www.pexels.com/photo/elephant-in-a-jungle-18161318/",
+    "download": "https://images.pexels.com/photos/18161318/pexels-photo-18161318.jpeg",
+    "author": "Juan Felipe Ramírez",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      6000,
+      4000
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-stambecco",
+    "source": "https://www.pexels.com/photo/an-ibex-standing-on-top-of-a-mountain-6934217/",
+    "download": "https://images.pexels.com/photos/6934217/pexels-photo-6934217.jpeg",
+    "author": "marco allasio",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      6000,
+      4000
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-farfalla",
+    "source": "https://www.pexels.com/photo/close-up-of-butterfly-pollinating-flower-326067/",
+    "download": "https://images.pexels.com/photos/326067/pexels-photo-326067.jpeg",
+    "author": "Pixabay",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      2000,
+      1333
+    ],
+    "width": 2000,
+    "height": 1333,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-rapace",
+    "source": "https://www.pexels.com/photo/majestic-golden-eagle-portrait-in-nature-36164232/",
+    "download": "https://images.pexels.com/photos/36164232/pexels-photo-36164232.jpeg",
+    "author": "Jesús Esteban San José",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      3131,
+      2505
+    ],
+    "width": 2400,
+    "height": 1920,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-mondo-puzzle",
+    "source": "https://www.pexels.com/photo/green-trees-in-the-forest-8747653/",
+    "download": "https://images.pexels.com/photos/8747653/pexels-photo-8747653.jpeg",
+    "author": "ROMAN ODINTSOV",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      5616,
+      3744
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "economia-circolare-mano",
+    "source": "https://www.pexels.com/photo/close-up-of-plant-seedling-in-hands-outdoors-36040363/",
+    "download": "https://images.pexels.com/photos/36040363/pexels-photo-36040363.jpeg",
+    "author": "Irvin David",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      3712,
+      5568
+    ],
+    "width": 1600,
+    "height": 2400,
+    "smallWidth": 533
+  },
+  {
+    "name": "ambiente-energia-risorse",
+    "source": "https://www.pexels.com/photo/wind-turbines-on-green-hills-with-clear-sky-31390211/",
+    "download": "https://images.pexels.com/photos/31390211/pexels-photo-31390211.jpeg",
+    "author": "Meriç Tuna",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      6240,
+      4160
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "biodiversita-tartaruga",
+    "source": "https://www.pexels.com/photo/close-up-shot-of-a-sea-turtle-swimming-underwater-7210380/",
+    "download": "https://images.pexels.com/photos/7210380/pexels-photo-7210380.jpeg",
+    "author": "Jan Simons",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      4197,
+      2361
+    ],
+    "width": 2400,
+    "height": 1350,
+    "smallWidth": 800
+  },
+  {
+    "name": "applicazione-acustica",
+    "source": "https://www.pexels.com/photo/engineers-in-sound-studio-3861965/",
+    "download": "https://images.pexels.com/photos/3861965/pexels-photo-3861965.jpeg",
+    "author": "ThisIsEngineering",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      5304,
+      7952
+    ],
+    "width": 1601,
+    "height": 2400,
+    "smallWidth": 534
+  },
+  {
+    "name": "applicazione-arredamento",
+    "source": "https://www.pexels.com/photo/sofa-in-modern-living-room-16274689/",
+    "download": "https://images.pexels.com/photos/16274689/pexels-photo-16274689.jpeg",
+    "author": "Bruna Finelli",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      6720,
+      4480
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "applicazione-automotive",
+    "source": "https://www.pexels.com/photo/car-seats-in-a-car-interior-8886302/",
+    "download": "https://images.pexels.com/photos/8886302/pexels-photo-8886302.jpeg",
+    "author": "Mike Bird",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      6000,
+      3376
+    ],
+    "width": 2400,
+    "height": 1350,
+    "smallWidth": 800
+  },
+  {
+    "name": "applicazione-edilizia",
+    "source": "https://www.pexels.com/photo/building-construction-in-city-17297268/",
+    "download": "https://images.pexels.com/photos/17297268/pexels-photo-17297268.jpeg",
+    "author": "pipop kunachon",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      4000,
+      6000
+    ],
+    "width": 1600,
+    "height": 2400,
+    "smallWidth": 533
+  },
+  {
+    "name": "applicazione-fitness",
+    "source": "https://www.pexels.com/photo/exercise-equipments-inside-a-gym-4944435/",
+    "download": "https://images.pexels.com/photos/4944435/pexels-photo-4944435.jpeg",
+    "author": "Anastasia Shuraeva",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      6720,
+      4480
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "applicazione-giocattoli",
+    "source": "https://www.pexels.com/photo/wooden-toys-3661263/",
+    "download": "https://images.pexels.com/photos/3661263/pexels-photo-3661263.jpeg",
+    "author": "cottonbro studio",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      3836,
+      5754
+    ],
+    "width": 1600,
+    "height": 2400,
+    "smallWidth": 533
+  },
+  {
+    "name": "applicazione-gioielli",
+    "source": "https://www.pexels.com/photo/elegant-gold-and-diamond-jewelry-rings-30541188/",
+    "download": "https://images.pexels.com/photos/30541188/pexels-photo-30541188.jpeg",
+    "author": "Jana Kukebal",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      4016,
+      6016
+    ],
+    "width": 1602,
+    "height": 2400,
+    "smallWidth": 534
+  },
+  {
+    "name": "applicazione-logistica",
+    "source": "https://www.pexels.com/photo/labeled-shelves-in-a-warehouse-7018662/",
+    "download": "https://images.pexels.com/photos/7018662/pexels-photo-7018662.jpeg",
+    "author": "cottonbro studio",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      5790,
+      3860
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "applicazione-meccanica",
+    "source": "https://www.pexels.com/photo/close-up-photo-of-an-industrial-machine-9242912/",
+    "download": "https://images.pexels.com/photos/9242912/pexels-photo-9242912.jpeg",
+    "author": "Mikhail Nilov",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      4000,
+      2667
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  },
+  {
+    "name": "applicazione-nautica",
+    "source": "https://www.pexels.com/photo/sailboat-on-sea-12800915/",
+    "download": "https://images.pexels.com/photos/12800915/pexels-photo-12800915.jpeg",
+    "author": "Zacharie Beaudoin",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      3933,
+      6187
+    ],
+    "width": 1526,
+    "height": 2400,
+    "smallWidth": 509
+  },
+  {
+    "name": "applicazione-protezione-sport",
+    "source": "https://www.pexels.com/photo/a-man-wearing-a-bicycle-helmet-5808007/",
+    "download": "https://images.pexels.com/photos/5808007/pexels-photo-5808007.jpeg",
+    "author": "Pavel Danilyuk",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      4016,
+      6016
+    ],
+    "width": 1602,
+    "height": 2400,
+    "smallWidth": 534
+  },
+  {
+    "name": "applicazione-utensili",
+    "source": "https://www.pexels.com/photo/variety-of-hand-tools-in-a-workshop-37792975/",
+    "download": "https://images.pexels.com/photos/37792975/pexels-photo-37792975.jpeg",
+    "author": "Chris Leib",
+    "license": "https://www.pexels.com/license/",
+    "original": [
+      3000,
+      2000
+    ],
+    "width": 2400,
+    "height": 1600,
+    "smallWidth": 800
+  }
+]

@@ -15,7 +15,7 @@ from brochure_sections import enrich
 from section_motion import section_motion
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "22"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "23"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina

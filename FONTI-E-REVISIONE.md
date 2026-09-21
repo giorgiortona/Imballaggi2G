@@ -93,3 +93,7 @@ Le immagini originali e i contenuti sono tracciati in `brochure-assets.json` e `
 
 ## Immagine marina — revisione 17
 `assets/turtle-ocean-v17.png`: immagine generata con imagegen per la direzione artistica della sostenibilità. Non tratta dalla brochure e non fotografia di iniziative aziendali. La tartaruga articolata in `turtle_art.py` è un'illustrazione originale per le animazioni, distinta dal logo e dai marchi di certificazione.
+
+
+## Revisione 23 — fotografie nitide
+Sostituite 27 immagini generiche: 12 animali, 12 settori applicativi e 3 immagini ambientali. Fonti, autori e risoluzioni in `CREDITI-FOTO.md` e `editorial-sources.json`. Immagini responsive WebP, senza upscaling, ritagli controllati. Gli originali dei prodotti e dei documenti aziendali restano invariati.
