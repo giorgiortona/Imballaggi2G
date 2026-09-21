@@ -888,3 +888,18 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 @keyframes shoulderCoverSettle{from{opacity:0;transform:translateY(-30px)}35%{opacity:1}to{opacity:1;transform:translateY(0)}}
 [data-page="coprispalla"] .technical-preview{background:#fff;border:1px solid #e8ebe8}
 [data-page="coprispalla"] .technical-preview::after{display:none}
+
+/* Pluriball: a sheet opens at its natural size; no zoom interaction. */
+.bubble-study{background:#fff}
+.bubble-window{background:#f4f5f2;border:1px solid #e6e9e4}
+.bubble-photo{transform:none!important;transition:none;will-change:auto;filter:saturate(.5) contrast(1.03)}
+.bubble-study.in .bubble-window{animation:none}
+.bubble-study.in .bubble-photo{animation:bubbleSheetOpen 1.8s cubic-bezier(.2,.65,.25,1) both}
+.bubble-fold{position:absolute;top:0;bottom:0;width:12%;left:0;background:linear-gradient(90deg,transparent,#fff9 50%,#21392b30 85%,transparent);opacity:0;pointer-events:none}
+.bubble-study.in .bubble-fold{animation:bubbleEdgeOpen 1.8s cubic-bezier(.2,.65,.25,1) both}
+.bubble-study.in .bubble-light{animation:bubbleLight 2.2s ease .45s both;opacity:.4}
+.bubble-tools{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.bubble-tools>span{font-size:18px;color:#536158}
+@keyframes bubbleSheetOpen{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+@keyframes bubbleEdgeOpen{0%{left:-12%;opacity:0}12%{opacity:1}82%{opacity:.7}100%{left:100%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.bubble-study.in .bubble-photo{animation:none;clip-path:none}.bubble-fold,.bubble-light{display:none}}

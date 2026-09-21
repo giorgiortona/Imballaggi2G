@@ -90,9 +90,6 @@
     buttons.forEach(function(button,i){button.addEventListener('click',function(){study._manual=true;study._show(i);});});study._show(0);
   });
   document.querySelectorAll('.bubble-study').forEach(function(study){
-    var input=study.querySelector('input'), image=study.querySelector('.bubble-photo'),output=study.querySelector('output');
-    function zoom(){var p=Number(input.value)/100;study.style.setProperty('--detail',p);image.style.transform='scale('+(1+p*.65)+')';output.value=p>.65?'La trama':p>.25?'Le bolle':'La superficie';}
-    input.addEventListener('input',zoom);zoom();
     var again=study.querySelector('[data-replay-material]');if(again)again.addEventListener('click',function(){study.classList.remove('in');void study.offsetWidth;study.classList.add('in');});
   });
   document.querySelectorAll('.eco-story').forEach(function(story){var replay=story.querySelector('button');if(replay)replay.addEventListener('click',function(){story.classList.remove('in');void story.offsetWidth;story.classList.add('in');});});
