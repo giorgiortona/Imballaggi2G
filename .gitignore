@@ -1,0 +1,6 @@
+# Cache di Python, generata da build.py
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
