@@ -97,3 +97,23 @@ Le immagini originali e i contenuti sono tracciati in `brochure-assets.json` e `
 
 ## Revisione 23 — fotografie nitide
 Sostituite 27 immagini generiche: 12 animali, 12 settori applicativi e 3 immagini ambientali. Fonti, autori e risoluzioni in `CREDITI-FOTO.md` e `editorial-sources.json`. Immagini responsive WebP, senza upscaling, ritagli controllati. Gli originali dei prodotti e dei documenti aziendali restano invariati.
+
+## Quarta revisione — 8 ottobre 2026: le fotografie dell'azienda
+Arrivata la cartella `foto_andrea` (28 fotografie e 6 video dell'azienda). Il livello fotografico del sito e' stato rifatto da capo: non una sostituzione uno-a-uno, ma una nuova scelta per ogni sezione fra materiale vecchio e nuovo.
+
+### Cosa e' entrato
+28 fotografie in `dist/assets/azienda/` (2,1 MB complessivi, WebP) e 5 clip in `dist/assets/video/` (2,1 MB, H.264 senza audio, 8-9 secondi, con poster). Il sesto video e' stato scartato per inquadratura.
+
+Soggetti: il coprispalla vero (foto e video), la linea di taglio e saldatura, le bobine in macchina e in magazzino, il pluriball e l'espanso in macro, i nastri personalizzati con il marchio Plastica Seconda Vita, i colli chiusi, la sede.
+
+### Cosa e' uscito
+Tutte le fotografie di repertorio Pexels introdotte nella seconda revisione sono state rimosse dai punti visibili: hero della home, fasce del navigatore, testate delle otto pagine, texture d'ingresso delle sezioni e le tre immagini di contenuto su bobine e protezioni. I file restano in cartella ma non sono piu' richiamati da nessuna pagina.
+
+Restano di repertorio le sole immagini editoriali di biodiversita' e di applicazione (specie animali, settori di impiego) gia' documentate in `CREDITI-FOTO.md`: illustrano temi, non l'azienda.
+
+### Attenzione sui testi
+Le didascalie e i titoli dei nuovi blocchi descrivono quello che si vede, senza aggiungere dati tecnici. Due affermazioni meritano una conferma:
+1. «Tutto in casa, su macchine nostre» (pagina coprispalla) e «Le usiamo tutti i giorni» (pagina macchine): le fotografie mostrano un reparto con macchine, una delle quali porta il marchio Imballaggi 2G. Verificare che la lavorazione del coprispalla avvenga effettivamente in sede e non presso terzi.
+2. «Quella qui accanto e' una delle nostre, fotografata in produzione» (pagina bobine): confermare che la bobina ripresa sia prodotto dell'azienda e non materiale di un fornitore.
+
+Nessuna fotografia e' stata ritoccata: solo ridimensionamento, conversione in WebP e, per i video, taglio e rimozione dell'audio.

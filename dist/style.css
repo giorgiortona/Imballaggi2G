@@ -216,11 +216,11 @@ em{font-style:normal;color:var(--green)}
    ============================================================ */
 .home-hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
   padding:calc(var(--header) + 4vh) var(--gutter) clamp(96px,14vh,150px);background:#0c100f;color:#fff;overflow:hidden}
-.hero-media{position:absolute;inset:-4%;background-image:url('assets/hero.webp');background-size:cover;background-position:center;transform:scale(1.04);will-change:transform}
+.hero-media{position:absolute;inset:-4%;background-image:url('assets/azienda/magazzino-bobine.webp');background-size:cover;background-position:center;transform:scale(1.04);will-change:transform}
 .hero-shade{position:absolute;inset:0;background:
-  linear-gradient(90deg,rgba(8,14,11,.9) 0%,rgba(8,14,11,.48) 40%,transparent 74%),
-  linear-gradient(0deg,rgba(5,10,7,.86),transparent 34%),
-  linear-gradient(180deg,rgba(5,10,7,.62),transparent 26%)}
+  linear-gradient(90deg,rgba(8,14,11,.94) 0%,rgba(8,14,11,.72) 34%,rgba(8,14,11,.3) 62%,rgba(8,14,11,.12) 100%),
+  linear-gradient(0deg,rgba(5,10,7,.88),transparent 38%),
+  linear-gradient(180deg,rgba(5,10,7,.66),transparent 26%)}
 .hero-content{position:relative;z-index:1}
 .home-hero .eyebrow{color:#cbd6ce;margin-bottom:clamp(18px,3.6vh,38px)}
 .home-hero h1{font-size:clamp(56px,min(8.2vw,13vh),136px);line-height:1.01;font-weight:500;letter-spacing:-.065em}
@@ -567,7 +567,7 @@ em{font-style:normal;color:var(--green)}
   .brand{width:180px}
   .header.solid .brand{width:166px}
   .home-hero{padding-bottom:clamp(96px,16vh,140px)}
-  .hero-media{background-position:67% 70%;opacity:.86}
+  .hero-media{background-position:62% center;opacity:.9}
   .hero-shade{background:linear-gradient(90deg,rgba(8,16,11,.9),rgba(8,16,11,.34)),linear-gradient(0deg,rgba(8,16,11,.82),transparent 52%),linear-gradient(180deg,rgba(5,10,7,.6),transparent 22%)}
   .home-hero h1{font-size:clamp(48px,12.5vw,80px);line-height:1.06}
   .hero-bottom{bottom:16px;font-size:12px}
@@ -666,19 +666,19 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden;padding-rig
 .entry-content{display:flex;align-items:baseline;gap:22px;position:relative;z-index:3;animation:entryType .6s var(--ease) both}
 .entry-number{color:#8bbc9d;font-size:15px;font-variant-numeric:tabular-nums}.entry-title{font-size:clamp(34px,6vw,86px);letter-spacing:-.05em}
 .entry-line{position:absolute;left:0;right:0;bottom:-24px;height:1px;background:#f4f7ee50;transform-origin:left;animation:ruleDraw .8s var(--ease) both}
-.entry-texture{position:absolute;inset:0;background:url('assets/film-texture.webp') center/cover;opacity:.2;animation:entryFilm 1.2s var(--ease) both}
+.entry-texture{position:absolute;inset:0;background:url('assets/azienda/fogli-uscita.webp') center/cover;opacity:.2;animation:entryFilm 1.2s var(--ease) both}
 .entry-wash{position:absolute;inset:0;background:#174934;transform-origin:left;animation:entryWash 1.2s var(--ease) both}
 .entry-turtle{display:none}
-.entry-coprispalla .entry-texture{background-image:url('assets/garments.webp');opacity:.15}
-.entry-protezioni .entry-texture{background-image:url('assets/bubble.webp');opacity:.2;animation:entryCushion 1s var(--ease) both}
+.entry-coprispalla .entry-texture{background-image:url('assets/azienda/coprispalla-linea.webp');opacity:.15}
+.entry-protezioni .entry-texture{background-image:url('assets/azienda/bobine-pluriball.webp');opacity:.2;animation:entryCushion 1s var(--ease) both}
 .entry-buste .entry-texture{animation:entryFold 1s var(--ease) both}
-.entry-macchine .entry-texture{background-image:url('assets/machines.webp');animation:entryFilm .85s var(--ease) both}
-.entry-azienda .entry-texture{background-image:url('assets/warehouse.webp')}
+.entry-macchine .entry-texture{background-image:url('assets/azienda/macchina-rulli.webp');animation:entryFilm .85s var(--ease) both}
+.entry-azienda .entry-texture{background-image:url('assets/azienda/sede-insegna.webp')}
 .entry-sostenibilita.is-playing{animation-delay:1.2s;animation-duration:.6s}
 .entry-sostenibilita .entry-content{align-self:end;margin-bottom:17vh;animation-delay:.15s}
 .entry-sostenibilita .entry-title{font-size:clamp(32px,5vw,65px)}
 .entry-sostenibilita .entry-wash{background:radial-gradient(ellipse at 65% 35%,#5a9c76,#123b2a 70%);animation:cleanSweep 1.35s var(--ease) .05s both}
-.entry-sostenibilita .entry-texture{background-image:url('assets/film-dark.webp');opacity:.48;animation:cleanSurface 1.3s var(--ease) .05s both}
+.entry-sostenibilita .entry-texture{background-image:url('assets/azienda/nastro-psv.webp');opacity:.48;animation:cleanSurface 1.3s var(--ease) .05s both}
 .entry-sostenibilita .entry-turtle{display:block;position:absolute;width:clamp(68px,10vw,140px);top:30%;left:0;opacity:0;animation:cleanTurtle 1.45s var(--ease) .05s both;filter:drop-shadow(0 0 45px #c6edcc50)}
 @keyframes entryExit{to{clip-path:inset(0 0 100% 0);visibility:hidden}}
 @keyframes entryType{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
@@ -769,7 +769,7 @@ table{border-collapse:collapse;width:100%;font-size:16px;text-align:left;line-he
 @keyframes bubbleUnfold{from{clip-path:inset(0 18% 0 18%);filter:blur(4px)}to{clip-path:inset(0);filter:blur(0)}}
 .eco-window{height:clamp(280px,46vw,590px);position:relative;overflow:hidden;background:#12291d;isolation:isolate}
 .eco-world{width:100%;height:100%;object-fit:cover;object-position:50% 45%;filter:saturate(.8)}
-.eco-cloud{position:absolute;inset:0;background:linear-gradient(#111e1bd9,#0d1b1acf),url('assets/film-dark.webp') center/cover;backdrop-filter:blur(5px)}
+.eco-cloud{position:absolute;inset:0;background:linear-gradient(#111e1bd9,#0d1b1acf),url('assets/azienda/macchina-rulli.webp') center/cover;backdrop-filter:blur(5px)}
 .eco-sweep{position:absolute;inset:0;background:linear-gradient(95deg,transparent 40%,#b9efc430 50%,transparent 60%);transform:translateX(-100%)}
 .eco-traveller{position:absolute;width:clamp(55px,8vw,100px);left:0;top:40%;transform:rotate(90deg);opacity:0;filter:drop-shadow(0 0 26px #bbf2b850)}
 .eco-story.in .eco-cloud{animation:cleanSurface 2.7s var(--ease) .3s both}.eco-story.in .eco-traveller{animation:cleanTurtle 2.8s var(--ease) .3s both}.eco-story.in .eco-sweep{animation:filmScan 2.7s var(--ease) .3s both}
@@ -907,3 +907,92 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 /* Native high-resolution editorial photography; retain natural colour and detail. */
 .biodiversity-gallery .editorial-photo img,.application-gallery .editorial-photo img{filter:none}
 .nature-photo img{aspect-ratio:1.3;object-fit:cover}
+
+/* ============================================================
+   FOTOGRAFIE D'AZIENDA
+   Figure, file di scatti, video in loop e fasce scorrevoli.
+   Le immagini entrano con una rivelazione a maschera: il ritaglio
+   si apre dal basso mentre la foto rientra da una leggera scala.
+   ============================================================ */
+.shot{margin:0;display:flex;flex-direction:column;gap:clamp(10px,1.4vh,16px)}
+.shot-frame{display:block;position:relative;overflow:hidden;background:var(--paper-2);
+  aspect-ratio:var(--ratio,4/3);border-radius:2px}
+.shot-frame img,.shot-frame video{width:100%;height:100%;object-fit:cover;display:block}
+.shot figcaption{font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:9px}
+.shot figcaption::before{content:"";width:16px;height:1px;background:var(--green);flex:none}
+.dark-block .shot figcaption,.photo-band .shot figcaption{color:#a8bcae}
+
+/* rivelazione a maschera */
+.js .photo-mask .shot-frame{clip-path:inset(0 0 100% 0);transition:clip-path 1.15s var(--ease)}
+.js .photo-mask .shot-frame img,.js .photo-mask .shot-frame video{transform:scale(1.16);transition:transform 1.5s var(--ease)}
+.js .photo-mask figcaption{opacity:0;transform:translateY(10px);transition:opacity .7s var(--ease) .45s,transform .7s var(--ease) .45s}
+.js .photo-mask.in .shot-frame{clip-path:inset(0 0 0 0)}
+.js .photo-mask.in .shot-frame img,.js .photo-mask.in .shot-frame video{transform:none}
+.js .photo-mask.in figcaption{opacity:1;transform:none}
+.shot-frame:hover img{transform:scale(1.045)}
+.js .photo-mask.in .shot-frame:hover img{transform:scale(1.045)}
+
+/* intestazione dei blocchi fotografici */
+.shot-head{display:grid;grid-template-columns:1fr .9fr;gap:clamp(24px,4vw,70px);align-items:end;
+  margin-bottom:clamp(28px,4.6vh,58px)}
+.shot-head .lead{margin-top:0}
+
+/* fila di scatti */
+.shot-row{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,30px)}
+.shot-row>*:nth-child(2){margin-top:clamp(18px,3.4vw,52px)}
+
+/* foto grande accanto al testo */
+.shot-split{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(28px,5vw,86px);align-items:center}
+.shot-split.flip .shot{order:2}
+.shot-copy .display{margin-top:clamp(12px,2vh,22px)}
+
+/* due scatti sfalsati con il testo in mezzo */
+.shot-duo{display:grid;grid-template-columns:.85fr 1.45fr .85fr;gap:clamp(20px,3vw,44px);align-items:center}
+.shot-duo .shot-copy .display{font-size:clamp(26px,3.3vw,46px)}
+.shot-duo>.shot:first-child{margin-top:clamp(-10px,-2vw,-40px)}
+.shot-duo>.shot:last-child{margin-top:clamp(20px,4vw,70px)}
+.shot-duo .shot-copy{text-align:center}
+.shot-duo .shot-copy .lead{margin-left:auto;margin-right:auto}
+
+/* video in loop */
+.video-shot .shot-frame{background:#0e1412}
+.shot-play{position:absolute;left:14px;bottom:14px;width:9px;height:9px;border-radius:50%;
+  background:var(--green-soft);box-shadow:0 0 0 0 rgba(102,191,153,.7);animation:shotPulse 2.6s infinite;
+  opacity:0;transition:opacity .5s var(--ease)}
+.video-shot.playing .shot-play{opacity:1}
+@keyframes shotPulse{0%{box-shadow:0 0 0 0 rgba(102,191,153,.6)}70%{box-shadow:0 0 0 11px rgba(102,191,153,0)}100%{box-shadow:0 0 0 0 rgba(102,191,153,0)}}
+
+/* fascia a tutta larghezza che scorre */
+.photo-band{background:var(--ink);padding:clamp(34px,6vh,70px) 0;overflow:hidden;position:relative}
+.band-label{max-width:1560px;margin:0 auto clamp(18px,2.6vh,30px);padding:0 var(--gutter);
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8fa497}
+.band-track{display:flex;gap:14px;width:max-content;animation:bandRun 58s linear infinite}
+.photo-band:hover .band-track{animation-play-state:paused}
+.band-cell{flex:none;width:clamp(210px,24vw,340px);aspect-ratio:4/3;overflow:hidden;border-radius:2px}
+.band-cell img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.72);
+  transition:filter .6s var(--ease),transform .8s var(--ease)}
+.band-cell:hover img{filter:none;transform:scale(1.05)}
+@keyframes bandRun{to{transform:translateX(calc(-50% - 7px))}}
+
+@media(max-width:1100px){
+  .shot-head{grid-template-columns:1fr;gap:18px;align-items:start}
+  .shot-split,.shot-duo{grid-template-columns:1fr;gap:clamp(22px,4vh,40px)}
+  .shot-split.flip .shot{order:0}
+  .shot-duo>.shot:first-child,.shot-duo>.shot:last-child{margin-top:0}
+  .shot-duo .shot-copy{text-align:left}
+  .shot-duo .shot-copy .lead{margin-left:0}
+}
+@media(max-width:760px){
+  .shot-row{grid-template-columns:1fr;gap:26px}
+  .shot-row>*:nth-child(2){margin-top:0}
+  .band-cell{width:62vw}
+  .shot figcaption{font-size:11.5px}
+}
+@media(prefers-reduced-motion:reduce){
+  .js .photo-mask .shot-frame{clip-path:none}
+  .js .photo-mask .shot-frame img,.js .photo-mask .shot-frame video{transform:none}
+  .js .photo-mask figcaption{opacity:1;transform:none}
+  .band-track{animation:none}
+  .shot-play{animation:none}
+}

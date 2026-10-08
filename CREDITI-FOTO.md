@@ -1,4 +1,37 @@
-# Fotografie di repertorio — revisione 23
+# Crediti fotografici
+
+## Fotografie dell'azienda — revisione 25
+
+**Le immagini che reggono il sito sono ora fotografie di Imballaggi 2G**: prodotto,
+linea di produzione, magazzino, nastri personalizzati e sede. Provengono dalla cartella
+`foto_andrea` (scatti di ottobre 2026) e vivono in `dist/assets/azienda/` (28 file) e
+`dist/assets/video/` (5 clip, senza audio, accorciate a 8-9 secondi).
+
+Nessuna fotografia di repertorio compare piu' nell'hero della home, nelle fasce del
+navigatore, nelle testate delle pagine o nelle texture d'ingresso delle sezioni:
+tutti questi punti usano scatti aziendali.
+
+| Dove | Fotografia |
+|---|---|
+| Hero della home | magazzino-bobine |
+| Navigatore (7 fasce) | coprispalla-linea · bobina-macchina · bobine-pluriball · fogli-uscita · macchina-2g · nastro-psv · sede-insegna |
+| Testata coprispalla | coprispalla-barre |
+| Testata bobine | bobine-magazzino |
+| Testata protezioni | magazzino-pluriball |
+| Testata buste | macchina-bobine |
+| Testata macchine | macchina-rulli |
+| Testata azienda | sede-edificio |
+| Video coprispalla | coprispalla-volume · coprispalla-gruccia · coprispalla-foro |
+| Video pluriball | pluriball-foglio · pluriball-macro |
+
+Restano di repertorio soltanto le immagini editoriali di biodiversita' e di applicazione
+elencate qui sotto, che illustrano temi (specie, settori) e non l'azienda. I file
+`hero.webp`, `garments.webp`, `machines.webp`, `warehouse.webp`, `pallet-wrap.webp` e
+`bubble.webp` non sono piu' richiamati da nessuna pagina: si possono rimuovere.
+
+---
+
+## Immagini editoriali di repertorio — revisione 23
 
 Nuove fotografie selezionate da Pexels. [Licenza](https://www.pexels.com/license/). Non raffigurano prodotti, clienti, sedi o attività dell’azienda.
 

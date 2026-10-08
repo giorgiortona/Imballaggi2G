@@ -27,7 +27,7 @@
     if(entry.target.hasAttribute('data-count'))countUp(entry.target);
     revealObserver.unobserve(entry.target);
   });},{threshold:0,rootMargin:'0px 0px -5% 0px'});
-  document.querySelectorAll('.reveal,.technical-preview,[data-lines],[data-stagger],[data-count],.material-experience,.eco-story').forEach(function(el){revealObserver.observe(el);});
+  document.querySelectorAll('.reveal,.technical-preview,[data-lines],[data-stagger],[data-count],.material-experience,.eco-story,.photo-mask').forEach(function(el){revealObserver.observe(el);});
   function countUp(el){var target=Number(el.dataset.count)||0,node=el.firstChild;
     if(!node||node.nodeType!==3){node=document.createTextNode(String(target));el.prepend(node);}
     if(reduced.matches){node.nodeValue=target;return;}
@@ -117,4 +117,55 @@
   document.querySelectorAll('img').forEach(function(img){if(!img.complete)img.addEventListener('load',schedule,{once:true});});
   if(document.fonts)document.fonts.ready.then(schedule);schedule();
   var year=document.querySelector('#year');if(year)year.textContent=new Date().getFullYear();
+
+  /* ---------- video in loop: partono quando entrano nello schermo ----------
+     Con la riduzione del movimento restano fermi sul poster e mostrano
+     i comandi, cosi' chi vuole puo' avviarli a mano. */
+  var clips = Array.prototype.slice.call(document.querySelectorAll('.video-shot video'));
+  if (clips.length) {
+    if (reduced.matches) {
+      clips.forEach(function (v) { v.setAttribute('controls', ''); v.removeAttribute('loop'); });
+    } else {
+      var inView = [];
+
+      function tryPlay(v) {
+        var fig = v.parentElement && v.parentElement.closest ? v.parentElement.closest('.video-shot') : null;
+        var p = v.play();
+        if (!p || !p.then) { if (fig) fig.classList.add('playing'); return; }
+        p.then(function () {
+          if (fig) fig.classList.add('playing');
+        }).catch(function (err) {
+          // AbortError arriva quando il browser mette in pausa i video muti
+          // in una scheda in secondo piano: non e' un blocco, riproviamo al rientro.
+          if (err && err.name === 'NotAllowedError') {
+            v.setAttribute('controls', '');
+          }
+          if (fig) fig.classList.remove('playing');
+        });
+      }
+
+      var clipObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var v = entry.target;
+          var fig = v.parentElement && v.parentElement.closest ? v.parentElement.closest('.video-shot') : null;
+          var i = inView.indexOf(v);
+          if (entry.isIntersecting) {
+            if (i < 0) inView.push(v);
+            if (!document.hidden) tryPlay(v);
+          } else {
+            if (i > -1) inView.splice(i, 1);
+            v.pause();
+            if (fig) fig.classList.remove('playing');
+          }
+        });
+      }, { threshold: 0.35 });
+      clips.forEach(function (v) { clipObserver.observe(v); });
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) return;
+        inView.forEach(tryPlay);
+      });
+    }
+  }
+
 })();

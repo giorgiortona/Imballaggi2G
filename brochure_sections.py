@@ -28,7 +28,7 @@ def gallery(items,cls=''):
 
 BUBBLE = '''<section class="block bubble-study material-experience" id="pluriball" aria-labelledby="bubble-title">
 <div class="wrap"><div class="study-heading"><div><p class="eyebrow">PLURIBALL / IL DETTAGLIO</p><h2 class="display small" id="bubble-title" data-lines>L’aria diventa<br><em>protezione.</em></h2></div><p>Una superficie leggera.<br>Una trama di piccole camere d’aria.</p></div>
-<div class="bubble-window"><img class="bubble-photo" src="assets/bubble.webp" width="1500" height="1000" alt="Macro fotografica delle bolle del pluriball" loading="lazy"><div class="bubble-fold" aria-hidden="true"></div><div class="bubble-light" aria-hidden="true"></div><span class="bubble-caption">Pluriball · dettaglio del materiale</span></div>
+<div class="bubble-window"><img class="bubble-photo" src="assets/azienda/pluriball-fogli.webp" width="1300" height="975" alt="Fogli di pluriball accatastati in magazzino" loading="lazy"><div class="bubble-fold" aria-hidden="true"></div><div class="bubble-light" aria-hidden="true"></div><span class="bubble-caption">Pluriball · dettaglio del materiale</span></div>
 <div class="bubble-tools"><span>Leggero. Flessibile. Protettivo.</span><button class="motion-replay" type="button" data-replay-material>Rivedi il movimento ↻</button></div>
 <p class="lead">Il film a bolle d’aria avvolge gli oggetti e crea uno strato di protezione durante la movimentazione. Per superfici sensibili e lavorazioni su misura, la gamma prosegue con il polietilene espanso.</p></div></section>'''
 

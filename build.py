@@ -13,20 +13,21 @@ anche modificare a mano, ma poi la parte comune va risincronizzata.
 from pathlib import Path
 from brochure_sections import enrich
 from section_motion import section_motion
+from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "23"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "25"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
 SECTIONS = [
-    ("coprispalla",  "coprispalla.html",  "01", "Coprispalla",        "ABBIGLIAMENTO",            "garments.webp"),
-    ("bobine",       "bobine.html",       "02", "Bobine e film",      "CONFEZIONAMENTO",          "pallet-wrap.webp"),
-    ("protezioni",   "protezioni.html",   "03", "Protezioni",         "PLURIBALL E FOAM",         "bubble.webp"),
-    ("buste",        "buste.html",        "04", "Buste",              "CONFEZIONAMENTO",          "film-texture.webp"),
-    ("macchine",     "macchine.html",     "05", "Macchine",           "CHIUSURA E MOVIMENTAZIONE","machines.webp"),
+    ("coprispalla",  "coprispalla.html",  "01", "Coprispalla",        "ABBIGLIAMENTO",            "azienda/coprispalla-barre.webp"),
+    ("bobine",       "bobine.html",       "02", "Bobine e film",      "CONFEZIONAMENTO",          "azienda/bobine-magazzino.webp"),
+    ("protezioni",   "protezioni.html",   "03", "Protezioni",         "PLURIBALL E FOAM",         "azienda/magazzino-pluriball.webp"),
+    ("buste",        "buste.html",        "04", "Buste",              "CONFEZIONAMENTO",          "azienda/macchina-bobine.webp"),
+    ("macchine",     "macchine.html",     "05", "Macchine",           "CHIUSURA E MOVIMENTAZIONE","azienda/macchina-rulli.webp"),
     ("sostenibilita","sostenibilita.html","06", "Sostenibilità",      "PLASTICA SECONDA VITA",    None),
-    ("azienda",      "azienda.html",      "07", "L’azienda",          "RADICI SALENTINE",         "warehouse.webp"),
+    ("azienda",      "azienda.html",      "07", "L’azienda",          "RADICI SALENTINE",         "azienda/sede-edificio.webp"),
     ("contatti",     "contatti.html",     "08", "Contatti",           "PARLIAMONE",               None),
 ]
 BY_KEY = {s[0]: s for s in SECTIONS}
@@ -154,9 +155,13 @@ def shell(current, title, description, body, body_class=""):
 """
 
 
-def page_hero(key, title_html, lead, image, tone="light"):
-    """Testata della pagina: numero, occhiello, titolo e foto di copertina."""
+def page_hero(key, title_html, lead, image="", tone="light"):
+    """Testata della pagina: numero, occhiello, titolo e foto di copertina.
+
+    Se `image` non viene passata si usa la copertina indicata in SECTIONS,
+    cosi' le foto di sezione si cambiano in un posto solo."""
     _k, _href, num, label, eyebrow, img = BY_KEY[key]
+    image = image or img
     media = ""
     if image:
         media = f'<div class="ph-media" data-parallax="0.04"><img src="assets/{image}" alt="" loading="eager" width="1500" height="1000"></div>'
@@ -173,13 +178,13 @@ def page_hero(key, title_html, lead, image, tone="light"):
 
 # ============================================================ HOME
 NAV_ITEMS = [
-    ("coprispalla",  "Il dettaglio che veste la cura.",                 "garments.webp"),
-    ("bobine",       "Avvolgere, proteggere, ripensare.",               "pallet-wrap.webp"),
-    ("protezioni",   "Un cuscino d’aria fra il prodotto e il viaggio.", "bubble.webp"),
-    ("buste",        "Chiudere bene, alla prima.",                      "film-texture.webp"),
-    ("macchine",     "Nastri, reggette, movimentazione.",               "machines.webp"),
-    ("sostenibilita","La materia non finisce al primo utilizzo.",       "turtle-ocean-v17.png"),
-    ("azienda",      "Una storia di famiglia, dal Salento.",            "warehouse.webp"),
+    ("coprispalla",  "Il dettaglio che veste la cura.",                 "azienda/coprispalla-linea.webp"),
+    ("bobine",       "Avvolgere, proteggere, ripensare.",               "azienda/bobina-macchina.webp"),
+    ("protezioni",   "Un cuscino d’aria fra il prodotto e il viaggio.", "azienda/bobine-pluriball.webp"),
+    ("buste",        "Chiudere bene, alla prima.",                      "azienda/fogli-uscita.webp"),
+    ("macchine",     "Nastri, reggette, movimentazione.",               "azienda/macchina-2g.webp"),
+    ("sostenibilita","La materia non finisce al primo utilizzo.",       "azienda/nastro-psv.webp"),
+    ("azienda",      "Una storia di famiglia, dal Salento.",            "azienda/sede-insegna.webp"),
 ]
 
 
@@ -235,6 +240,8 @@ HOME = f"""
   </div>
 </section>
 
+{HOME_BAND}
+
 <section class="navigator" id="navigatore" aria-labelledby="nav-title">
   <div class="nav-head">
     <p class="eyebrow"><i class="tag">↘</i> SETTE SEZIONI, UNA PER ARGOMENTO</p>
@@ -264,7 +271,6 @@ COPRISPALLA = page_hero(
     "coprispalla",
     "Il dettaglio<br>che veste <em>la cura.</em>",
     "Una protezione discreta, studiata per accompagnare ogni capo. Tagli sagomati e retti, con dettagli funzionali per la gestione dell’abbigliamento.",
-    "garments.webp",
 ) + """
 <section class="block" aria-labelledby="draw-title">
   <div class="wrap split">
@@ -326,15 +332,14 @@ BOBINE = page_hero(
     "bobine",
     "Avvolgere.<br>Proteggere.<br><em>Ripensare.</em>",
     "Film per il confezionamento e la movimentazione. Con Tiger Film, le linee Eco Converting, Eco Manuale ed Eco Automatico danno spazio a materiale proveniente da processi di riciclo.",
-    "pallet-wrap.webp",
 ) + """
 <section class="material-experience film-study block" id="bobina" data-material-study aria-labelledby="reel-title">
   <div class="wrap">
     <div class="study-heading"><div><p class="eyebrow">LA MATERIA, DA VICINO</p><h2 class="display small" id="reel-title" data-lines>Dal rotolo.<br><em>Alla protezione.</em></h2></div><p>Compatto all’origine.<br>Flessibile quando serve.</p></div>
     <div class="study-window">
       <div class="study-panel is-active"><img src="assets/bobine.webp" width="480" height="361" alt="Bobine di film, dalla presentazione Imballaggi 2G"><span>01 / La bobina</span></div>
-      <div class="study-panel film-detail"><img src="assets/film-texture.webp" width="1500" height="1000" alt="Dettaglio fotografico della trama di una pellicola trasparente"><span>02 / La materia si distende</span></div>
-      <div class="study-panel film-application"><img src="assets/pallet-wrap.webp" width="1500" height="1000" alt="Immagine di contesto: film avvolto intorno a un carico"><span>03 / Il carico prende forma</span></div>
+      <div class="study-panel film-detail"><img src="assets/azienda/coprispalla-barre.webp" width="1400" height="2100" alt="Fogli di film protettivo stesi sulle barre della linea di produzione"><span>02 / La materia si distende</span></div>
+      <div class="study-panel film-application"><img src="assets/azienda/magazzino-vista.webp" width="1300" height="1174" alt="Il magazzino delle bobine, con il muletto fra le carico"><span>03 / Il carico prende forma</span></div>
       <div class="study-scan" aria-hidden="true"></div>
     </div>
     <div class="study-controls" aria-label="Esplora il film"><button data-step="0" aria-pressed="true">01 <span>La bobina</span></button><button data-step="1" aria-pressed="false">02 <span>La pellicola</span></button><button data-step="2" aria-pressed="false">03 <span>La protezione</span></button></div>
@@ -366,7 +371,7 @@ BOBINE = page_hero(
 <section class="block tinted" aria-labelledby="reels-photo">
   <div class="wrap split">
     <div class="reel-visual">
-      <img src="assets/bobine.webp" alt="Bobine di film dalla presentazione Imballaggi 2G" loading="lazy" width="480" height="361">
+      <img src="assets/azienda/bobine-cataste.webp" alt="Cataste di bobine nel magazzino Imballaggi 2G" loading="lazy" width="1300" height="867">
       <span>LA LINEA TIGER FILM</span>
     </div>
     <div>
@@ -384,7 +389,6 @@ PROTEZIONI = page_hero(
     "protezioni",
     "Un cuscino d’aria<br>fra il prodotto<br>e <em>il viaggio.</em>",
     "Pluriball, polietilene espanso, angolari e cuscini d’aria: tutto ciò che assorbe gli urti e protegge le superfici delicate.",
-    "bubble.webp",
 ) + """
 <section class="block" aria-labelledby="pr-title">
   <div class="wrap split">
@@ -426,7 +430,6 @@ BUSTE = page_hero(
     "buste",
     "Chiudere bene,<br><em>alla prima.</em>",
     "Buste e confezionamento per il negozio, il magazzino e la spedizione.",
-    "film-texture.webp",
 ) + """
 <section class="block" aria-labelledby="bu-title">
   <div class="wrap">
@@ -461,7 +464,6 @@ MACCHINE = page_hero(
     "macchine",
     "Chiudere.<br>Reggiare.<br><em>Muovere.</em>",
     "Nastri, reggette, corde e cinghie, accessori e macchine per l’imballaggio: la parte che tiene insieme il carico.",
-    "machines.webp",
 ) + """
 <section class="block" aria-labelledby="ma-title">
   <div class="wrap">
@@ -557,7 +559,6 @@ AZIENDA = page_hero(
     "azienda",
     "Una storia<br>di famiglia.<br><em>Una visione<br>che cresce.</em>",
     "La nostra esperienza nasce dal lavoro di Aldo Giuri e da una passione per l’imballaggio trasmessa alla generazione successiva.",
-    "warehouse.webp",
 ) + """
 <section class="block" aria-labelledby="az-title">
   <div class="wrap split">
@@ -635,7 +636,7 @@ PAGES = [
 def main():
     DIST.mkdir(exist_ok=True)
     for key, filename, title, description, body, body_class in PAGES:
-        html = shell(key, title, description, enrich(key, body), body_class)
+        html = shell(key, title, description, with_photos(key, enrich(key, body)), body_class)
         (DIST / filename).write_text(html, encoding="utf-8")
         print(f"  {filename:22} {len(html):>7} byte")
     print(f"\n{len(PAGES)} pagine scritte in {DIST} (versione asset ?v={VERSION})")

@@ -56,16 +56,35 @@ Verifiche: sintassi JavaScript, collegamenti locali delle nove pagine, assenza d
 
 ## Immagini
 
-### Da sostituire con materiale aziendale
-- `hero.webp` — illustrazione concettuale generata con AI, **non** una fotografia dei prodotti dell'azienda.
-- `bobine.webp` — estratta dalla presentazione aziendale, qualità limitata (480 × 361 px).
-- **Le sette fotografie di sezione** (`garments`, `pallet-wrap`, `bubble`, `film-texture`, `machines`, `warehouse`, `film-dark`) sono **fotografie di repertorio prese da Pexels**, non stabilimenti, prodotti o clienti di Imballaggi 2G. Licenza Pexels: uso gratuito anche commerciale, senza obbligo di attribuzione. Vanno sostituite con lo shooting aziendale. L'elenco con le fonti è in `FONTI-E-REVISIONE.md`.
-- Il coprispalla è un diagramma SVG dimostrativo, non una fotografia e non un disegno esecutivo in scala.
+### Fotografie dell'azienda
+Il sito e' retto da fotografie proprie, in `dist/assets/azienda/` (28 file WebP) e
+`dist/assets/video/` (5 clip senza audio con poster). Coprono hero, navigatore,
+testate di pagina, blocchi di prodotto e fasce scorrevoli. L'elenco completo di cosa
+sta dove e' in `CREDITI-FOTO.md`.
+
+I blocchi fotografici sono definiti in **`photo_blocks.py`**: `shot()` per una figura,
+`clip()` per un video, `row()` per una fila di tre, `split()` per foto grande piu' testo,
+`duo()` per due scatti sfalsati, `band()` per la fascia a tutta larghezza che scorre.
+I dizionari `AFTER` e `END` dicono quali blocchi entrano in quale sezione e dove:
+`AFTER` subito sotto la testata, `END` in coda.
+
+Ogni figura entra con una rivelazione a maschera: il ritaglio si apre dal basso mentre
+l'immagine rientra da una leggera scala. I video partono quando entrano nello schermo
+e si fermano quando escono; con `prefers-reduced-motion` restano fermi sul poster e
+mostrano i comandi.
+
+### Da sostituire
+- Il coprispalla disegnato in SVG resta uno schema dimostrativo, non un disegno in scala.
+- Restano di repertorio le immagini editoriali di biodiversita' e applicazione, che
+  illustrano temi e non l'azienda (vedi `CREDITI-FOTO.md`).
+- `hero.webp`, `garments.webp`, `machines.webp`, `warehouse.webp`, `pallet-wrap.webp`
+  e `bubble.webp` non sono piu' usati da nessuna pagina: si possono rimuovere.
 
 ### Marchi
 Ricavati dai file aziendali, senza modifiche al disegno, solo sottraendo il fondo bianco:
-`logo-ink.webp` e `mark-ink.webp` (colori originali, fondo trasparente), `logo-light.webp` e `turtle-light.webp` (versione bianca per i fondi scuri), `turtle-mark.webp` e `turtle-mark-light.webp` (la sola tartaruga, ricostruita per simmetria dal marchio PSV Puglia).
-Restano in cartella gli originali con fondo bianco (`logo.webp`, `mark.webp`, `turtle.webp`, `turtle-symbol.webp`): non più usati, si possono togliere. Le sorgenti stanno comunque in `documenti/`.
+`logo-ink.webp` e `mark-ink.webp` (colori originali, fondo trasparente), `logo-light.webp`
+e `turtle-light.webp` (versione bianca per i fondi scuri), `turtle-mark.webp` e
+`turtle-mark-light.webp` (la sola tartaruga).
 
 ## Prima della messa online
 Vedere `FONTI-E-REVISIONE.md` per le incongruenze dei documenti e le informazioni ancora da confermare. Mancano partita IVA e dati societari completi per il piede definitivo e un'informativa privacy approvata: non sono stati inventati. Nessun modulo di contatto, nessun analytics.
