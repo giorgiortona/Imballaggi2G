@@ -1020,3 +1020,7 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 @media(max-width:760px){.reel3d-section.reel3d-ready{height:230svh}.reel3d-pin{padding:85px 0 25px;min-height:600px}.reel3d-ready .reel3d-pin{min-height:540px}.reel3d-heading{display:block}.reel3d-heading h2{font-size:36px}.reel3d-heading p{font-size:15px;margin-top:17px}.reel3d-stage{height:380px;flex:1}.reel3d-steps{display:grid;gap:5px;font-size:14px}.reel3d-steps span{display:none}.reel3d-steps .is-current{display:block}}
 @media(prefers-reduced-motion:reduce){.reel3d-section.reel3d-ready{height:auto}.reel3d-ready .reel3d-pin{position:relative;height:auto;min-height:750px}.reel3d-stage{flex:none;height:450px}.reel3d-steps span{display:none}.reel3d-steps span:last-child{display:block;opacity:1}}
 @media print{.reel3d-section.reel3d-ready{height:auto}.reel3d-ready .reel3d-pin{position:relative;height:auto;min-height:500px}.reel3d-stage canvas{display:none}.reel3d-ready .reel3d-fallback{display:flex}}
+
+/* Contrast for the transparent, winding film. */
+.reel3d-pin{background:radial-gradient(ellipse at 48% 50%,#e6ece8 0%,#cbd7d0 100%)}
+.reel3d-stage{background:none}

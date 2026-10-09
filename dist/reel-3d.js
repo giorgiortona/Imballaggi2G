@@ -43,7 +43,7 @@ if (section) {
       for(let i=0;i<16;i++){g.fillStyle='rgba(110,124,117,.035)';g.fillRect(i*33,0,1,h);}
     });
     const roll=new THREE.Group();world.add(roll);
-    const filmMaterial=new THREE.MeshPhysicalMaterial({color:0xe2e9e3,map:striation,roughness:.22,metalness:.12,clearcoat:1,clearcoatRoughness:.13,envMapIntensity:1.5});
+    const filmMaterial=new THREE.MeshPhysicalMaterial({color:0xb5c4bd,map:striation,roughness:.27,metalness:.18,clearcoat:1,clearcoatRoughness:.13,envMapIntensity:1.5});
     const barrel=new THREE.Mesh(new THREE.CylinderGeometry(.63,.63,2.9,128,1,true),filmMaterial);roll.add(barrel);
     const endMaterial=new THREE.MeshStandardMaterial({color:0xe0e6db,roughness:.42,metalness:.12,side:THREE.DoubleSide});
     const coreMaterial=new THREE.MeshStandardMaterial({color:0x96724c,roughness:.94,side:THREE.DoubleSide});
@@ -55,7 +55,7 @@ if (section) {
       const lip=new THREE.Mesh(new THREE.RingGeometry(.215,.249,64),coreMaterial);lip.rotation.x=-Math.PI/2;lip.position.y=y+(y>0?.012:-.012);roll.add(lip);
       for(let ring=0;ring<48;ring++){const r=.25+ring*.00785;for(let j=0;j<128;j++){const a=j/128*Math.PI*2,b=(j+1)/128*Math.PI*2;layerPoints.push(r*Math.cos(a),y+.001,r*Math.sin(a),r*Math.cos(b),y+.001,r*Math.sin(b));}}
     }
-    const layers=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(layerPoints,3)),new THREE.LineBasicMaterial({color:0x87968a,transparent:true,opacity:.28}));roll.add(layers);
+    const layers=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(layerPoints,3)),new THREE.LineBasicMaterial({color:0x87968a,transparent:true,opacity:.48}));roll.add(layers);
     const seam=new THREE.Mesh(new THREE.CylinderGeometry(.632,.632,2.87,4,1,true,0,.012),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.6,roughness:.1}));roll.add(seam);
 
     // Floating brand plaque, later enclosed by the clear film.
@@ -81,26 +81,72 @@ if (section) {
     // Final sleeve folds over the edges, creating recognisable layered protection.
     const sleeveGeometry=new THREE.BoxGeometry(3.3,1.39,.39);
     const sleeve=new THREE.Mesh(sleeveGeometry,new THREE.MeshPhysicalMaterial({color:0xffffff,transparent:true,opacity:0,roughness:.09,metalness:.13,clearcoat:1,side:THREE.FrontSide,depthWrite:false,envMapIntensity:1.8}));sleeve.renderOrder=5;world.add(sleeve);
-    const creaseMaterial=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0});
+    const creaseMaterial=new THREE.LineBasicMaterial({color:0x427761,transparent:true,opacity:0});
     const creasePoints=[-1.65,.69,.2,-1.39,.48,.2, 1.65,.69,.2,1.39,.48,.2, -1.65,-.69,.2,-1.39,-.48,.2, 1.65,-.69,.2,1.39,-.48,.2, -1.65,.69,.2,1.65,.69,.2, -1.65,-.69,.2,1.65,-.69,.2];
     const creases=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(creasePoints,3)),creaseMaterial);creases.renderOrder=6;world.add(creases);
     // Soft elongated specular reflection over the protected logo.
     const glintTexture=surface(128,32,(g,w,h)=>{const a=g.createLinearGradient(0,0,w,0);a.addColorStop(0,'rgba(255,255,255,0)');a.addColorStop(.48,'rgba(255,255,255,.65)');a.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=a;g.fillRect(0,0,w,h);});
     const glint=new THREE.Mesh(new THREE.PlaneGeometry(.5,1.32),new THREE.MeshBasicMaterial({map:glintTexture,transparent:true,opacity:0,depthWrite:false}));glint.position.z=.205;glint.rotation.z=-.15;glint.renderOrder=7;world.add(glint);
 
+    // A continuous ribbon follows the rounded perimeter; its free end curls
+    // before tension flattens it. Geometry is reversible at every scroll position.
+    const ribbonGeometry=new THREE.PlaneGeometry(1,1,120,12);
+    const ribbonMaterial=new THREE.MeshPhysicalMaterial({color:0x82b6a3,transparent:true,opacity:.24,roughness:.18,metalness:.18,clearcoat:1,side:THREE.DoubleSide,depthWrite:false,envMapIntensity:1.6});
+    const ribbon=new THREE.Mesh(ribbonGeometry,ribbonMaterial);world.add(ribbon);
+    const rimMaterial=new THREE.LineBasicMaterial({color:0x397862,transparent:true,opacity:.65,depthWrite:false});
+    const rims=[0,1].map(()=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(121*3),3));const l=new THREE.Line(g,rimMaterial);world.add(l);return l;});
+    const movingEdge=new THREE.Line(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(new Float32Array(13*3),3)),new THREE.LineBasicMaterial({color:0xe7fff4,transparent:true,opacity:.95}));world.add(movingEdge);
+    const perimeter=new THREE.CurvePath();
+    const vec=(x,z)=>new THREE.Vector3(x,0,z);
+    const line=(ax,az,bx,bz)=>perimeter.add(new THREE.LineCurve3(vec(ax,az),vec(bx,bz)));
+    const bend=(ax,az,cx,cz,bx,bz)=>perimeter.add(new THREE.QuadraticBezierCurve3(vec(ax,az),vec(cx,cz),vec(bx,bz)));
+    line(1.55,.31,-1.55,.31);bend(-1.55,.31,-1.72,.31,-1.72,.14);
+    line(-1.72,.14,-1.72,-.14);bend(-1.72,-.14,-1.72,-.31,-1.55,-.31);
+    line(-1.55,-.31,1.55,-.31);bend(1.55,-.31,1.72,-.31,1.72,-.14);
+    line(1.72,-.14,1.72,.14);bend(1.72,.14,1.72,.31,1.55,.31);
+    const feedGeometry=new THREE.PlaneGeometry(1,1,16,8);
+    const feed=new THREE.Mesh(feedGeometry,ribbonMaterial.clone());world.add(feed);
+    function windFilm(w){
+      ribbon.visible=w>.001;rims.forEach(l=>l.visible=ribbon.visible);movingEdge.visible=ribbon.visible&&w<.999;
+      const length=perimeter.getLength(),progress=w*1.04;
+      feed.visible=w>.001&&w<.98;
+      feed.material.opacity=.24*(1-smooth(.82,.98,w));
+      const fp=feedGeometry.attributes.position;
+      for(let j=0;j<=8;j++)for(let i=0;i<=16;i++){
+        const t=i/16,v=j/8-.5;
+        fp.setXYZ(j*17+i,1.45+t*1.03,v*(1.46+t*1.38),.31+t*.34-Math.sin(t*Math.PI)*.07);
+      }
+      fp.needsUpdate=true;feedGeometry.computeVertexNormals();
+      const pos=ribbonGeometry.attributes.position;
+      for(let j=0;j<=12;j++)for(let i=0;i<=120;i++){
+        const u=i/120,v=j/12-.5,t=u*progress;
+        const q=perimeter.getPointAt(Math.min(t,1));
+        if(t>1)q.x-=(t-1)*length;
+        const tail=smooth(.8,1,u)*Math.sin(Math.PI*w);
+        const ripple=Math.sin(u*24-v*5+w*12)*.025*tail;
+        q.z+=Math.sin(u*Math.PI)*.012+tail*.32+ripple;
+        q.y=v*(1.46+.12*tail)+Math.sin(u*12+w*6)*.025*tail;
+        pos.setXYZ(j*121+i,q.x-.1,q.y,q.z);
+        if(j===0||j===12)rims[j===0?0:1].geometry.attributes.position.setXYZ(i,q.x-.1,q.y,q.z+.002);
+        if(i===120)movingEdge.geometry.attributes.position.setXYZ(j,q.x-.1,q.y,q.z+.004);
+      }
+      pos.needsUpdate=true;ribbonGeometry.computeVertexNormals();rims.forEach(l=>l.geometry.attributes.position.needsUpdate=true);movingEdge.geometry.attributes.position.needsUpdate=true;
+    }
+
     function measure(){const r=section.getBoundingClientRect();start=r.top+scrollY;travel=Math.max(1,section.offsetHeight-section.querySelector('.reel3d-pin').offsetHeight);measurePending=false;}
     function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;const distance=Math.max(9.6,3.35/(Math.tan(THREE.MathUtils.degToRad(16.5))*camera.aspect));camera.position.set(2.8,2.6,10).normalize().multiplyScalar(distance);camera.lookAt(0,-.05,0);camera.updateProjectionMatrix();resizePending=false;measurePending=true;}
     function update(p){
-      const unwind=smooth(.08,.72,p),reveal=smooth(.22,.55,p),wrap=smooth(.68,.96,p);
+      const unwind=smooth(.06,.48,p),reveal=smooth(.16,.42,p),wrap=smooth(.48,.96,p);
       const rx=THREE.MathUtils.lerp(-2.18,2.48,unwind);
-      roll.position.set(rx,0,.02);roll.rotation.y=-unwind*9.5;roll.rotation.z=(1-unwind)*-.035;
+      roll.position.set(rx,0,.02);roll.rotation.y=-(unwind*4.66+wrap*7.96)/.63;roll.rotation.z=(1-unwind)*-.035;
       rollShadow.position.x=rx;
       brand.position.set(-.1,-.25*(1-reveal),-.9*(1-reveal));brand.scale.setScalar(.86+.14*reveal);brand.visible=reveal>.001;
       plaque.material.transparent=true;plaque.material.opacity=reveal;logo.material.opacity=reveal;brandShadow.material.opacity=reveal*.75;
-      sleeve.position.copy(brand.position);creases.position.copy(brand.position);sleeve.material.opacity=wrap*.12;creaseMaterial.opacity=wrap*.68;
+      sleeve.position.copy(brand.position);creases.position.copy(brand.position);sleeve.material.opacity=wrap*.035;creaseMaterial.opacity=wrap*.68;
       glint.position.x=-1.8+wrap*3.6;glint.position.y=brand.position.y;glint.material.opacity=Math.sin(wrap*Math.PI)*.4;
       sheet.visible=unwind>.005;highlights.visible=sheet.visible;
-      clear.opacity=.25*(1-wrap*.2);
+      clear.opacity=.23*(1-smooth(0,.3,wrap));
+      windFilm(wrap);
       const left=-2.2+wrap*.45,width=Math.max(.002,rx-left),height=2.84-wrap*1.45;
       const point=(u,v)=>{
         const x=left+u*width,y=v*height;
@@ -112,8 +158,8 @@ if (section) {
       for(let j=0;j<=16;j++)for(let i=0;i<=64;i++){const idx=j*65+i;const pt=point(i/64,.5-j/16);sheetPositions.setXYZ(idx,...pt);}
       sheetPositions.needsUpdate=true;sheetGeometry.computeVertexNormals();
       for(let n=0;n<filaments.length;n++){const a=filaments[n].geometry.attributes.position;const v=n===0?.5:n===1?-.5:(n-5)*.105;for(let i=0;i<=64;i++){const pt=point(i/64,v);a.setXYZ(i,pt[0],pt[1],pt[2]+.003);}a.needsUpdate=true;}
-      filamentMaterial.opacity=.5*(1-wrap*.25);
-      const step=p<.3?0:p<.73?1:2;
+      filamentMaterial.opacity=.55*(1-smooth(0,.3,wrap));
+      const step=p<.3?0:p<.5?1:2;
       if(step!==lastStep){lastStep=step;section.querySelectorAll('[data-reel-step]').forEach((el,i)=>el.classList.toggle('is-current',i===step));}
       canvas.dataset.progress=p.toFixed(3);
     }
