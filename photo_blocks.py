@@ -16,25 +16,24 @@ A = "assets/azienda/"
 V = "assets/video/"
 
 
-def shot(img, alt, caption=None, ratio="4/3", parallax=None, cls=""):
-    """Una fotografia con rivelazione a maschera."""
+def shot(img, alt, ratio="4/3", parallax=None, cls=""):
+    """Una fotografia con rivelazione a maschera. Nessuna didascalia a vista:
+    il testo descrittivo resta nell'alt, per chi naviga senza vedere."""
     par = f' data-parallax="{parallax}"' if parallax else ""
-    cap = f'<figcaption>{caption}</figcaption>' if caption else ""
     return (f'<figure class="shot photo-mask {cls}" style="--ratio:{ratio}">'
             f'<span class="shot-frame"{par}><img src="{A}{img}" alt="{alt}" loading="lazy"></span>'
-            f'{cap}</figure>')
+            f'</figure>')
 
 
-def clip(name, alt, caption=None, ratio="16/9", cls=""):
+def clip(name, alt, ratio="16/9", cls=""):
     """Un video muto in loop, che parte quando entra nello schermo."""
-    cap = f'<figcaption>{caption}</figcaption>' if caption else ""
     return (f'<figure class="shot video-shot photo-mask {cls}" style="--ratio:{ratio}">'
             f'<span class="shot-frame"><video src="{V}{name}.mp4" poster="{V}{name}-poster.webp" '
             f'muted loop playsinline preload="none" aria-label="{alt}"></video>'
-            f'<span class="shot-play" aria-hidden="true"></span></span>{cap}</figure>')
+            f'<span class="shot-play" aria-hidden="true"></span></span></figure>')
 
 
-def row(eyebrow, title, text, figures, tint=False, extra=""):
+def row(title, text, figures, tint=False, extra=""):
     """Blocco con titolo a sinistra e una fila di figure."""
     cls = "block tinted" if tint else "block"
     body = "\n      ".join(figures)
@@ -43,10 +42,7 @@ def row(eyebrow, title, text, figures, tint=False, extra=""):
 <section class="{cls}">
   <div class="wrap">
     <div class="shot-head">
-      <div>
-        <p class="eyebrow">{eyebrow}</p>
-        <h2 class="display small" data-lines>{title}</h2>
-      </div>
+      <h2 class="display small" data-lines>{title}</h2>
       {lead}
     </div>
     <div class="shot-row" data-stagger>
@@ -56,7 +52,7 @@ def row(eyebrow, title, text, figures, tint=False, extra=""):
 </section>"""
 
 
-def split(img, alt, eyebrow, title, text, link=None, flip=False, caption=None):
+def split(img, alt, title, text, link=None, flip=False):
     """Una fotografia grande accanto a un testo."""
     cta = ""
     if link:
@@ -66,9 +62,8 @@ def split(img, alt, eyebrow, title, text, link=None, flip=False, caption=None):
     return f"""
 <section class="block">
   <div class="wrap {side}">
-    {shot(img, alt, caption, ratio="3/4", parallax="0.05")}
+    {shot(img, alt, ratio="3/4", parallax="0.05")}
     <div class="shot-copy">
-      <p class="eyebrow">{eyebrow}</p>
       <h2 class="display small" data-lines>{title}</h2>
       <p class="lead">{text}</p>
       {cta}
@@ -77,20 +72,18 @@ def split(img, alt, eyebrow, title, text, link=None, flip=False, caption=None):
 </section>"""
 
 
-def band(items, label=None):
+def band(items):
     """Fascia a tutta larghezza che scorre lentamente."""
     cells = "".join(
         f'<span class="band-cell"><img src="{A}{img}" alt="{alt}" loading="lazy"></span>'
         for img, alt in items)
-    cap = f'<p class="band-label">{label}</p>' if label else ""
     return f"""
 <section class="photo-band" aria-label="Immagini dall'azienda">
-  {cap}
   <div class="band-track">{cells}{cells}</div>
 </section>"""
 
 
-def duo(a, b, eyebrow, title, text, tint=False):
+def duo(a, b, title, text, tint=False):
     """Due figure sfalsate in verticale, con il testo in mezzo."""
     cls = "block tinted" if tint else "block"
     return f"""
@@ -98,7 +91,6 @@ def duo(a, b, eyebrow, title, text, tint=False):
   <div class="wrap shot-duo">
     {a}
     <div class="shot-copy">
-      <p class="eyebrow">{eyebrow}</p>
       <h2 class="display small" data-lines>{title}</h2>
       <p class="lead">{text}</p>
     </div>
@@ -110,52 +102,39 @@ def duo(a, b, eyebrow, title, text, tint=False):
 # ============================================================ i blocchi, sezione per sezione
 # "dopo" = inserito subito sotto la testata della pagina
 # "fine" = aggiunto in coda, prima del rimando alla sezione successiva
+# Niente occhielli ne' didascalie: parlano le fotografie, il testo resta
+# dove dice qualcosa che la foto non dice.
 
 AFTER = {}
 END = {}
 
 # ---------------------------------------------------------------- coprispalla
 AFTER["coprispalla"] = row(
-    "IL PRODOTTO, DAL VERO",
     "Non si vede.<br>Ed è <em>il punto.</em>",
-    "Un velo che prende la forma della spalla, lascia passare il gancio e non pesa sul capo. "
-    "Queste sono riprese del prodotto, non rendering.",
+    "Un velo che prende la forma della spalla, lascia passare il gancio e non pesa sul capo.",
     [
-        clip("coprispalla-volume", "Un coprispalla appeso che si apre e mostra il volume della spalla",
-             "Il volume sulla spalla", ratio="4/5"),
-        clip("coprispalla-gruccia", "Il coprispalla infilato sulla gruccia, visto da vicino",
-             "Il passaggio del gancio", ratio="4/5"),
-        clip("coprispalla-foro", "Il profilo sagomato del coprispalla in controluce",
-             "Il taglio sagomato", ratio="4/5"),
+        clip("coprispalla-volume", "Un coprispalla appeso che si apre e mostra il volume della spalla", ratio="4/5"),
+        clip("coprispalla-gruccia", "Il coprispalla infilato sulla gruccia, visto da vicino", ratio="4/5"),
+        clip("coprispalla-foro", "Il profilo sagomato del coprispalla in controluce", ratio="4/5"),
     ])
 
 END["coprispalla"] = row(
-    "COME NASCE",
     "Dalla bobina<br>al <em>capo finito.</em>",
-    "Il film arriva in bobina, passa sotto la saldatrice e ne esce sagomato. "
-    "Tutto in casa, su macchine nostre.",
+    "Il film arriva in bobina, passa sotto la saldatrice e ne esce sagomato.",
     [
-        shot("coprispalla-linea.webp", "Il film del coprispalla che scorre sulla macchina da taglio",
-             "La linea di taglio", ratio="3/4"),
-        shot("coprispalla-barre.webp", "Fogli di film protettivo stesi sulle barre della linea",
-             "I fogli in uscita", ratio="3/4"),
-        shot("macchina-saldatura.webp", "Dettaglio del gruppo di saldatura sopra il film",
-             "Il gruppo di saldatura", ratio="3/4"),
+        shot("coprispalla-linea.webp", "Il film del coprispalla che scorre sulla macchina da taglio", ratio="3/4"),
+        shot("coprispalla-barre.webp", "Fogli di film protettivo stesi sulle barre della linea", ratio="3/4"),
+        shot("macchina-saldatura.webp", "Dettaglio del gruppo di saldatura sopra il film", ratio="3/4"),
     ], tint=True)
 
 # ---------------------------------------------------------------- bobine
 AFTER["bobine"] = split(
     "bobina-macchina.webp",
     "Una bobina di film montata sulla macchina, pronta a srotolarsi",
-    "LA BOBINA VERA",
     "Larga quanto serve.<br>Lunga <em>quanto basta.</em>",
-    "Montiamo la bobina sulla macchina e la lavoriamo nel formato richiesto. "
-    "Quella qui accanto è una delle nostre, fotografata in produzione.",
-    link=("#bobina", "Guarda come si srotola"),
-    caption="Bobina in macchina")
+    "Montiamo la bobina sulla macchina e la lavoriamo nel formato richiesto.")
 
 END["bobine"] = row(
-    "IN MAGAZZINO",
     "Pronte <em>a partire.</em>",
     "Il magazzino tiene i formati di uso corrente, così una richiesta urgente non diventa un'attesa.",
     [
@@ -166,74 +145,57 @@ END["bobine"] = row(
 
 # ---------------------------------------------------------------- protezioni
 AFTER["protezioni"] = row(
-    "ARIA, IMPRIGIONATA",
     "Il materiale<br>in <em>movimento.</em>",
-    "Il pluriball è quasi tutto aria: è per questo che assorbe. Qui si vede come si comporta in mano.",
+    "Il pluriball è quasi tutto aria: è per questo che assorbe.",
     [
-        clip("pluriball-foglio", "Un foglio di pluriball sagomato appeso a una gruccia, in controluce",
-             "Un foglio in controluce", ratio="4/5"),
-        clip("pluriball-macro", "Dettaglio ravvicinato delle bolle d'aria del pluriball",
-             "Le bolle, da vicino", ratio="4/5"),
-        shot("pluriball-fogli.webp", "Fogli di pluriball accatastati pronti all'uso",
-             "I fogli pronti", ratio="4/5"),
+        clip("pluriball-foglio", "Un foglio di pluriball sagomato appeso a una gruccia, in controluce", ratio="4/5"),
+        clip("pluriball-macro", "Dettaglio ravvicinato delle bolle d'aria del pluriball", ratio="4/5"),
+        shot("pluriball-fogli.webp", "Fogli di pluriball accatastati pronti all'uso", ratio="4/5"),
     ])
 
 END["protezioni"] = row(
-    "POLIETILENE ESPANSO",
     "Morbido fuori,<br>fermo <em>dentro.</em>",
     "L'espanso lavora dove il pluriball non arriva: superfici lucide, spigoli, pezzi che non devono rigarsi.",
     [
-        shot("espanso-macro.webp", "Macro della superficie di un foglio di polietilene espanso",
-             "La grana dell'espanso", ratio="4/3"),
-        shot("espanso-fogli.webp", "Fogli di polietilene espanso sovrapposti, visti di taglio",
-             "Spessori a confronto", ratio="4/3"),
-        shot("magazzino-pluriball.webp", "Bobine di pluriball e cartone accatastati nel magazzino",
-             "Pluriball e cartone", ratio="4/3"),
+        shot("espanso-macro.webp", "Macro della superficie di un foglio di polietilene espanso", ratio="4/3"),
+        shot("espanso-fogli.webp", "Fogli di polietilene espanso sovrapposti, visti di taglio", ratio="4/3"),
+        shot("magazzino-pluriball.webp", "Bobine di pluriball e cartone accatastati nel magazzino", ratio="4/3"),
     ], tint=True)
 
 # ---------------------------------------------------------------- buste
 END["buste"] = row(
-    "DOVE NASCONO",
     "Un foglio,<br>due <em>saldature.</em>",
     "Buste e fogli protettivi escono dalle stesse linee: si cambia formato, non fornitore.",
     [
-        shot("fogli-uscita.webp", "Fogli bianchi che escono dai rulli della macchina", "In uscita dai rulli", ratio="4/3"),
-        shot("macchina-bobine.webp", "La macchina che svolge il film dalle bobine", "Lo svolgimento", ratio="4/3"),
-        shot("reparto-produzione.webp", "Il reparto di produzione con le cataste di fogli", "Il reparto", ratio="4/3"),
+        shot("fogli-uscita.webp", "Fogli bianchi che escono dai rulli della macchina", ratio="4/3"),
+        shot("macchina-bobine.webp", "La macchina che svolge il film dalle bobine", ratio="4/3"),
+        shot("reparto-produzione.webp", "Il reparto di produzione con le cataste di fogli", ratio="4/3"),
     ], tint=True)
 
 # ---------------------------------------------------------------- macchine
 AFTER["macchine"] = row(
-    "IL NOSTRO REPARTO",
     "Macchine che<br>conosciamo <em>a memoria.</em>",
     "Le usiamo tutti i giorni: per questo sappiamo consigliare quella giusta e non quella più grande.",
     [
-        shot("macchina-2g.webp", "Una macchina confezionatrice con il marchio Imballaggi 2G",
-             "Confezionatrice", ratio="4/3"),
-        shot("macchina-comandi.webp", "Il quadro comandi di una linea di confezionamento",
-             "Il quadro comandi", ratio="4/3"),
-        shot("macchina-linea.webp", "La linea di produzione vista di lato, con il film in tensione",
-             "La linea", ratio="4/3"),
+        shot("macchina-2g.webp", "Una macchina confezionatrice con il marchio Imballaggi 2G", ratio="4/3"),
+        shot("macchina-comandi.webp", "Il quadro comandi di una linea di confezionamento", ratio="4/3"),
+        shot("macchina-linea.webp", "La linea di produzione vista di lato, con il film in tensione", ratio="4/3"),
     ])
 
 END["macchine"] = split(
     "nastro-psv.webp",
     "Rotoli di nastro adesivo personalizzato con il marchio Imballaggi 2G e Plastica Seconda Vita",
-    "NASTRI PERSONALIZZATI",
     "La scatola parla<br>prima di <em>aprirsi.</em>",
-    "Stampiamo il nastro con il tuo marchio. Il nostro porta la tartaruga Plastica Seconda Vita: "
-    "chi riceve il collo sa da dove arriva e di cosa è fatto.",
+    "Stampiamo il nastro con il tuo marchio. Il nostro porta la tartaruga Plastica Seconda Vita.",
     link=("sostenibilita.html", "La linea certificata"),
-    flip=True,
-    caption="Nastro personalizzato")
+    flip=True)
 
 # ---------------------------------------------------------------- sostenibilita
 AFTER["sostenibilita"] = duo(
     shot("nastro-psv.webp", "Rotoli di nastro con il marchio Puglia Plastic Second Life",
-         "Il marchio sul nastro", ratio="4/3", parallax="0.04"),
+         ratio="4/3", parallax="0.04"),
     shot("scatole-nastro.webp", "Scatole chiuse con il nastro che riporta il marchio Plastica Seconda Vita",
-         "Sui colli in partenza", ratio="4/3", parallax="0.06"),
-    "NON SOLO SULLA CARTA",
+         ratio="4/3", parallax="0.06"),
     "Il marchio finisce<br>sul <em>prodotto.</em>",
     "Plastica Seconda Vita non resta un certificato in un cassetto: è stampato sul nastro "
     "che chiude i colli in partenza.")
@@ -242,11 +204,9 @@ AFTER["sostenibilita"] = duo(
 AFTER["azienda"] = split(
     "sede-insegna.webp",
     "L'insegna Imballaggi 2G sopra l'ingresso della sede",
-    "LA SEDE",
     "Un'insegna,<br>una <em>targa.</em>",
-    "Niente di più. Il resto sta dentro: il reparto, il magazzino e le persone che li tengono in piedi.",
-    link=("contatti.html", "Vieni a trovarci"),
-    caption="L'ingresso")
+    "Il resto sta dentro: il reparto, il magazzino e le persone che li tengono in piedi.",
+    link=("contatti.html", "Vieni a trovarci"))
 
 END["azienda"] = band([
     ("reparto-produzione.webp", "Il reparto di produzione"),
@@ -255,7 +215,7 @@ END["azienda"] = band([
     ("sede-cancello.webp", "La sede vista dalla strada"),
     ("muletto.webp", "Il muletto in magazzino"),
     ("macchina-2g.webp", "Una macchina con il marchio Imballaggi 2G"),
-], label="Dentro l'azienda")
+])
 
 # ---------------------------------------------------------------- contatti
 END["contatti"] = band([
@@ -263,7 +223,7 @@ END["contatti"] = band([
     ("sede-edificio.webp", "La palazzina della sede"),
     ("sede-cancello.webp", "L'ingresso dalla strada"),
     ("magazzino-bobine.webp", "Il magazzino"),
-], label="Dove ci trovi")
+])
 
 # ---------------------------------------------------------------- home
 HOME_BAND = band([
@@ -275,7 +235,7 @@ HOME_BAND = band([
     ("magazzino-muletto.webp", "Il muletto fra le bobine"),
     ("espanso-macro.webp", "Macro del polietilene espanso"),
     ("sede-insegna.webp", "L'insegna della sede"),
-], label="Dall'azienda")
+])
 
 
 def with_photos(key, body):

@@ -16,7 +16,7 @@ from section_motion import section_motion
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "25"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "27"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -58,8 +58,7 @@ def page_footer(current):
     if current is not None:
         onward = f"""
   <a class="onward" href="{nxt[1]}">
-    <span class="onward-label">Sezione successiva</span>
-    <span class="onward-name"><i>{nxt[2]}</i>{nxt[3]}</span>
+    <span class="onward-name">{nxt[3]}</span>
     <span class="onward-arrow" aria-hidden="true">→</span>
   </a>"""
     replay = '<button class="replay" type="button">Rivedi l’intro ↻</button>' if current is None else '<a href="index.html">Torna all’indice</a>'
@@ -109,6 +108,7 @@ def shell(current, title, description, body, body_class=""):
 <link rel="preload" href="assets/manrope-regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="style.css?v={VERSION}">
 <script src="app.js?v={VERSION}" defer></script>
+{'<script type="module" src="reel-3d.js?v='+VERSION+'"></script>' if current == 'bobine' else ''}
 </head>
 <body{cls}>
 <a class="skip" href="#main">Vai ai contenuti</a>
@@ -169,11 +169,9 @@ def page_hero(key, title_html, lead, image="", tone="light"):
   {media}
   <div class="ph-shade" aria-hidden="true"></div>
   <div class="ph-body">
-    <p class="eyebrow"><i class="tag">{num}</i> {eyebrow}</p>
     <h1 id="ph-title" class="display" data-lines>{title_html}</h1>
     <p class="ph-lead">{lead}</p>
   </div>
-  <div class="ph-foot"><span>{label}</span><span class="cue" aria-hidden="true">↓</span></div>
 </section>"""
 
 # ============================================================ HOME
@@ -198,11 +196,9 @@ def navigator():
         slats.append(f"""      <a class="slat" href="{href}" style="--i:{i}" data-claim="{claim}">
         {media}
         <span class="slat-veil" aria-hidden="true"></span>
-        <span class="slat-num">{num}</span>
         <span class="slat-name-v" aria-hidden="true">{label}</span>
         <span class="slat-open">
           <span class="slat-name">{label}</span>
-          <span class="slat-claim">{claim}</span>
           <span class="slat-go">Entra <i aria-hidden="true">↗</i></span>
         </span>
       </a>""")
@@ -214,20 +210,14 @@ HOME = f"""
   <div class="hero-media" aria-hidden="true"></div>
   <div class="hero-shade" aria-hidden="true"></div>
   <div class="hero-content">
-    <p class="eyebrow hero-eyebrow"><i class="dot" aria-hidden="true"></i>IMBALLAGGI 2G &middot; SANNICOLA, SALENTO</p>
     <h1 id="home-title" data-lines>La cura,<br>in ogni <em>forma.</em></h1>
     <p class="hero-description">Proteggiamo ciò che crei.<br>Valorizziamo ciò che sei.</p>
     <a class="button light magnetic" href="#navigatore">Entra nelle sezioni <span aria-hidden="true">↓</span></a>
-  </div>
-  <div class="hero-bottom">
-    <span>Packaging. Protezione. Possibilità.</span>
-    <a href="#manifesto" aria-label="Scopri Imballaggi 2G">Scorri per scoprire <span class="cue" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
 <section class="manifesto" id="manifesto" aria-labelledby="manifesto-title">
   <div class="wrap">
-    <p class="eyebrow"><i class="tag">00</i> IL VALORE DI CIÒ CHE PROTEGGIAMO</p>
     <h2 id="manifesto-title" class="display" data-lines>Un buon imballaggio<br>si prende cura <span>di tutto.</span></h2>
     <div class="manifesto-grid">
       <p class="reveal">Del prodotto. Della sua presentazione. Del viaggio che lo aspetta. Realizziamo e selezioniamo soluzioni di packaging che mettono al centro le esigenze di chi le usa.</p>
@@ -244,18 +234,15 @@ HOME = f"""
 
 <section class="navigator" id="navigatore" aria-labelledby="nav-title">
   <div class="nav-head">
-    <p class="eyebrow"><i class="tag">↘</i> SETTE SEZIONI, UNA PER ARGOMENTO</p>
     <h2 id="nav-title" class="nav-claim"><span class="nav-claim-default">Da dove vuoi cominciare?</span></h2>
   </div>
   <div class="slats" data-nav-slats>
 {navigator()}
   </div>
-  <p class="nav-hint" aria-hidden="true">Passa sopra una fascia per aprirla &middot; tocca per entrare</p>
 </section>
 
 <section class="home-cta" aria-labelledby="cta-title">
   <div class="wrap">
-    <p class="eyebrow"><i class="tag">08</i> IL PROSSIMO PROGETTO INIZIA QUI</p>
     <a class="contact-headline" id="cta-title" href="contatti.html">Diamo forma<br>alla tua <em>soluzione.</em><span aria-hidden="true">↗</span></a>
     <div class="contact-grid" data-stagger>
       <div><span>Scrivici</span><a href="mailto:info@imballaggi2g.it">info@imballaggi2g.it</a></div>
@@ -275,13 +262,11 @@ COPRISPALLA = page_hero(
 <section class="block" aria-labelledby="draw-title">
   <div class="wrap split">
     <div>
-      <p class="eyebrow">LO STUDIO DEL PRODOTTO</p>
       <h2 id="draw-title" class="display small" data-lines>Larghezza 46 cm.<br>Il resto lo decidi <em>tu.</em></h2>
       <p class="lead">Una larghezza comune, finiture diverse. Il taglio sagomato segue la spalla, quello retto accompagna altri formati: ogni dettaglio risponde al capo da proteggere.</p>
       <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Apri le schede tecniche <span aria-hidden="true">↗</span></a>
     </div>
     <div class="technical-preview">
-      <span class="drawing-label">STUDIO DEL PRODOTTO / COPRISPALLA</span>
       <svg class="garment-drawing" viewBox="0 0 600 650" role="img" aria-label="Schema tecnico del coprispalla sagomato, larghezza 46 centimetri">
         <defs><linearGradient id="film" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffffff" stop-opacity=".85"/><stop offset=".45" stop-color="#ffffff" stop-opacity=".2"/><stop offset="1" stop-color="#9aaca4" stop-opacity=".25"/></linearGradient></defs>
         <g class="drawing-lines">
@@ -295,7 +280,6 @@ COPRISPALLA = page_hero(
           <text class="draw-tip" x="454" y="93">Taglio sagomato</text>
         </g>
       </svg>
-      <div class="drawing-bottom"><span>Protezione che segue il capo.</span><span class="drawing-symbol" aria-hidden="true">＋</span></div>
     </div>
   </div>
 </section>
@@ -303,7 +287,6 @@ COPRISPALLA = page_hero(
 <section class="block tinted" aria-labelledby="cs-det">
   <div class="wrap split">
     <div>
-      <p class="eyebrow">I DETTAGLI</p>
       <h2 id="cs-det" class="display small" data-lines>Ogni scelta<br>ha una <em>funzione.</em></h2>
     </div>
     <div class="details-list" data-stagger>
@@ -333,25 +316,19 @@ BOBINE = page_hero(
     "Avvolgere.<br>Proteggere.<br><em>Ripensare.</em>",
     "Film per il confezionamento e la movimentazione. Con Tiger Film, le linee Eco Converting, Eco Manuale ed Eco Automatico danno spazio a materiale proveniente da processi di riciclo.",
 ) + """
-<section class="material-experience film-study block" id="bobina" data-material-study aria-labelledby="reel-title">
-  <div class="wrap">
-    <div class="study-heading"><div><p class="eyebrow">LA MATERIA, DA VICINO</p><h2 class="display small" id="reel-title" data-lines>Dal rotolo.<br><em>Alla protezione.</em></h2></div><p>Compatto all’origine.<br>Flessibile quando serve.</p></div>
-    <div class="study-window">
-      <div class="study-panel is-active"><img src="assets/bobine.webp" width="480" height="361" alt="Bobine di film, dalla presentazione Imballaggi 2G"><span>01 / La bobina</span></div>
-      <div class="study-panel film-detail"><img src="assets/azienda/coprispalla-barre.webp" width="1400" height="2100" alt="Fogli di film protettivo stesi sulle barre della linea di produzione"><span>02 / La materia si distende</span></div>
-      <div class="study-panel film-application"><img src="assets/azienda/magazzino-vista.webp" width="1300" height="1174" alt="Il magazzino delle bobine, con il muletto fra le carico"><span>03 / Il carico prende forma</span></div>
-      <div class="study-scan" aria-hidden="true"></div>
+<section class="reel3d-section" id="bobina" data-reel-3d aria-labelledby="reel-title">
+  <div class="reel3d-pin">
+    <div class="wrap reel3d-heading"><h2 class="display small" id="reel-title">Dal rotolo.<br><em>Alla protezione.</em></h2><p>Un gesto continuo.<br>La materia si prende cura.</p></div>
+    <div class="reel3d-stage" role="img" aria-label="Una bobina di film si srotola con lo scorrimento e avvolge il logo Imballaggi 2G. Visualizzazione tridimensionale illustrativa.">
+      <canvas aria-hidden="true"></canvas>
+      <div class="reel3d-fallback"><span class="reel3d-fallback-roll" aria-hidden="true"></span><img src="assets/logo-ink.webp" width="1200" height="344" alt="Imballaggi 2G"><span>Il film avvolge. Il valore resta.</span></div>
     </div>
-    <div class="study-controls" aria-label="Esplora il film"><button data-step="0" aria-pressed="true">01 <span>La bobina</span></button><button data-step="1" aria-pressed="false">02 <span>La pellicola</span></button><button data-step="2" aria-pressed="false">03 <span>La protezione</span></button></div>
+    <div class="wrap reel3d-footer"><div class="reel3d-steps" aria-hidden="true"><span class="is-current" data-reel-step>La bobina</span><span data-reel-step>Il film si distende</span><span data-reel-step>Il valore è protetto</span></div><a class="reel3d-skip" href="#tiger-title">Continua <span aria-hidden="true">↓</span></a></div>
   </div>
 </section>
 
 <section class="block" aria-labelledby="tiger-title">
   <div class="wrap">
-    <div class="block-top">
-      <p class="eyebrow">TIGER FILM</p>
-      <span>Contenuto totale di riciclato</span>
-    </div>
     <div class="tiger-intro">
       <h2 id="tiger-title" class="display small" data-lines>Una linea.<br>Tre modi di <em>proteggere.</em></h2>
       <p>Valori riportati nell’allegato al certificato PSV MixEco n. 3040/2024.</p>
@@ -375,7 +352,6 @@ BOBINE = page_hero(
       <span>LA LINEA TIGER FILM</span>
     </div>
     <div>
-      <p class="eyebrow">IN MAGAZZINO</p>
       <h2 id="reels-photo" class="display small" data-lines>Le nostre bobine.</h2>
       <p class="lead">Formati e spessori diversi per il confezionamento manuale e per le macchine avvolgitrici. Raccontaci il carico da fasciare: troviamo la bobina giusta.</p>
       <a class="text-link" href="contatti.html">Chiedi un formato <span aria-hidden="true">↗</span></a>
@@ -393,7 +369,6 @@ PROTEZIONI = page_hero(
 <section class="block" aria-labelledby="pr-title">
   <div class="wrap split">
     <div>
-      <p class="eyebrow">LA GAMMA</p>
       <h2 id="pr-title" class="display small" data-lines>Materiali diversi,<br>lo stesso <em>compito.</em></h2>
       <p class="lead">Ogni prodotto ha un punto debole: uno spigolo, una superficie lucida, un peso mal distribuito. Scegliamo insieme il materiale che lo copre.</p>
       <a class="text-link" href="assets/brochure-foam.pdf" target="_blank" rel="noopener">Sfoglia la brochure Foam <span aria-hidden="true">↗</span></a>
@@ -417,7 +392,6 @@ PROTEZIONI = page_hero(
 
 <section class="block tinted" aria-labelledby="pr-psv">
   <div class="wrap narrow center">
-    <p class="eyebrow">DALLA STESSA PARTE</p>
     <h2 id="pr-psv" class="display small" data-lines>Proteggere non deve<br>voler dire <em>sprecare.</em></h2>
     <p class="lead">Le nostre linee certificate Plastica Seconda Vita portano il riciclo dentro il mondo dell’imballaggio.</p>
     <a class="button magnetic" href="sostenibilita.html">Vai alla sostenibilità <span aria-hidden="true">↗</span></a>
@@ -433,10 +407,6 @@ BUSTE = page_hero(
 ) + """
 <section class="block" aria-labelledby="bu-title">
   <div class="wrap">
-    <div class="block-top">
-      <p class="eyebrow">LA GAMMA</p>
-      <span>Buste e confezionamento</span>
-    </div>
     <h2 id="bu-title" class="display small" data-lines>Ogni contenuto<br>ha la sua <em>busta.</em></h2>
     <div class="card-grid" data-stagger>
       <div class="mini-card"><span>01</span><h3>Buste e shopping bag</h3><p>Per il banco, il negozio e la consegna.</p></div>
@@ -451,7 +421,6 @@ BUSTE = page_hero(
 
 <section class="block tinted" aria-labelledby="bu-psv">
   <div class="wrap narrow center">
-    <p class="eyebrow">CERTIFICAZIONE</p>
     <h2 id="bu-psv" class="display small" data-lines>Buste e fogli protettivi<br>nel campo del <em>certificato PSV.</em></h2>
     <p class="lead">Il certificato n. 3433/2026 riguarda la produzione di coprispalla, coprisedia, buste e fogli protettivi con MPS da sottoprodotto esterno. Il campo di applicazione è specificato nel documento.</p>
     <a class="button magnetic" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato <span aria-hidden="true">↗</span></a>
@@ -467,10 +436,6 @@ MACCHINE = page_hero(
 ) + """
 <section class="block" aria-labelledby="ma-title">
   <div class="wrap">
-    <div class="block-top">
-      <p class="eyebrow">LA GAMMA</p>
-      <span>Chiusura e movimentazione</span>
-    </div>
     <h2 id="ma-title" class="display small" data-lines>Il carico regge<br>quanto regge <em>la chiusura.</em></h2>
     <div class="card-grid" data-stagger>
       <div class="mini-card"><span>01</span><h3>Nastri adesivi</h3><p>Neutri o personalizzati con il tuo marchio.</p></div>
@@ -485,7 +450,6 @@ MACCHINE = page_hero(
 
 <section class="block tinted" aria-labelledby="ma-cta">
   <div class="wrap narrow center">
-    <p class="eyebrow">ASSISTENZA</p>
     <h2 id="ma-cta" class="display small" data-lines>Non solo forniture.<br><em>Affiancamento.</em></h2>
     <p class="lead">Affianchiamo le imprese con attenzione, competenza e flessibilità: dal formato giusto alla macchina adatta al ritmo del tuo magazzino.</p>
     <a class="button magnetic" href="contatti.html">Parliamone <span aria-hidden="true">↗</span></a>
@@ -504,7 +468,6 @@ SOSTENIBILITA = page_hero(
 <section class="block dark-block" aria-labelledby="so-turtle">
   <div class="wrap split middle">
     <div>
-      <p class="eyebrow">IL NOSTRO SIMBOLO</p>
       <h2 id="so-turtle" class="display small" data-lines>Lenta,<br>ma <em>va lontano.</em></h2>
       <p class="lead">La tartaruga è il simbolo del progetto Puglia Plastic Second Life presentato dall’azienda: un invito a dare continuità al valore della materia.</p>
       <div class="circular-words" data-stagger>
@@ -522,10 +485,6 @@ SOSTENIBILITA = page_hero(
 
 <section class="block" aria-labelledby="so-cert">
   <div class="wrap">
-    <div class="block-top">
-      <p class="eyebrow">IMPEGNI DOCUMENTATI</p>
-      <span>Documenti da consultare</span>
-    </div>
     <div class="split">
       <h2 id="so-cert" class="display small" data-lines>La fiducia.<br>Nero su <em>bianco.</em></h2>
       <div>
@@ -577,7 +536,6 @@ AZIENDA = page_hero(
 
 <section class="block tinted" aria-labelledby="az-time">
   <div class="wrap">
-    <p class="eyebrow">LA LINEA DEL TEMPO</p>
     <h2 id="az-time" class="display small" data-lines>Da una generazione<br>a <em>quella dopo.</em></h2>
     <div class="timeline" data-stagger>
       <div class="timeline-step"><span class="year">1980</span><p>La tradizione familiare nel mondo dell’imballaggio.</p></div>
@@ -597,7 +555,6 @@ AZIENDA = page_hero(
 CONTATTI = """
 <section class="contact-page" aria-labelledby="co-title">
   <div class="wrap">
-    <p class="eyebrow"><i class="tag">08</i> IL PROSSIMO PROGETTO INIZIA QUI</p>
     <a class="contact-headline" id="co-title" href="mailto:info@imballaggi2g.it">Diamo forma<br>alla tua <em>soluzione.</em><span aria-hidden="true">↗</span></a>
     <div class="contact-grid" data-stagger>
       <div><span>Scrivici</span><a href="mailto:info@imballaggi2g.it">info@imballaggi2g.it</a></div>

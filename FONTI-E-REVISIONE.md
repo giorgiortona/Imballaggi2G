@@ -117,3 +117,16 @@ Le didascalie e i titoli dei nuovi blocchi descrivono quello che si vede, senza 
 2. «Quella qui accanto e' una delle nostre, fotografata in produzione» (pagina bobine): confermare che la bobina ripresa sia prodotto dell'azienda e non materiale di un fornitore.
 
 Nessuna fotografia e' stata ritoccata: solo ridimensionamento, conversione in WebP e, per i video, taglio e rimozione dell'audio.
+
+## Quinta revisione — 8 ottobre 2026: meno scritte, piu' colore
+Tre richieste dell'utente, tutte applicate.
+
+1. **Nuova fotografia d'apertura**: l'hero della home passa al reparto di produzione (`reparto-produzione.webp`, riesportata a 2000 px per l'uso a tutto schermo).
+2. **Colore ovunque**: tolto il bianco e nero dalle fasce scorrevoli di home, azienda e contatti. Alleggerite le velature sopra le fotografie nell'hero e nelle testate di pagina, cosi' i colori si vedono senza compromettere la leggibilita' del testo. Il bianco e nero resta solo nelle fasce del navigatore, dove serve a distinguere la fascia aperta.
+3. **Via le scritte superflue**: rimossi 53 occhielli in maiuscoletto, 72 didascalie sotto le fotografie, 11 numeri di sezione, 7 pie' di testata, i numeri sulle fasce del navigatore, il suggerimento "passa sopra una fascia", la fascia in fondo all'hero, le etichette delle fasce scorrevoli, l'etichetta "sezione successiva" e le diciture laterali delle intestazioni di blocco.
+
+Restano i titoli, i testi che spiegano qualcosa, gli elenchi di prodotto, i certificati e i contatti. Nessun contenuto informativo e' andato perso: le descrizioni delle fotografie sono conservate negli attributi `alt`, quindi restano disponibili a chi usa uno screen reader e ai motori di ricerca.
+
+
+### Bobina 3D — revisione 27
+La sezione «Dal rotolo. Alla protezione.» usa geometrie e texture procedurali, senza fotografie della bobina. Three.js 0.170.0 è incluso localmente con licenza MIT. Lo scroll nativo controlla srotolamento, comparsa del logo e ripiegamento del film. Rendering solo quando necessario; vista statica per movimento ridotto e alternativa senza WebGL.

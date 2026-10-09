@@ -11,9 +11,16 @@ Nessuna fotografia di repertorio compare piu' nell'hero della home, nelle fasce 
 navigatore, nelle testate delle pagine o nelle texture d'ingresso delle sezioni:
 tutti questi punti usano scatti aziendali.
 
+Le fotografie sono a colori ovunque. Il bianco e nero resta soltanto nelle fasce del
+navigatore in home ("Da dove vuoi cominciare?"), dove la fascia aperta torna a colori
+saturi: e' quel contrasto a far capire quale sezione si sta per aprire.
+
+Le figure non hanno didascalie a vista: il testo descrittivo vive nell'attributo `alt`,
+per chi naviga con uno screen reader.
+
 | Dove | Fotografia |
 |---|---|
-| Hero della home | magazzino-bobine |
+| Hero della home | reparto-produzione |
 | Navigatore (7 fasce) | coprispalla-linea · bobina-macchina · bobine-pluriball · fogli-uscita · macchina-2g · nastro-psv · sede-insegna |
 | Testata coprispalla | coprispalla-barre |
 | Testata bobine | bobine-magazzino |
