@@ -16,7 +16,7 @@ from section_motion import section_motion
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "25"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "31"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -34,15 +34,40 @@ BY_KEY = {s[0]: s for s in SECTIONS}
 ORDER = [s[0] for s in SECTIONS]
 
 
+# fotografia mostrata nell'anteprima del menu, una per sezione
+MENU_IMG = {
+    "coprispalla": "azienda/coprispalla-linea.webp",
+    "bobine": "azienda/bobina-macchina.webp",
+    "protezioni": "azienda/bobine-pluriball.webp",
+    "buste": "azienda/fogli-uscita.webp",
+    "macchine": "azienda/macchina-2g.webp",
+    "sostenibilita": "azienda/nastro-psv.webp",
+    "azienda": "azienda/sede-insegna.webp",
+    "contatti": "azienda/sede-cancello.webp",
+}
+
+
 def menu_links(current):
     out = []
-    for i, (key, href, num, label, _eyebrow, _img) in enumerate(SECTIONS):
-        cls = ' class="is-current"' if key == current else ""
+    for i, (key, href, num, label, eyebrow, _img) in enumerate(SECTIONS):
+        cls = "is-current" if key == current else ""
+        cur = ' aria-current="page"' if key == current else ""
         out.append(
-            f'      <a href="{href}"{cls} style="--i:{i}"><i>{num}</i>'
-            f'<span>{label}</span><em aria-hidden="true">↗</em></a>'
+            f'      <a href="{href}" class="{cls}"{cur} style="--i:{i}" data-key="{i}" data-label="{label}">'
+            f'<span>{label}</span><small>{eyebrow.title()}</small></a>'
         )
     return "\n".join(out)
+
+
+def menu_preview():
+    imgs = "\n".join(
+        f'      <img data-src="assets/{MENU_IMG[s[0]]}" alt="" width="1500" height="1000" data-cap="{s[3]}">'
+        for s in SECTIONS
+    )
+    return f"""<figure class="menu-preview" aria-hidden="true">
+{imgs}
+      <figcaption><span id="menu-cap"></span></figcaption>
+    </figure>"""
 
 
 def next_section(current):
@@ -131,16 +156,19 @@ def shell(current, title, description, body, body_class=""):
 </header>
 
 <div class="menu" id="menu" aria-label="Menu principale" aria-hidden="true">
-  <div class="menu-bg" aria-hidden="true"></div>
+  <div class="menu-bg" aria-hidden="true">{"".join(f'<b style="--c:{n}"></b>' for n in range(8))}<i class="menu-glow"></i></div>
   <div class="menu-inner">
     <nav class="menu-nav" aria-label="Sezioni del sito">
 {menu_links(current)}
     </nav>
     <div class="menu-side">
+      {menu_preview()}
+      <div class="menu-contacts">
       <div class="menu-block" style="--i:0"><span>Scrivici</span><a href="mailto:info@imballaggi2g.it">info@imballaggi2g.it</a></div>
       <div class="menu-block" style="--i:1"><span>Chiamaci</span><a href="tel:+390833861000">0833 861000</a></div>
       <div class="menu-block" style="--i:2"><span>Dove siamo</span><a href="https://www.google.com/maps/place/IMBALLAGGI+2G+s.r.l./@40.0911849,18.0653234,17z/data=!3m1!4b1!4m6!3m5!1s0x13441f7b57c7b16f:0xfc850e22ba05aec7!8m2!3d40.0911849!4d18.0678983!16s%2Fg%2F11jyjc4qhs" target="_blank" rel="noopener">Via dei Cavamonti, Z.I.<br>73017 Sannicola (LE) ↗</a></div>
       <div class="menu-block" style="--i:3"><span>Seguici</span><a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram ↗</a></div>
+      </div>
     </div>
   </div>
 </div>
