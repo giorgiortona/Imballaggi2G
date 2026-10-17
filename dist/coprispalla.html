@@ -9,10 +9,11 @@
 <meta name="theme-color" content="#121615">
 <link rel="icon" href="assets/mark-ink.webp">
 <link rel="preload" href="assets/manrope-regular.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="style.css?v=31">
-<script src="app.js?v=31" defer></script>
+<link rel="stylesheet" href="style.css?v=32">
+<script src="app.js?v=32" defer></script>
 
 
+<script type="module" src="shoulder-3d.js?v=32"></script>
 </head>
 <body class="" data-page="coprispalla">
 <a class="skip" href="#main">Vai ai contenuti</a>
@@ -72,23 +73,41 @@
 </section>
 <section class="shoulder-story" id="coprispalla-in-dettaglio" aria-labelledby="shoulder-title">
  <div class="shoulder-pin">
-  <div class="shoulder-copy">
-   <p class="shoulder-eyebrow">IL COPRISPALLA, DA VICINO</p>
-   <h2 class="display small" id="shoulder-title">La cura prende<br><em>forma.</em></h2>
-   <div class="shoulder-chapters">
-    <article class="shoulder-chapter is-active" id="shoulder-detail-0"><span class="shoulder-index">01 / LA FORMA</span><h3>Segue la spalla.</h3><p>Il taglio sagomato accompagna il profilo della gruccia. Una protezione che prende volume, con la discrezione di un velo.</p></article>
-    <article class="shoulder-chapter" id="shoulder-detail-1"><span class="shoulder-index">02 / IL PASSAGGIO</span><h3>Ogni dettaglio trova posto.</h3><p>Il gancio attraversa l’apertura superiore. Il coprispalla si dispone sulla gruccia e lascia il capo pronto da appendere.</p></article>
-    <article class="shoulder-chapter" id="shoulder-detail-2"><span class="shoulder-index">03 / IL FORMATO</span><h3>46 cm. La tua lunghezza.</h3><p>Una larghezza comune, lunghezze diverse. Taglio sagomato o retto: scegliamo insieme la variante adatta al tuo capo.</p><a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Esplora i formati ↗</a></article>
-   </div>
-   <div class="shoulder-nav" aria-label="Dettagli del coprispalla"><button type="button" data-shoulder-step="0" aria-controls="shoulder-detail-0" aria-pressed="true">Forma</button><button type="button" data-shoulder-step="1" aria-controls="shoulder-detail-1" aria-pressed="false">Gruccia</button><button type="button" data-shoulder-step="2" aria-controls="shoulder-detail-2" aria-pressed="false">Formato</button></div>
-  </div>
-  <figure class="shoulder-visual">
-   <div class="shoulder-object"><img src="assets/realistic/coprispalla-studio.webp" width="1024" height="1536" loading="lazy" alt="Ricostruzione fotografica del coprispalla dai video aziendali: film bianco traslucido, spalle sagomate e gruccia interna.">
-    <span class="shoulder-marker is-active" style="--x:76%;--y:24%" aria-hidden="true"><i></i><b>Taglio sagomato</b></span>
-    <span class="shoulder-marker" style="--x:50%;--y:12%" aria-hidden="true"><i></i><b>Passaggio gruccia</b></span>
-    <span class="shoulder-marker" style="--x:77%;--y:78%" aria-hidden="true"><i></i><b>Formato su richiesta</b></span>
-   </div>
+  <figure class="shoulder-visual" aria-label="Il coprispalla ruota seguendo lo scroll: ricostruzione illustrativa dalle riprese del prodotto.">
+   <div class="shoulder-object"><img src="assets/realistic/coprispalla-studio.webp" width="1024" height="1536" loading="lazy" alt="Coprispalla in film bianco traslucido sulla gruccia, con profilo sagomato."></div>
+   <canvas class="shoulder-canvas" aria-hidden="true"></canvas>
+   <div class="shoulder-caption" aria-hidden="true"><span data-shoulder-label>Il profilo della spalla</span><span>SCORRI PER ESPLORARE ↓</span></div>
   </figure>
+  <div class="shoulder-copy">
+   <article class="shoulder-chapter" id="shoulder-detail-0">
+    <p class="shoulder-eyebrow">01 — IL COPRISPALLA, DA VICINO</p>
+    <h2 class="display small" id="shoulder-title">La cura prende<br><em>forma.</em></h2>
+    <p>Il taglio sagomato segue la linea della spalla e si dispone sulla gruccia. Il film prende volume intorno al supporto e lo lascia intravedere attraverso la superficie traslucida.</p>
+    <p>Una protezione dedicata all’abbigliamento, con una forma studiata per accompagnare il capo quando viene appeso e movimentato.</p>
+    <div class="shoulder-fact"><span>Profilo</span><strong>Sagomato o retto</strong></div>
+   </article>
+   <article class="shoulder-chapter" id="shoulder-detail-1">
+    <p class="shoulder-eyebrow">02 — INTORNO ALLA GRUCCIA</p>
+    <h3>Un gesto semplice.<br><em>Ogni volta.</em></h3>
+    <p>Il gancio passa attraverso l’apertura superiore, mentre il coprispalla si appoggia sul profilo della gruccia. Il capo rimane pronto da appendere.</p>
+    <p>L’apertura del gancio e il profilo della spalla lavorano insieme: il supporto trova il suo posto all’interno, mentre il film si dispone lungo il capo.</p>
+    <div class="shoulder-fact"><span>Dettaglio</span><strong>Apertura superiore</strong></div>
+   </article>
+   <article class="shoulder-chapter" id="shoulder-detail-2">
+    <p class="shoulder-eyebrow">03 — IL FORMATO GIUSTO</p>
+    <h3>46 cm.<br><em>La tua lunghezza.</em></h3>
+    <p>Le schede indicano una larghezza comune di 46 cm, con varianti di lunghezza e taglio. La scelta parte dal tipo di capo e dal formato necessario alla tua produzione.</p>
+    <p>Alcune varianti prevedono un taglio laterale di 13,5 cm per il passaggio del bar-code. È un dettaglio da verificare sul modello scelto, insieme alle altre finiture.</p>
+    <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Confronta le schede tecniche ↗</a>
+   </article>
+   <article class="shoulder-chapter" id="shoulder-detail-3">
+    <p class="shoulder-eyebrow">04 — LA LINEA CERTIFICATA</p>
+    <h3>La cura continua.<br><em>Anche nel materiale.</em></h3>
+    <p>Il certificato PSV n. 3433/2026 comprende la produzione di coprispalla mediante taglio e saldatura, con MPS da sottoprodotto esterno.</p>
+    <p>La certificazione si riferisce ai prodotti e alle lavorazioni indicati nel documento. Ti aiutiamo a individuare il formato e la linea adatti alla tua esigenza.</p>
+    <a class="text-link" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato PSV ↗</a>
+   </article>
+  </div>
  </div>
 </section>
 

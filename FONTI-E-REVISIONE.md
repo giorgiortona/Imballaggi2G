@@ -137,3 +137,6 @@ Le scene di bobina e busta integrano asset illustrativi fotorealistici generati 
 
 ## v31 — Presentazione coprispalla
 Rimossa la sequenza di tre video affiancati. Nuova scena sticky con immagine isolata, tre descrizioni e punti evidenziati sincronizzati con lo scroll nativo. Movimento illustrativo dell’immagine, non rotazione 3D del prodotto. Vista statica completa per reduced-motion e senza JavaScript. Anche il doppio video pluriball lascia posto a una fotografia aziendale e una descrizione unica.
+
+## v32 — Coprispalla fuori scala
+Prodotto a sinistra con giro completo, inclinazione e movimento in profondità; quattro capitoli scorrono naturalmente a destra. Contenuti ampliati da schede e certificato già presenti. Rendering WebGL su superfici curve con texture fronte/retro; fallback fotografico se WebGL non disponibile o movimento ridotto. Verificati desktop 1440x900 e mobile 390x844, scorrimento e assenza di errori console. Nessun intercettamento di wheel o touch.

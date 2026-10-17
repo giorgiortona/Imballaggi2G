@@ -81,3 +81,6 @@ Gli asset in `dist/assets/realistic/` (bobina, busta, velo e occhiale) sono imma
 ## Coprispalla isolato — v31
 `dist/assets/realistic/coprispalla-studio.webp`: ricostruzione fotografica generata con imagegen integrato a partire da fotogrammi del video aziendale coprispalla-volume. Non è un fotogramma originale né una fotografia commerciale certificata. Rimosse mano ed etichetta; ricostruito il bordo inferiore.
 Prompt: creare un unico coprispalla in film bianco traslucido, completo e isolato su trasparenza, con spalle sagomate, apertura superiore e gruccia scura visibile attraverso il film; mantenere l’aspetto dei video, pieghe e riflessi realistici, nessun testo o marchio inventato.
+
+## Coprispalla retro — v32
+`dist/assets/realistic/coprispalla-retro.webp`: vista posteriore illustrativa generata con imagegen integrato, usando il fronte v31 come riferimento. Prompt: stesso prodotto, silhouette e scala, fotografato da dietro, gancio invertito, film bianco traslucido con pieghe realistiche, senza etichette, sfondo trasparente. Fronte e retro sono applicati a superfici curve per la rotazione; non si tratta di una scansione tridimensionale del campione.
