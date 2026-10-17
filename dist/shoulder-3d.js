@@ -23,18 +23,27 @@ if(section){
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(34,1,.1,50);camera.position.set(0,0,7.8);
   const model=new THREE.Group(),garment=new THREE.Group();scene.add(model);model.add(garment);
   const filmMeshes=[],clothMeshes=[],loader=new THREE.TextureLoader();
+  const concealed={value:0};
   const vec=new THREE.Vector3();
   function prepare(map){map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return map;}
   function surface(map,back,isFilm){
-   const geo=new THREE.PlaneGeometry(isFilm?3.6:2.78,5.4,48,64),pos=geo.attributes.position;
+   const geo=new THREE.PlaneGeometry(isFilm?3.6:2.60,5.4,48,64),pos=geo.attributes.position;
    const bases=Float32Array.from(pos.array);
    if(back){const uv=geo.attributes.uv;for(let i=0;i<uv.count;i++)uv.setX(i,1-uv.getX(i));}
    const mat=new THREE.MeshBasicMaterial({map:prepare(map),transparent:true,alphaTest:.025,side:back?THREE.BackSide:THREE.FrontSide,depthWrite:false,toneMapped:false});
-   if(isFilm){
-    // Keep bright folds and seams, but let the real cloth texture show through the film.
-    mat.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
-     float crease=max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b));
-     diffuseColor.a *= mix(0.18,0.55,smoothstep(0.62,1.0,crease));`);};
+   // Preserve the original milky-white photographic film, including its opacity.
+   // The jacket stays behind the product instead of darkening it through a clear shader.
+
+   if(!isFilm){
+    // Once seated, the opaque sleeve conceals the cloth, including its side silhouette.
+    // Keep the hook above the neck visible throughout the sequence.
+    mat.onBeforeCompile=shader=>{
+     shader.uniforms.concealed=concealed;
+     shader.fragmentShader='uniform float concealed;\n'+shader.fragmentShader;
+     shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
+      float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
+      diffuseColor.a *= 1.0-0.97*concealed*bodyMask;`);
+    };
    }
    const mesh=new THREE.Mesh(geo,mat);mesh.userData={bases,back};
    (isFilm?model:garment).add(mesh);(isFilm?filmMeshes:clothMeshes).push(mesh);
@@ -88,16 +97,16 @@ if(section){
   }
   function paint(){
    if(resize){stageW=stage.clientWidth;stageH=stage.clientHeight;renderer.setSize(stageW,stageH,false);camera.aspect=stageW/stageH;camera.updateProjectionMatrix();resize=false;}
-   const insert=smooth(.12,.40,current);deform(insert);
+   const insert=smooth(.12,.40,current);concealed.value=smooth(.82,1,insert);deform(insert);
    const turn=track([0,0,0,.07,.48,.93,1]);
    model.rotation.y=turn*Math.PI*2;
    model.rotation.z=THREE.MathUtils.degToRad(track([-11,0,0,7,-18,15,-10]));
    model.rotation.x=track([.02,0,0,.03,-.05,.04,0]);
-   model.position.set(track([-.05,0,0,.04,-.1,.12,0]),track([-.10,.1,.1,-.15,-.1,.05,-.12]),track([.22,0,0,.25,.35,.28,.22]));
+   model.position.set(track([-.05,0,0,.04,-.1,.12,0]),track([-.12,.08,.08,-.22,.26,-.18,.12]),track([.22,0,0,.25,.35,.28,.22]));
    const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*(camera.position.z-model.position.z);
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
-   // Wider hero framing returns after the insertion, when the garment is seated.
-   const fill=track([1.28,.96,.96,1.20,1.34,1.24,1.27]);model.scale.setScalar(viewHeight*fill/tiltedHeight);
+   // Product-first close-ups: keep the sleeve beyond the frame, with breathing during insertion.
+   const fill=track([1.48,1.12,1.16,1.48,1.72,1.46,1.62]);model.scale.setScalar(viewHeight*fill/tiltedHeight);
    const front=Math.cos(turn*Math.PI*2)>=0;
    filmMeshes.forEach(mesh=>{mesh.renderOrder=(mesh.userData.back===!front)?3:0;});
    clothMeshes.forEach(mesh=>{mesh.renderOrder=1;});

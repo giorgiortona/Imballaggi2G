@@ -146,3 +146,6 @@ Ridotta e compensata la scala in base all’inclinazione; posizione centrata e s
 
 ## v34 — Inserimento e punti descrittivi
 Ripristinato l’ingombro oltre i bordi dopo l’inserimento. Film vuoto e giacca su gruccia separati: salita dal fondo aperto, gancio allineato al collo, lieve ritardo dei lembi inferiori e deformazione del film. Animazione illustrativa vincolata allo scroll, non simulazione fisica del tessuto o scansione del prodotto. Cinque punti proiettati sulla superficie con mini descrizioni; occultati quando fuori campo o di taglio. Texture fronte/retro per la giacca. Verificati inserimento, giro e console nel browser.
+
+## v35 — Coprispalla protagonista
+Ripristinata l’opacità della texture fotografica bianco latte, eliminando lo shader che rendeva il film troppo trasparente. Giacca occultata gradualmente a inserimento completato, gancio mantenuto visibile. Zoom dinamico ampliato fino a 1,72 volte l’altezza dell’inquadratura, con punti descrittivi mantenuti. Verificata in browser la copertura del capo anche in vista laterale, senza errori console.
