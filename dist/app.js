@@ -169,3 +169,61 @@
   }
 
 })();
+
+/* Coprispalla: scroll-linked framing and details, no wheel/touch interception. */
+(function(){
+ 'use strict';
+ const section=document.querySelector('.shoulder-story');
+ if(!section)return;
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ const object=section.querySelector('.shoulder-object');
+ const chapters=[...section.querySelectorAll('.shoulder-chapter')];
+ const markers=[...section.querySelectorAll('.shoulder-marker')];
+ const buttons=[...section.querySelectorAll('[data-shoulder-step]')];
+ let raf=0,visible=false,current=0,target=0,last=0,active=-1;
+ const clamp=v=>Math.max(0,Math.min(1,v));
+ function select(index){
+  if(active===index)return;
+  active=index;
+  chapters.forEach((el,i)=>{el.classList.toggle('is-active',i===index);el.inert=i!==index;});
+  markers.forEach((el,i)=>el.classList.toggle('is-active',i===index));
+  buttons.forEach((el,i)=>el.setAttribute('aria-pressed',String(i===index)));
+ }
+ function measure(){
+  const r=section.getBoundingClientRect();
+  target=clamp(-r.top/Math.max(1,r.height-innerHeight));
+ }
+ function paint(){
+  const angle=-3+current*6;
+  const zoom=1+Math.sin(current*Math.PI)*.09;
+  object.style.transform=`translateY(${Math.sin(current*Math.PI)*-12}px) rotate(${angle}deg) scale(${zoom})`;
+  select(current<.33?0:current<.68?1:2);
+ }
+ function frame(now){
+  raf=0;
+  const dt=Math.min(.05,(now-last)/1000||.016);last=now;
+  current+=(target-current)*(1-Math.exp(-12*dt));
+  if(Math.abs(target-current)<.0002)current=target;
+  paint();
+  if(visible&&Math.abs(target-current)>.0002)raf=requestAnimationFrame(frame);
+ }
+ function wake(){
+  if(reduced.matches||document.hidden||!visible)return;
+  measure();if(!raf){last=performance.now();raf=requestAnimationFrame(frame);}
+ }
+ function configure(){
+  cancelAnimationFrame(raf);raf=0;
+  section.classList.toggle('shoulder-enhanced',!reduced.matches);
+  if(reduced.matches){object.style.transform='';chapters.forEach(el=>{el.inert=false;});}
+  else{measure();current=target;active=-1;paint();wake();}
+ }
+ buttons.forEach((button,i)=>button.addEventListener('click',()=>{
+  const top=scrollY+section.getBoundingClientRect().top;
+  const travel=section.offsetHeight-innerHeight;
+  window.scrollTo({top:top+[.1,.5,.88][i]*travel,behavior:reduced.matches?'instant':'smooth'});
+ }));
+ new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(raf);raf=0;}},{rootMargin:'100px'}).observe(section);
+ addEventListener('scroll',wake,{passive:true});addEventListener('resize',wake,{passive:true});
+ document.addEventListener('visibilitychange',wake);reduced.addEventListener('change',configure);
+ configure();
+})();

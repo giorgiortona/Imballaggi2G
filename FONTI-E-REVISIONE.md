@@ -130,3 +130,10 @@ Restano i titoli, i testi che spiegano qualcosa, gli elenchi di prodotto, i cert
 
 ### Bobina 3D — revisione 27
 La sezione «Dal rotolo. Alla protezione.» usa geometrie e texture procedurali, senza fotografie della bobina. Three.js 0.170.0 è incluso localmente con licenza MIT. Lo scroll nativo controlla srotolamento, comparsa del logo e ripiegamento del film. Rendering solo quando necessario; vista statica per movimento ridotto e alternativa senza WebGL.
+
+
+### Revisione 30 — superfici fotorealistiche
+Le scene di bobina e busta integrano asset illustrativi fotorealistici generati appositamente (roll, bubble-pouch, stretch-film) con trasparenza, animati tramite geometrie deformabili e scroll nativo. Non sono fotografie del catalogo aziendale. Il video originale del campione resta il riferimento reale della busta. Sostituiti cilindro uniforme e bolle geometriche ripetute; preservati logo originale, contenuti e riduzione del movimento.
+
+## v31 — Presentazione coprispalla
+Rimossa la sequenza di tre video affiancati. Nuova scena sticky con immagine isolata, tre descrizioni e punti evidenziati sincronizzati con lo scroll nativo. Movimento illustrativo dell’immagine, non rotazione 3D del prodotto. Vista statica completa per reduced-motion e senza JavaScript. Anche il doppio video pluriball lascia posto a una fotografia aziendale e una descrizione unica.

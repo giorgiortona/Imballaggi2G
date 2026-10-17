@@ -73,3 +73,11 @@ Gli originali delle brochure restano conservati. Le nuove immagini vengono espor
 | applicazione-nautica | [Zacharie Beaudoin](https://www.pexels.com/photo/sailboat-on-sea-12800915/) | 3933 × 6187 | 1526 × 2400 |
 | applicazione-protezione-sport | [Pavel Danilyuk](https://www.pexels.com/photo/a-man-wearing-a-bicycle-helmet-5808007/) | 4016 × 6016 | 1602 × 2400 |
 | applicazione-utensili | [Chris Leib](https://www.pexels.com/photo/variety-of-hand-tools-in-a-workshop-37792975/) | 3000 × 2000 | 2400 × 1600 |
+
+
+## Scene interattive — revisione 30
+Gli asset in `dist/assets/realistic/` (bobina, busta, velo e occhiale) sono immagini fotorealistiche generate appositamente con lo strumento Image Generation. Sono ricostruzioni illustrative, non fotografie dei prodotti aziendali. Il video della busta fornito dall’azienda resta disponibile nella relativa pagina.
+
+## Coprispalla isolato — v31
+`dist/assets/realistic/coprispalla-studio.webp`: ricostruzione fotografica generata con imagegen integrato a partire da fotogrammi del video aziendale coprispalla-volume. Non è un fotogramma originale né una fotografia commerciale certificata. Rimosse mano ed etichetta; ricostruito il bordo inferiore.
+Prompt: creare un unico coprispalla in film bianco traslucido, completo e isolato su trasparenza, con spalle sagomate, apertura superiore e gruccia scura visibile attraverso il film; mantenere l’aspetto dei video, pieghe e riflessi realistici, nessun testo o marchio inventato.

@@ -1029,3 +1029,63 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 .bag-experience{background:#e4ebe6;color:#1e3027}.bag-experience.bag-ready{height:285svh}.bag-pin{min-height:650px;padding:96px 0 26px;display:flex;flex-direction:column}.bag-ready .bag-pin{position:sticky;top:0;height:100svh;min-height:620px;background:radial-gradient(ellipse at 45% 45%,#f1f4f0,#cad8ce)}.bag-heading{display:flex;align-items:end;justify-content:space-between;gap:30px}.bag-heading h2{font-size:clamp(36px,4.5vw,66px);margin:0}.bag-heading p{font-size:18px;line-height:1.6}.bag-stage{position:relative;flex:1;min-height:0;height:540px}.bag-stage canvas{display:none;width:100%;height:100%}.bag-ready canvas{display:block}.bag-fallback{display:block;max-height:470px;width:auto;max-width:90%;margin:25px auto;object-fit:contain}.bag-ready .bag-fallback{display:none}.bag-footer{display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:16px}.bag-footer [data-bag-step]{display:none}.bag-footer .is-current{display:inline}.bag-real-grid{display:grid;grid-template-columns:.85fr 1fr;align-items:center;gap:clamp(40px,8vw,130px)}.bag-video{background:#e5e9e1;padding:20px;max-width:500px;margin:auto;width:100%}.bag-video video{display:block;max-height:660px;width:100%;height:auto}.bag-detail{display:grid;grid-template-columns:160px 1fr;gap:24px;align-items:center;border-top:1px solid #d4ddd6;padding:24px 0}.bag-detail svg{width:100%}.bag-detail h3{font-size:22px;margin:0 0 8px}.bag-detail p{font-size:17px;line-height:1.5;margin:0}.bag-real .lead{margin:28px 0 36px}
 @media(max-width:760px){.bag-ready .bag-pin{padding:88px 0 22px;min-height:580px}.bag-heading{display:block}.bag-heading p{font-size:15px;margin:14px 0 0}.bag-footer{font-size:13px;gap:12px}.bag-footer .text-link{font-size:13px}.bag-real-grid{grid-template-columns:1fr;gap:40px}.bag-video{max-width:370px}.bag-detail{grid-template-columns:115px 1fr;gap:16px}.bag-detail h3{font-size:20px}}
 @media(prefers-reduced-motion:reduce){.bag-experience.bag-ready{height:auto}.bag-ready .bag-pin{position:relative;height:auto}.bag-stage{flex:none;height:500px}}
+
+/* Neutral studio background keeps clear polymer silver, not green. */
+.reel3d-ready .reel3d-pin,.bag-ready .bag-pin{background:radial-gradient(ellipse at 47% 42%,#faf9f6 0%,#e3e2dc 72%,#d3d3cc 100%)}
+
+/* Product editorial: native scrolling, a shared sticky stage. */
+.shoulder-story{position:relative;background:#eeede8;scroll-margin-top:80px}
+.shoulder-pin{max-width:1600px;margin:auto;padding:80px 6vw;display:grid;grid-template-columns:.85fr 1.15fr;gap:4vw;align-items:center}
+.shoulder-copy{position:relative;z-index:2;max-width:510px}
+.shoulder-eyebrow{font-size:12px;letter-spacing:.16em;font-weight:600;margin:0 0 24px;color:#426253}
+.shoulder-copy .display{font-size:clamp(44px,4.8vw,78px);line-height:1.06;margin-bottom:40px}
+.shoulder-index{font-size:12px;letter-spacing:.12em;color:#547262;display:block;margin-bottom:18px}
+.shoulder-chapter h3{font-size:clamp(24px,2.2vw,34px);line-height:1.15;font-weight:500;margin:0 0 18px;letter-spacing:-.035em}
+.shoulder-chapter p{font-size:clamp(17px,1.4vw,21px);line-height:1.6;color:#4d5550;margin:0 0 22px;max-width:440px}
+.shoulder-chapter{margin-bottom:30px}
+.shoulder-nav{display:none;gap:24px;margin-top:28px}
+.shoulder-nav button{font:inherit;font-size:14px;border:0;border-bottom:1px solid #acb9b0;padding:10px 0;background:none;color:#59665e;cursor:pointer}
+.shoulder-nav button[aria-pressed=true]{color:#154d38;border-color:#154d38}
+.shoulder-nav button:focus-visible{outline:2px solid #1b7554;outline-offset:5px}
+.shoulder-visual{margin:0;min-width:0;display:grid;place-items:center;position:relative}
+.shoulder-object{position:relative;width:min(100%,530px);transform-origin:50% 40%;will-change:transform}
+.shoulder-object>img{display:block;width:100%;height:auto;filter:drop-shadow(20px 25px 22px #20292116)}
+.shoulder-marker{position:absolute;left:var(--x);top:var(--y);display:flex;align-items:center;gap:12px;opacity:0;transition:opacity .3s;pointer-events:none}
+.shoulder-marker.is-active{opacity:1}
+.shoulder-marker i{display:block;width:13px;height:13px;background:#247853;border:3px solid white;border-radius:50%;box-shadow:0 0 0 7px #24785322;flex-shrink:0}
+.shoulder-marker b{font-size:12px;font-weight:500;white-space:nowrap;display:block;background:#fffefae8;padding:10px 12px;color:#194f36;box-shadow:0 3px 20px #22332208;transform:translateX(-7px)}
+.shoulder-enhanced{height:320svh}
+.shoulder-enhanced .shoulder-pin{position:sticky;top:0;height:100svh;min-height:620px;padding-top:100px;padding-bottom:35px;overflow:clip}
+.shoulder-enhanced .shoulder-object{width:min(100%,calc(48svh))}
+.shoulder-enhanced .shoulder-chapters{display:grid;min-height:230px}
+.shoulder-enhanced .shoulder-chapter{grid-area:1/1;margin:0;opacity:0;visibility:hidden;transform:translateY(14px);transition:opacity .35s,transform .35s,visibility .35s}
+.shoulder-enhanced .shoulder-chapter.is-active{opacity:1;visibility:visible;transform:none}
+.shoulder-enhanced .shoulder-nav{display:flex}
+@media(max-width:700px){
+ .shoulder-pin{grid-template-columns:1fr;padding:55px 6vw;gap:22px}
+ .shoulder-enhanced{height:290svh}
+ .shoulder-enhanced .shoulder-pin{height:100svh;min-height:0;padding:90px 7vw 16px;grid-template-rows:auto 1fr;gap:8px}
+ .shoulder-copy{max-width:none}
+ .shoulder-eyebrow{font-size:10px;margin-bottom:12px}
+ .shoulder-copy .display{font-size:36px;margin-bottom:18px}
+ .shoulder-enhanced .shoulder-chapters{min-height:160px}
+ .shoulder-index{font-size:10px;margin-bottom:10px}
+ .shoulder-chapter h3{font-size:23px;margin-bottom:9px}
+ .shoulder-chapter p{font-size:16px;line-height:1.45;margin-bottom:12px}
+ .shoulder-chapter .text-link{font-size:14px}
+ .shoulder-nav{margin-top:6px;gap:22px}
+ .shoulder-nav button{font-size:12px;padding:7px 0}
+ .shoulder-visual{height:100%;min-height:0}
+ .shoulder-enhanced .shoulder-object{width:auto;height:100%;max-height:46svh;aspect-ratio:2/3}
+ .shoulder-object>img{height:100%;width:100%;object-fit:contain}
+ .shoulder-marker{gap:6px}
+ .shoulder-marker b{font-size:10px;padding:7px;white-space:normal;max-width:95px}
+}
+@media(max-height:720px) and (max-width:700px){
+ .shoulder-copy .display{font-size:29px;margin-bottom:12px}
+ .shoulder-eyebrow{display:none}
+ .shoulder-enhanced .shoulder-chapters{min-height:150px}
+ .shoulder-chapter h3{font-size:21px}
+ .shoulder-chapter p{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){.shoulder-marker,.shoulder-chapter{transition:none!important}.shoulder-object{transform:none!important;will-change:auto}}

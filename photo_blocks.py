@@ -66,7 +66,7 @@ def split(img, alt, title, text, link=None, flip=False):
     <div class="shot-copy">
       <h2 class="display small" data-lines>{title}</h2>
       <p class="lead">{text}</p>
-      {cta}
+{cta}
     </div>
   </div>
 </section>"""
@@ -109,14 +109,29 @@ AFTER = {}
 END = {}
 
 # ---------------------------------------------------------------- coprispalla
-AFTER["coprispalla"] = row(
-    "Non si vede.<br>Ed è <em>il punto.</em>",
-    "Un velo che prende la forma della spalla, lascia passare il gancio e non pesa sul capo.",
-    [
-        clip("coprispalla-volume", "Un coprispalla appeso che si apre e mostra il volume della spalla", ratio="4/5"),
-        clip("coprispalla-gruccia", "Il coprispalla infilato sulla gruccia, visto da vicino", ratio="4/5"),
-        clip("coprispalla-foro", "Il profilo sagomato del coprispalla in controluce", ratio="4/5"),
-    ])
+AFTER["coprispalla"] = """
+<section class="shoulder-story" id="coprispalla-in-dettaglio" aria-labelledby="shoulder-title">
+ <div class="shoulder-pin">
+  <div class="shoulder-copy">
+   <p class="shoulder-eyebrow">IL COPRISPALLA, DA VICINO</p>
+   <h2 class="display small" id="shoulder-title">La cura prende<br><em>forma.</em></h2>
+   <div class="shoulder-chapters">
+    <article class="shoulder-chapter is-active" id="shoulder-detail-0"><span class="shoulder-index">01 / LA FORMA</span><h3>Segue la spalla.</h3><p>Il taglio sagomato accompagna il profilo della gruccia. Una protezione che prende volume, con la discrezione di un velo.</p></article>
+    <article class="shoulder-chapter" id="shoulder-detail-1"><span class="shoulder-index">02 / IL PASSAGGIO</span><h3>Ogni dettaglio trova posto.</h3><p>Il gancio attraversa l’apertura superiore. Il coprispalla si dispone sulla gruccia e lascia il capo pronto da appendere.</p></article>
+    <article class="shoulder-chapter" id="shoulder-detail-2"><span class="shoulder-index">03 / IL FORMATO</span><h3>46 cm. La tua lunghezza.</h3><p>Una larghezza comune, lunghezze diverse. Taglio sagomato o retto: scegliamo insieme la variante adatta al tuo capo.</p><a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Esplora i formati ↗</a></article>
+   </div>
+   <div class="shoulder-nav" aria-label="Dettagli del coprispalla"><button type="button" data-shoulder-step="0" aria-controls="shoulder-detail-0" aria-pressed="true">Forma</button><button type="button" data-shoulder-step="1" aria-controls="shoulder-detail-1" aria-pressed="false">Gruccia</button><button type="button" data-shoulder-step="2" aria-controls="shoulder-detail-2" aria-pressed="false">Formato</button></div>
+  </div>
+  <figure class="shoulder-visual">
+   <div class="shoulder-object"><img src="assets/realistic/coprispalla-studio.webp" width="1024" height="1536" loading="lazy" alt="Ricostruzione fotografica del coprispalla dai video aziendali: film bianco traslucido, spalle sagomate e gruccia interna.">
+    <span class="shoulder-marker is-active" style="--x:76%;--y:24%" aria-hidden="true"><i></i><b>Taglio sagomato</b></span>
+    <span class="shoulder-marker" style="--x:50%;--y:12%" aria-hidden="true"><i></i><b>Passaggio gruccia</b></span>
+    <span class="shoulder-marker" style="--x:77%;--y:78%" aria-hidden="true"><i></i><b>Formato su richiesta</b></span>
+   </div>
+  </figure>
+ </div>
+</section>
+"""
 
 END["coprispalla"] = row(
     "Dalla bobina<br>al <em>capo finito.</em>",
@@ -144,14 +159,11 @@ END["bobine"] = row(
     ], tint=True)
 
 # ---------------------------------------------------------------- protezioni
-AFTER["protezioni"] = row(
-    "Il materiale<br>in <em>movimento.</em>",
-    "Il pluriball è quasi tutto aria: è per questo che assorbe.",
-    [
-        clip("pluriball-foglio", "Un foglio di pluriball sagomato appeso a una gruccia, in controluce", ratio="4/5"),
-        clip("pluriball-macro", "Dettaglio ravvicinato delle bolle d'aria del pluriball", ratio="4/5"),
-        shot("pluriball-fogli.webp", "Fogli di pluriball accatastati pronti all'uso", ratio="4/5"),
-    ])
+AFTER["protezioni"] = split(
+    "pluriball-fogli.webp",
+    "La struttura a bolle dei fogli di pluriball, vista da vicino",
+    "L’aria diventa<br><em>protezione.</em>",
+    "Una superficie di piccole camere d’aria accompagna il prodotto e attutisce gli urti. In fogli o in bobina, il pluriball si adatta alla forma di ciò che vuoi proteggere.")
 
 END["protezioni"] = row(
     "Morbido fuori,<br>fermo <em>dentro.</em>",

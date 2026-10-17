@@ -1,5 +1,4 @@
-/* Procedural PE-film study. All geometry, lighting and material maps are generated
-   locally; the sole image asset is the company's original logo. */
+/* Photoreal product surfaces on scroll-driven deforming geometry. */
 import * as THREE from './vendor/three.module.min.js';
 
 const section = document.querySelector('[data-reel-3d]');
@@ -36,27 +35,10 @@ if (section) {
     const key=new THREE.DirectionalLight(0xffffff,2.7);key.position.set(-3,6,5);scene.add(key);
     const edge=new THREE.DirectionalLight(0xe7f1eb,2.1);edge.position.set(5,3,-3);scene.add(edge);
 
-    // Fine extrusion lines, generated with deterministic noise; never a stock texture.
-    const striation=surface(512,512,(g,w,h)=>{
-      g.fillStyle='#d3d8d5';g.fillRect(0,0,w,h);
-      for(let i=0;i<512;i++){const a=.02+(Math.sin(i*17.31)*.5+.5)*.08;g.fillStyle=`rgba(255,255,255,${a})`;g.fillRect(0,i,w,1);}
-      for(let i=0;i<16;i++){g.fillStyle='rgba(110,124,117,.035)';g.fillRect(i*33,0,1,h);}
-    });
+    // Photoreal cutout composited into the deforming film scene.
     const roll=new THREE.Group();world.add(roll);
-    const filmMaterial=new THREE.MeshPhysicalMaterial({color:0xb5c4bd,map:striation,roughness:.27,metalness:.18,clearcoat:1,clearcoatRoughness:.13,envMapIntensity:1.5});
-    const barrel=new THREE.Mesh(new THREE.CylinderGeometry(.63,.63,2.9,128,1,true),filmMaterial);roll.add(barrel);
-    const endMaterial=new THREE.MeshStandardMaterial({color:0xe0e6db,roughness:.42,metalness:.12,side:THREE.DoubleSide});
-    const coreMaterial=new THREE.MeshStandardMaterial({color:0x96724c,roughness:.94,side:THREE.DoubleSide});
-    const core=new THREE.Mesh(new THREE.CylinderGeometry(.218,.218,2.96,64,1,true),coreMaterial);roll.add(core);
-    const darkCore=new THREE.Mesh(new THREE.CircleGeometry(.216,64),new THREE.MeshBasicMaterial({color:0x3b3127,side:THREE.DoubleSide}));darkCore.rotation.x=-Math.PI/2;darkCore.position.y=.86;roll.add(darkCore);
-    const layerPoints=[];
-    for(const y of [-1.454,1.454]){
-      const end=new THREE.Mesh(new THREE.RingGeometry(.247,.63,128),endMaterial);end.rotation.x=-Math.PI/2;end.position.y=y;roll.add(end);
-      const lip=new THREE.Mesh(new THREE.RingGeometry(.215,.249,64),coreMaterial);lip.rotation.x=-Math.PI/2;lip.position.y=y+(y>0?.012:-.012);roll.add(lip);
-      for(let ring=0;ring<48;ring++){const r=.25+ring*.00785;for(let j=0;j<128;j++){const a=j/128*Math.PI*2,b=(j+1)/128*Math.PI*2;layerPoints.push(r*Math.cos(a),y+.001,r*Math.sin(a),r*Math.cos(b),y+.001,r*Math.sin(b));}}
-    }
-    const layers=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(layerPoints,3)),new THREE.LineBasicMaterial({color:0x87968a,transparent:true,opacity:.48}));roll.add(layers);
-    const seam=new THREE.Mesh(new THREE.CylinderGeometry(.632,.632,2.87,4,1,true,0,.012),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.6,roughness:.1}));roll.add(seam);
+    const rollMap=new THREE.TextureLoader().load('assets/realistic/roll.webp',()=>wake());rollMap.colorSpace=THREE.SRGBColorSpace;rollMap.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+    const rollPhoto=new THREE.Mesh(new THREE.PlaneGeometry(2.45,3.675),new THREE.MeshBasicMaterial({map:rollMap,transparent:true,depthWrite:false,toneMapped:false}));rollPhoto.renderOrder=8;world.add(rollPhoto);
 
     // Floating brand plaque, later enclosed by the clear film.
     const brand=new THREE.Group();world.add(brand);
@@ -68,10 +50,12 @@ if (section) {
     function shadow(w,h){const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:shadowTexture,transparent:true,depthWrite:false}));mesh.rotation.x=-Math.PI/2;mesh.position.y=-1.52;world.add(mesh);return mesh;}
     const rollShadow=shadow(2.1,1.7),brandShadow=shadow(4.5,2.3);
 
+    const filmMap=new THREE.TextureLoader().load('assets/realistic/stretch-film.webp',()=>wake());filmMap.colorSpace=THREE.SRGBColorSpace;
+    function photoFilm(opacity){const m=new THREE.MeshBasicMaterial({map:filmMap,transparent:true,opacity,depthWrite:false,side:THREE.DoubleSide,toneMapped:false});m.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>','diffuseColor.a *= 0.07 + 0.93 * smoothstep(0.38,0.9,max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)));\n#include <opaque_fragment>');};return m;}
     // A real deforming mesh: a loose leading edge straightens as the roll moves.
     const sheetGeometry=new THREE.PlaneGeometry(1,2.84,64,16);
     const sheetPositions=sheetGeometry.attributes.position;
-    const clear=new THREE.MeshPhysicalMaterial({color:0xf0fff5,transparent:true,opacity:.18,roughness:.13,metalness:.12,clearcoat:1,clearcoatRoughness:.08,side:THREE.DoubleSide,depthWrite:false,envMapIntensity:2.1});
+    const clear=photoFilm(.72);
     const sheet=new THREE.Mesh(sheetGeometry,clear);sheet.renderOrder=3;world.add(sheet);
     const highlights=new THREE.Group();world.add(highlights);
     const filamentMaterial=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.55,depthWrite:false});
@@ -91,9 +75,9 @@ if (section) {
     // A continuous ribbon follows the rounded perimeter; its free end curls
     // before tension flattens it. Geometry is reversible at every scroll position.
     const ribbonGeometry=new THREE.PlaneGeometry(1,1,120,12);
-    const ribbonMaterial=new THREE.MeshPhysicalMaterial({color:0x82b6a3,transparent:true,opacity:.24,roughness:.18,metalness:.18,clearcoat:1,side:THREE.DoubleSide,depthWrite:false,envMapIntensity:1.6});
+    const ribbonMaterial=photoFilm(.7);
     const ribbon=new THREE.Mesh(ribbonGeometry,ribbonMaterial);world.add(ribbon);
-    const rimMaterial=new THREE.LineBasicMaterial({color:0x397862,transparent:true,opacity:.65,depthWrite:false});
+    const rimMaterial=new THREE.LineBasicMaterial({color:0xe9edea,transparent:true,opacity:.28,depthWrite:false});
     const rims=[0,1].map(()=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(121*3),3));const l=new THREE.Line(g,rimMaterial);world.add(l);return l;});
     const movingEdge=new THREE.Line(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(new Float32Array(13*3),3)),new THREE.LineBasicMaterial({color:0xe7fff4,transparent:true,opacity:.95}));world.add(movingEdge);
     const perimeter=new THREE.CurvePath();
@@ -110,7 +94,7 @@ if (section) {
       ribbon.visible=w>.001;rims.forEach(l=>l.visible=ribbon.visible);movingEdge.visible=ribbon.visible&&w<.999;
       const length=perimeter.getLength(),progress=w*1.04;
       feed.visible=w>.001&&w<.98;
-      feed.material.opacity=.24*(1-smooth(.82,.98,w));
+      feed.material.opacity=.7*(1-smooth(.82,.98,w));
       const fp=feedGeometry.attributes.position;
       for(let j=0;j<=8;j++)for(let i=0;i<=16;i++){
         const t=i/16,v=j/8-.5;
@@ -139,13 +123,13 @@ if (section) {
       const unwind=smooth(.06,.48,p),reveal=smooth(.16,.42,p),wrap=smooth(.48,.96,p);
       const rx=THREE.MathUtils.lerp(-2.18,2.48,unwind);
       roll.position.set(rx,0,.02);roll.rotation.y=-(unwind*4.66+wrap*7.96)/.63;roll.rotation.z=(1-unwind)*-.035;
-      rollShadow.position.x=rx;
+      rollShadow.position.x=rx;rollPhoto.position.set(rx,.03,.08);rollPhoto.quaternion.copy(camera.quaternion);rollPhoto.rotateZ((1-unwind)*-.025);
       brand.position.set(-.1,-.25*(1-reveal),-.9*(1-reveal));brand.scale.setScalar(.86+.14*reveal);brand.visible=reveal>.001;
       plaque.material.transparent=true;plaque.material.opacity=reveal;logo.material.opacity=reveal;brandShadow.material.opacity=reveal*.75;
-      sleeve.position.copy(brand.position);creases.position.copy(brand.position);sleeve.material.opacity=wrap*.035;creaseMaterial.opacity=wrap*.68;
+      sleeve.position.copy(brand.position);creases.position.copy(brand.position);sleeve.material.opacity=wrap*.035;creaseMaterial.opacity=wrap*.15;
       glint.position.x=-1.8+wrap*3.6;glint.position.y=brand.position.y;glint.material.opacity=Math.sin(wrap*Math.PI)*.4;
       sheet.visible=unwind>.005;highlights.visible=sheet.visible;
-      clear.opacity=.23*(1-smooth(0,.3,wrap));
+      clear.opacity=.75*(1-smooth(0,.3,wrap));
       windFilm(wrap);
       const left=-2.2+wrap*.45,width=Math.max(.002,rx-left),height=2.84-wrap*1.45;
       const point=(u,v)=>{
@@ -158,7 +142,7 @@ if (section) {
       for(let j=0;j<=16;j++)for(let i=0;i<=64;i++){const idx=j*65+i;const pt=point(i/64,.5-j/16);sheetPositions.setXYZ(idx,...pt);}
       sheetPositions.needsUpdate=true;sheetGeometry.computeVertexNormals();
       for(let n=0;n<filaments.length;n++){const a=filaments[n].geometry.attributes.position;const v=n===0?.5:n===1?-.5:(n-5)*.105;for(let i=0;i<=64;i++){const pt=point(i/64,v);a.setXYZ(i,pt[0],pt[1],pt[2]+.003);}a.needsUpdate=true;}
-      filamentMaterial.opacity=.55*(1-smooth(0,.3,wrap));
+      filamentMaterial.opacity=.1*(1-smooth(0,.3,wrap));
       const step=p<.3?0:p<.5?1:2;
       if(step!==lastStep){lastStep=step;section.querySelectorAll('[data-reel-step]').forEach((el,i)=>el.classList.toggle('is-current',i===step));}
       canvas.dataset.progress=p.toFixed(3);
