@@ -84,3 +84,7 @@ Prompt: creare un unico coprispalla in film bianco traslucido, completo e isolat
 
 ## Coprispalla retro — v32
 `dist/assets/realistic/coprispalla-retro.webp`: vista posteriore illustrativa generata con imagegen integrato, usando il fronte v31 come riferimento. Prompt: stesso prodotto, silhouette e scala, fotografato da dietro, gancio invertito, film bianco traslucido con pieghe realistiche, senza etichette, sfondo trasparente. Fronte e retro sono applicati a superfici curve per la rotazione; non si tratta di una scansione tridimensionale del campione.
+
+## v34 — Giacca e film separati
+Tre asset generati con imagegen integrato: `dist/assets/realistic/coprispalla-vuoto.webp`, `giacca-fronte.webp`, `giacca-retro.webp`. Il film deriva dal riferimento aziendale già ricostruito; la giacca è una visualizzazione senza marchi, non un prodotto venduto dall’azienda. Riferimenti web consultati per caduta e proporzioni: https://www.madrigalyourline.jp/c/soutiencollar/soutiencollar_outer/soutiencollar-portjacket (nessuna fotografia remota incorporata).
+Prompt film: mantenere silhouette e pieghe, rimuovere gruccia e gancio, fondo e collo aperti, materiale traslucido su trasparenza. Prompt giacca: fotografia realistica frontale di blazer blu notte in lana su gruccia nera, maniche soggette alla gravità, senza marchi, sfondo trasparente; seconda vista dello stesso capo da dietro.

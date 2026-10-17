@@ -112,9 +112,13 @@ END = {}
 AFTER["coprispalla"] = """
 <section class="shoulder-story" id="coprispalla-in-dettaglio" aria-labelledby="shoulder-title">
  <div class="shoulder-pin">
-  <figure class="shoulder-visual" aria-label="Il coprispalla ruota seguendo lo scroll: ricostruzione illustrativa dalle riprese del prodotto.">
+  <figure class="shoulder-visual" aria-label="La giacca sulla gruccia entra dal fondo aperto del coprispalla; il prodotto ruota con lo scroll. Ricostruzione illustrativa.">
    <div class="shoulder-object"><img src="assets/realistic/coprispalla-studio.webp" width="1024" height="1536" loading="lazy" alt="Coprispalla in film bianco traslucido sulla gruccia, con profilo sagomato."></div>
    <canvas class="shoulder-canvas" aria-hidden="true"></canvas>
+   <div class="shoulder-annotation" hidden>
+    <svg aria-hidden="true"><line class="shoulder-leader"/><circle class="shoulder-dot" r="6"/></svg>
+    <div class="shoulder-note"><strong></strong><p></p></div>
+   </div>
    <div class="shoulder-caption" aria-hidden="true"><span data-shoulder-label>Il profilo della spalla</span><span>SCORRI PER ESPLORARE ↓</span></div>
   </figure>
   <div class="shoulder-copy">

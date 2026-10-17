@@ -143,3 +143,6 @@ Prodotto a sinistra con giro completo, inclinazione e movimento in profondità; 
 
 ## v33 — Centratura e ritmo
 Ridotta e compensata la scala in base all’inclinazione; posizione centrata e spostamenti contenuti. Rotazione, discesa e profondità seguono sei passaggi con accelerazioni e rallentamenti, mantenendo lo scroll nativo e il giro completo. Verificati desktop e mobile.
+
+## v34 — Inserimento e punti descrittivi
+Ripristinato l’ingombro oltre i bordi dopo l’inserimento. Film vuoto e giacca su gruccia separati: salita dal fondo aperto, gancio allineato al collo, lieve ritardo dei lembi inferiori e deformazione del film. Animazione illustrativa vincolata allo scroll, non simulazione fisica del tessuto o scansione del prodotto. Cinque punti proiettati sulla superficie con mini descrizioni; occultati quando fuori campo o di taglio. Texture fronte/retro per la giacca. Verificati inserimento, giro e console nel browser.

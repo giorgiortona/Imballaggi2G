@@ -1080,3 +1080,13 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
  .shoulder-chapter .text-link{align-self:stretch}
  .shoulder-fact{border-top:0}
 }
+/* A projected point stays attached to the film; its note stays readable. */
+.shoulder-annotation{position:absolute;inset:0;z-index:3;pointer-events:none}
+.shoulder-annotation[hidden]{display:none}
+.shoulder-annotation svg{position:absolute;width:100%;height:100%;overflow:visible}
+.shoulder-leader{stroke:#39775b;stroke-width:1;opacity:.7}
+.shoulder-dot{fill:#2d805b;stroke:white;stroke-width:3}
+.shoulder-note{position:absolute;max-width:220px;background:#fffffff2;padding:17px 19px;box-shadow:0 8px 40px #253b2510;border-left:2px solid #438665;backdrop-filter:blur(10px)}
+.shoulder-note strong{display:block;font-size:17px;font-weight:500;line-height:1.2;color:#214c36}
+.shoulder-note p{font-size:14px;line-height:1.45;color:#536158;margin:7px 0 0}
+@media(max-width:700px){.shoulder-note{max-width:170px;padding:12px 14px}.shoulder-note strong{font-size:14px}.shoulder-note p{font-size:12px;margin-top:5px}.shoulder-caption{display:none}}
