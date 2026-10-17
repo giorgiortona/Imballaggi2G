@@ -44,16 +44,28 @@ if(section){
   }
   function paint(){
    if(resize){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();resize=false;}
-   const turn=smooth(.13,.87,current);
+   // Uneven beats: dwell on the broad faces, accelerate through the turn.
+   // Gentle easing within each beat; the damped playhead also follows reverse scroll.
+   const beats=[0,.16,.37,.60,.83,1];
+   function track(values){
+    let i=0;while(i<beats.length-2&&current>beats[i+1])i++;
+    const t=clamp((current-beats[i])/(beats[i+1]-beats[i]),0,1);
+    const ease=.12*t+.88*t*t*(3-2*t);
+    return THREE.MathUtils.lerp(values[i],values[i+1],ease);
+   }
+   const turn=track([0,.07,.43,.54,.94,1]);
    model.rotation.y=turn*Math.PI*2;
-   model.rotation.z=THREE.MathUtils.degToRad(-18+36*Math.sin(current*Math.PI*2-.3));
-   model.rotation.x=.11*Math.sin(current*Math.PI*2);
-   const mobile=innerWidth<=700;
-   const scale=(mobile?1.04:1.13)+.20*(1-Math.sin(current*Math.PI));
-   model.scale.setScalar(scale);
-   model.position.x=(mobile?-.08:-.22)+Math.sin(current*Math.PI*2)*.38;
-   model.position.y=.1+Math.sin(current*Math.PI*2)*.42;
-   model.position.z=.3+.55*Math.sin(current*Math.PI);
+   model.rotation.z=THREE.MathUtils.degToRad(track([-12,-4,17,8,-19,-8]));
+   model.rotation.x=track([0,.06,-.04,.03,-.05,0]);
+   model.position.x=track([0,.09,-.08,.05,-.10,0]);
+   model.position.y=track([-.12,-.02,-.21,-.09,-.24,-.12]);
+   model.position.z=track([.12,.28,.16,.32,.18,.12]);
+   // Fit the tilted silhouette rather than applying an oversized fixed scale.
+   const distance=camera.position.z-model.position.z;
+   const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*distance;
+   const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
+   const fill=track([1.04,1.02,1.07,1.03,1.06,1.02]);
+   model.scale.setScalar(viewHeight*fill/tiltedHeight);
    renderer.render(scene,camera);
    stage.dataset.rotation=String(Math.round(turn*360));
   }

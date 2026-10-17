@@ -140,3 +140,6 @@ Rimossa la sequenza di tre video affiancati. Nuova scena sticky con immagine iso
 
 ## v32 — Coprispalla fuori scala
 Prodotto a sinistra con giro completo, inclinazione e movimento in profondità; quattro capitoli scorrono naturalmente a destra. Contenuti ampliati da schede e certificato già presenti. Rendering WebGL su superfici curve con texture fronte/retro; fallback fotografico se WebGL non disponibile o movimento ridotto. Verificati desktop 1440x900 e mobile 390x844, scorrimento e assenza di errori console. Nessun intercettamento di wheel o touch.
+
+## v33 — Centratura e ritmo
+Ridotta e compensata la scala in base all’inclinazione; posizione centrata e spostamenti contenuti. Rotazione, discesa e profondità seguono sei passaggi con accelerazioni e rallentamenti, mantenendo lo scroll nativo e il giro completo. Verificati desktop e mobile.
