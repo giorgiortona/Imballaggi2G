@@ -95,14 +95,18 @@ if(section){
    const reveal=smooth(.12,.21,current)*(1-smooth(.36,.44,current));
    concealed.value=smooth(.82,1,insert)*(1-reveal);deform(insert);
    filmMeshes.forEach(mesh=>{mesh.material.opacity=1-(stageW<=700?.32:.58)*reveal;});
-   // Keep the opening macro composition fixed; only the garment moves inside it.
-   const turn=-.025;
-   model.rotation.set(.06,turn*Math.PI*2,THREE.MathUtils.degToRad(-19));
+   // Gentle scroll-driven drift around the opening macro, with no change of framing.
+   const drift=Math.sin(current*Math.PI*2);
+   const lift=Math.sin(current*Math.PI);
+   const turn=-.025+.006*drift;
+   model.rotation.set(.06+.012*lift,turn*Math.PI*2,THREE.MathUtils.degToRad(-19+1.6*drift));
    const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.position.z;
    const narrow=stageW<=700;
    // Full-viewport canvas: the product is never clipped at the editorial column.
    model.position.set(-viewHeight*camera.aspect*.215-1.40,-1.75,0);
    if(narrow)model.position.x=-1.25;
+   model.position.x+=.07*drift;
+   model.position.y+=.16*lift-.05*drift;
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
    model.scale.setScalar(viewHeight*2.75/tiltedHeight);
    const front=Math.cos(turn*Math.PI*2)>=0;

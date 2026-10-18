@@ -157,3 +157,7 @@ Inquadratura iniziale macro e decentrata ispirata al riferimento del cliente. Al
 
 ## Revisione 37 — macro fisso senza taglio della colonna
 Canvas a larghezza viewport, testo su fondo trasparente, inquadratura macro fissa. Rimangono ingresso giacca e trasparenza temporanea. Rimosse variazioni di zoom e rotazione durante lo scroll; aria-label aggiornato.
+
+
+## Revisione 38 — movimento leggero
+Aggiunta deriva dolce legata allo scroll attorno alla composizione macro: piccoli spostamenti laterali e verticali, inclinazione di 1,6 gradi. Zoom ravvicinato, canvas a tutta larghezza e inserimento giacca conservati.
