@@ -153,3 +153,7 @@ Ripristinata l’opacità della texture fotografica bianco latte, eliminando lo 
 
 ## Revisione 36 — sequenza coprispalla
 Inquadratura iniziale macro e decentrata ispirata al riferimento del cliente. Allontanamento e pausa durante inserimento, trasparenza temporanea del film, ritorno al bianco originale prima di rotazione e dettaglio posteriore. Movimento reversibile con scroll e fallback reduced-motion conservato.
+
+
+## Revisione 37 — macro fisso senza taglio della colonna
+Canvas a larghezza viewport, testo su fondo trasparente, inquadratura macro fissa. Rimangono ingresso giacca e trasparenza temporanea. Rimosse variazioni di zoom e rotazione durante lo scroll; aria-label aggiornato.

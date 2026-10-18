@@ -53,11 +53,6 @@ if(section){
    ready=true;configure();
   }).catch(()=>{renderer.dispose();});
   function measure(){const r=section.getBoundingClientRect();target=clamp(-r.top/Math.max(1,r.height-innerHeight),0,1);}
-  function track(values){
-   const beats=[0,.09,.19,.35,.44,.57,.72,.87,1];let i=0;while(i<beats.length-2&&current>beats[i+1])i++;
-   const t=clamp((current-beats[i])/(beats[i+1]-beats[i]),0,1),e=.08*t+.92*t*t*(3-2*t);
-   return THREE.MathUtils.lerp(values[i],values[i+1],e);
-  }
   function deform(insert){
    // The collar and shoulders follow the hanger; lower fabric lags slightly while lifted.
    const travel=smooth(.12,.35,current);
@@ -99,19 +94,17 @@ if(section){
    const insert=smooth(.12,.35,current);
    const reveal=smooth(.12,.21,current)*(1-smooth(.36,.44,current));
    concealed.value=smooth(.82,1,insert)*(1-reveal);deform(insert);
-   filmMeshes.forEach(mesh=>{mesh.material.opacity=1-.58*reveal;});
-   const turn=track([-.025,0,0,0,0,.18,.52,.94,1]);
-   model.rotation.y=turn*Math.PI*2;
-   model.rotation.z=THREE.MathUtils.degToRad(track([-19,-12,0,0,0,12,-9,5,-6]));
-   model.rotation.x=track([.06,.03,0,0,0,-.06,.03,-.03,0]);
-   // Shoulder macro → pull back for insertion → side pass → back detail → settled portrait.
-   const narrow=stageW<500;
-   model.position.set(track([-.95,-.68,0,0,0,.40,-.62,.20,-.08])*(narrow?.55:1),
-    track([-1.75,-1.20,.05,.05,.05,.28,-.85,.38,0]),0);
-   const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*(camera.position.z-model.position.z);
+   filmMeshes.forEach(mesh=>{mesh.material.opacity=1-(stageW<=700?.32:.58)*reveal;});
+   // Keep the opening macro composition fixed; only the garment moves inside it.
+   const turn=-.025;
+   model.rotation.set(.06,turn*Math.PI*2,THREE.MathUtils.degToRad(-19));
+   const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.position.z;
+   const narrow=stageW<=700;
+   // Full-viewport canvas: the product is never clipped at the editorial column.
+   model.position.set(-viewHeight*camera.aspect*.215-1.40,-1.75,0);
+   if(narrow)model.position.x=-1.25;
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
-   // Product-first close-ups: keep the sleeve beyond the frame, with breathing during insertion.
-   const fill=track([2.75,2.32,1.08,1.08,1.08,1.42,2.18,1.70,1.22]);model.scale.setScalar(viewHeight*fill/tiltedHeight);
+   model.scale.setScalar(viewHeight*2.75/tiltedHeight);
    const front=Math.cos(turn*Math.PI*2)>=0;
    filmMeshes.forEach(mesh=>{mesh.renderOrder=(mesh.userData.back===!front)?3:0;});
    clothMeshes.forEach(mesh=>{mesh.renderOrder=1;});

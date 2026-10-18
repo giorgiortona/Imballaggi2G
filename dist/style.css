@@ -1090,3 +1090,21 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 .shoulder-note strong{display:block;font-size:17px;font-weight:500;line-height:1.2;color:#214c36}
 .shoulder-note p{font-size:14px;line-height:1.45;color:#536158;margin:7px 0 0}
 @media(max-width:700px){.shoulder-note{max-width:170px;padding:12px 14px}.shoulder-note strong{font-size:14px}.shoulder-note p{font-size:12px;margin-top:5px}.shoulder-caption{display:none}}
+
+/* A single viewport-wide stage, with editorial copy layered over its empty side. */
+.shoulder-pin{grid-template-rows:auto}
+.shoulder-visual{grid-column:1 / -1;grid-row:1;width:100%;overflow:visible}
+.shoulder-copy{grid-column:2;grid-row:1;background:transparent}
+.shoulder-caption{right:46%}
+@media(max-width:700px){
+ .shoulder-pin{display:grid;grid-template-columns:1fr}
+ .shoulder-visual{height:100svh;top:0;background:transparent}
+ .shoulder-copy{grid-column:1;grid-row:1}
+ .shoulder-chapter>*{background:transparent;text-shadow:0 1px 8px #eeede8}
+ .shoulder-caption{right:7%}
+}
+@media(prefers-reduced-motion:reduce){
+ .shoulder-visual{grid-row:auto;grid-column:1;height:85svh}
+ .shoulder-copy{grid-row:auto}
+ @media(max-width:700px){.shoulder-copy{grid-column:1}.shoulder-visual{height:65svh}}
+}
