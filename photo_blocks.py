@@ -112,7 +112,7 @@ END = {}
 AFTER["coprispalla"] = """
 <section class="shoulder-story" id="coprispalla-in-dettaglio" aria-labelledby="shoulder-title">
  <div class="shoulder-pin">
-  <figure class="shoulder-visual" aria-label="La giacca sulla gruccia entra dal fondo aperto del coprispalla; inquadratura ravvicinata con lievi movimenti durante lo scroll. Ricostruzione illustrativa.">
+  <figure class="shoulder-visual" aria-label="La giacca sulla gruccia entra dal fondo aperto del coprispalla; inquadratura ravvicinata con rotazioni e variazioni di zoom durante lo scroll. Ricostruzione illustrativa.">
    <div class="shoulder-object"><img src="assets/realistic/coprispalla-studio.webp" width="1024" height="1536" loading="lazy" alt="Coprispalla in film bianco traslucido sulla gruccia, con profilo sagomato."></div>
    <canvas class="shoulder-canvas" aria-hidden="true"></canvas>
    <div class="shoulder-annotation" hidden>

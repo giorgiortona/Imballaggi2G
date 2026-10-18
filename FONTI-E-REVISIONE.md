@@ -161,3 +161,7 @@ Canvas a larghezza viewport, testo su fondo trasparente, inquadratura macro fiss
 
 ## Revisione 38 — movimento leggero
 Aggiunta deriva dolce legata allo scroll attorno alla composizione macro: piccoli spostamenti laterali e verticali, inclinazione di 1,6 gradi. Zoom ravvicinato, canvas a tutta larghezza e inserimento giacca conservati.
+
+
+## Revisione 39 — rotazioni, zoom e rendering
+Rotazioni composte e variazioni di ingrandimento 2,04–2,60, con pausa durante inserimento giacca. Ripristinata sorgente PNG originale lossless (1024 × 1536, non una nuova sorgente 4K), filtro cubico con alpha premoltiplicato negli ingrandimenti, anisotropia massima supportata e DPR fino a 3. Variante generata non integrata per preservare aspetto originale. Verifica desktop 1440 × 900 e mobile 390 × 844 senza errori shader.

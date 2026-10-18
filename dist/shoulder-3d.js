@@ -18,41 +18,62 @@ if(section){
  let stageW=1,stageH=1;
  const clamp=THREE.MathUtils.clamp,smooth=(a,b,p)=>{const t=clamp((p-a)/(b-a),0,1);return t*t*(3-2*t);};
  try{
-  renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'low-power'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,3));renderer.outputColorSpace=THREE.SRGBColorSpace;
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(34,1,.1,50);camera.position.set(0,0,7.8);
   const model=new THREE.Group(),garment=new THREE.Group();scene.add(model);model.add(garment);
   const filmMeshes=[],clothMeshes=[],loader=new THREE.TextureLoader();
   const concealed={value:0};
   const vec=new THREE.Vector3();
-  function prepare(map){map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return map;}
+  function prepare(map){map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=renderer.capabilities.getMaxAnisotropy();return map;}
   function surface(map,back,isFilm){
    const geo=new THREE.PlaneGeometry(isFilm?3.6:2.60,5.4,48,64),pos=geo.attributes.position;
    const bases=Float32Array.from(pos.array);
    if(back){const uv=geo.attributes.uv;for(let i=0;i<uv.count;i++)uv.setX(i,1-uv.getX(i));}
-   const mat=new THREE.MeshBasicMaterial({map:prepare(map),transparent:true,alphaTest:.025,side:back?THREE.BackSide:THREE.FrontSide,depthWrite:false,toneMapped:false});
-   // A short reveal during insertion; the original photographic film returns afterwards.
-
-   if(!isFilm){
-    // Once seated, the opaque sleeve conceals the cloth, including its side silhouette.
-    // Keep the hook above the neck visible throughout the sequence.
-    mat.onBeforeCompile=shader=>{
-     shader.uniforms.concealed=concealed;
-     shader.fragmentShader='uniform float concealed;\n'+shader.fragmentShader;
-     shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
-      float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
-      diffuseColor.a *= 1.0-0.97*concealed*bodyMask;`);
-    };
-   }
+   const mat=new THREE.MeshBasicMaterial({map:prepare(map),transparent:true,alphaTest:.001,side:back?THREE.BackSide:THREE.FrontSide,depthWrite:false,toneMapped:false});
+   // Preserve the lossless source. Cubic filtering avoids a visible texel grid in close-ups.
+   mat.onBeforeCompile=shader=>{
+    shader.uniforms.concealed=concealed;
+    shader.uniforms.sourceSize={value:new THREE.Vector2(map.image.width,map.image.height)};
+    shader.fragmentShader=`uniform float concealed;
+     uniform vec2 sourceSize;
+     vec4 cubicWeights(float t){
+      float t2=t*t,t3=t2*t;
+      return vec4(-.5*t+t2-.5*t3,1.-2.5*t2+1.5*t3,.5*t+2.*t2-1.5*t3,-.5*t2+.5*t3);
+     }
+     vec4 productSample(sampler2D tex,vec2 uv){
+      vec2 footprint=fwidth(uv)*sourceSize;
+      if(max(footprint.x,footprint.y)>1.)return texture2D(tex,uv);
+      vec2 pixel=uv*sourceSize-.5,base=floor(pixel),f=fract(pixel);
+      vec4 wx=cubicWeights(f.x),wy=cubicWeights(f.y),sum=vec4(0.);
+      for(int y=0;y<4;y++)for(int x=0;x<4;x++){
+       vec4 c=texture2D(tex,(base+vec2(float(x)-1.,float(y)-1.)+.5)/sourceSize);
+       c.rgb*=c.a;sum+=c*wx[x]*wy[y];
+      }
+      sum=clamp(sum,0.,1.);sum.rgb/=max(sum.a,.0001);return sum;
+     }
+    `+shader.fragmentShader;
+    let fragment=THREE.ShaderChunk.map_fragment.replace('texture2D( map, vMapUv )','productSample( map, vMapUv )');
+    if(!isFilm)fragment+=`
+float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
+     diffuseColor.a *= 1.0-0.97*concealed*bodyMask;`;
+    shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',fragment);
+   };
+   mat.customProgramCacheKey=()=>isFilm?'product-cubic-film':'product-cubic-cloth';
    const mesh=new THREE.Mesh(geo,mat);mesh.userData={bases,back};
    (isFilm?model:garment).add(mesh);(isFilm?filmMeshes:clothMeshes).push(mesh);
   }
-  Promise.all(['coprispalla-vuoto.webp','giacca-fronte.webp','giacca-retro.webp'].map(file=>loader.loadAsync('assets/realistic/'+file))).then(maps=>{
+  Promise.all(['coprispalla-originale-lossless.png','giacca-fronte.webp','giacca-retro.webp'].map(file=>loader.loadAsync('assets/realistic/'+file))).then(maps=>{
    surface(maps[0],false,true);surface(maps[0],true,true);
    surface(maps[1],false,false);surface(maps[2],true,false);
    ready=true;configure();
   }).catch(()=>{renderer.dispose();});
   function measure(){const r=section.getBoundingClientRect();target=clamp(-r.top/Math.max(1,r.height-innerHeight),0,1);}
+  function track(values){
+   const beats=[0,.12,.36,.52,.70,.86,1];let i=0;
+   while(i<beats.length-2&&current>beats[i+1])i++;
+   return THREE.MathUtils.lerp(values[i],values[i+1],smooth(beats[i],beats[i+1],current));
+  }
   function deform(insert){
    // The collar and shoulders follow the hanger; lower fabric lags slightly while lifted.
    const travel=smooth(.12,.35,current);
@@ -95,20 +116,18 @@ if(section){
    const reveal=smooth(.12,.21,current)*(1-smooth(.36,.44,current));
    concealed.value=smooth(.82,1,insert)*(1-reveal);deform(insert);
    filmMeshes.forEach(mesh=>{mesh.material.opacity=1-(stageW<=700?.32:.58)*reveal;});
-   // Gentle scroll-driven drift around the opening macro, with no change of framing.
-   const drift=Math.sin(current*Math.PI*2);
-   const lift=Math.sin(current*Math.PI);
-   const turn=-.025+.006*drift;
-   model.rotation.set(.06+.012*lift,turn*Math.PI*2,THREE.MathUtils.degToRad(-19+1.6*drift));
+   // A composed sequence: settle for insertion, tilt towards the viewer, then pull back.
+   const turn=track([-.025,0,0,.035,-.06,.025,-.025]);
+   model.rotation.set(track([.06,0,0,.09,-.04,.03,.06]),turn*Math.PI*2,
+    THREE.MathUtils.degToRad(track([-19,-10,-10,3,-24,-6,-19])));
    const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.position.z;
    const narrow=stageW<=700;
-   // Full-viewport canvas: the product is never clipped at the editorial column.
-   model.position.set(-viewHeight*camera.aspect*.215-1.40,-1.75,0);
-   if(narrow)model.position.x=-1.25;
-   model.position.x+=.07*drift;
-   model.position.y+=.16*lift-.05*drift;
+   model.position.set(-viewHeight*camera.aspect*.215+track([-1.4,-1.5,-1.5,-1.75,-1.1,-1.55,-1.4]),
+    track([-1.75,-1.1,-1.1,-1.50,-.65,-1.2,-1.75]),0);
+   if(narrow)model.position.x=track([-1.25,-1.0,-1.0,-1.4,-.85,-1.1,-1.25]);
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
-   model.scale.setScalar(viewHeight*2.75/tiltedHeight);
+   const fill=track([2.60,2.22,2.22,2.48,2.04,2.38,2.60]);
+   model.scale.setScalar(viewHeight*fill/tiltedHeight);
    const front=Math.cos(turn*Math.PI*2)>=0;
    filmMeshes.forEach(mesh=>{mesh.renderOrder=(mesh.userData.back===!front)?3:0;});
    clothMeshes.forEach(mesh=>{mesh.renderOrder=1;});
