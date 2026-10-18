@@ -149,3 +149,7 @@ Ripristinato l’ingombro oltre i bordi dopo l’inserimento. Film vuoto e giacc
 
 ## v35 — Coprispalla protagonista
 Ripristinata l’opacità della texture fotografica bianco latte, eliminando lo shader che rendeva il film troppo trasparente. Giacca occultata gradualmente a inserimento completato, gancio mantenuto visibile. Zoom dinamico ampliato fino a 1,72 volte l’altezza dell’inquadratura, con punti descrittivi mantenuti. Verificata in browser la copertura del capo anche in vista laterale, senza errori console.
+
+
+## Revisione 36 — sequenza coprispalla
+Inquadratura iniziale macro e decentrata ispirata al riferimento del cliente. Allontanamento e pausa durante inserimento, trasparenza temporanea del film, ritorno al bianco originale prima di rotazione e dettaglio posteriore. Movimento reversibile con scroll e fallback reduced-motion conservato.

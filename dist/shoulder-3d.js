@@ -31,8 +31,7 @@ if(section){
    const bases=Float32Array.from(pos.array);
    if(back){const uv=geo.attributes.uv;for(let i=0;i<uv.count;i++)uv.setX(i,1-uv.getX(i));}
    const mat=new THREE.MeshBasicMaterial({map:prepare(map),transparent:true,alphaTest:.025,side:back?THREE.BackSide:THREE.FrontSide,depthWrite:false,toneMapped:false});
-   // Preserve the original milky-white photographic film, including its opacity.
-   // The jacket stays behind the product instead of darkening it through a clear shader.
+   // A short reveal during insertion; the original photographic film returns afterwards.
 
    if(!isFilm){
     // Once seated, the opaque sleeve conceals the cloth, including its side silhouette.
@@ -55,13 +54,13 @@ if(section){
   }).catch(()=>{renderer.dispose();});
   function measure(){const r=section.getBoundingClientRect();target=clamp(-r.top/Math.max(1,r.height-innerHeight),0,1);}
   function track(values){
-   const beats=[0,.12,.38,.50,.67,.84,1];let i=0;while(i<beats.length-2&&current>beats[i+1])i++;
+   const beats=[0,.09,.19,.35,.44,.57,.72,.87,1];let i=0;while(i<beats.length-2&&current>beats[i+1])i++;
    const t=clamp((current-beats[i])/(beats[i+1]-beats[i]),0,1),e=.08*t+.92*t*t*(3-2*t);
    return THREE.MathUtils.lerp(values[i],values[i+1],e);
   }
   function deform(insert){
    // The collar and shoulders follow the hanger; lower fabric lags slightly while lifted.
-   const travel=smooth(.12,.40,current);
+   const travel=smooth(.12,.35,current);
    const sway=Math.sin(travel*Math.PI*2)*Math.sin(travel*Math.PI)*.055;
    garment.position.y=-5.55*(1-insert);garment.rotation.z=0;
    for(const mesh of clothMeshes){
@@ -97,20 +96,27 @@ if(section){
   }
   function paint(){
    if(resize){stageW=stage.clientWidth;stageH=stage.clientHeight;renderer.setSize(stageW,stageH,false);camera.aspect=stageW/stageH;camera.updateProjectionMatrix();resize=false;}
-   const insert=smooth(.12,.40,current);concealed.value=smooth(.82,1,insert);deform(insert);
-   const turn=track([0,0,0,.07,.48,.93,1]);
+   const insert=smooth(.12,.35,current);
+   const reveal=smooth(.12,.21,current)*(1-smooth(.36,.44,current));
+   concealed.value=smooth(.82,1,insert)*(1-reveal);deform(insert);
+   filmMeshes.forEach(mesh=>{mesh.material.opacity=1-.58*reveal;});
+   const turn=track([-.025,0,0,0,0,.18,.52,.94,1]);
    model.rotation.y=turn*Math.PI*2;
-   model.rotation.z=THREE.MathUtils.degToRad(track([-11,0,0,7,-18,15,-10]));
-   model.rotation.x=track([.02,0,0,.03,-.05,.04,0]);
-   model.position.set(track([-.05,0,0,.04,-.1,.12,0]),track([-.12,.08,.08,-.22,.26,-.18,.12]),track([.22,0,0,.25,.35,.28,.22]));
+   model.rotation.z=THREE.MathUtils.degToRad(track([-19,-12,0,0,0,12,-9,5,-6]));
+   model.rotation.x=track([.06,.03,0,0,0,-.06,.03,-.03,0]);
+   // Shoulder macro → pull back for insertion → side pass → back detail → settled portrait.
+   const narrow=stageW<500;
+   model.position.set(track([-.95,-.68,0,0,0,.40,-.62,.20,-.08])*(narrow?.55:1),
+    track([-1.75,-1.20,.05,.05,.05,.28,-.85,.38,0]),0);
    const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*(camera.position.z-model.position.z);
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
    // Product-first close-ups: keep the sleeve beyond the frame, with breathing during insertion.
-   const fill=track([1.48,1.12,1.16,1.48,1.72,1.46,1.62]);model.scale.setScalar(viewHeight*fill/tiltedHeight);
+   const fill=track([2.75,2.32,1.08,1.08,1.08,1.42,2.18,1.70,1.22]);model.scale.setScalar(viewHeight*fill/tiltedHeight);
    const front=Math.cos(turn*Math.PI*2)>=0;
    filmMeshes.forEach(mesh=>{mesh.renderOrder=(mesh.userData.back===!front)?3:0;});
    clothMeshes.forEach(mesh=>{mesh.renderOrder=1;});
    renderer.render(scene,camera);annotate(turn);
+   stage.dataset.reveal=reveal.toFixed(3);stage.dataset.progress=current.toFixed(3);
    stage.dataset.rotation=String(Math.round(turn*360));stage.dataset.insertion=insert.toFixed(3);
   }
   function frame(now){raf=0;const dt=Math.min(.05,(now-last)/1000||.016);last=now;current+=(target-current)*(1-Math.exp(-10*dt));if(Math.abs(target-current)<.0001)current=target;paint();if(visible&&Math.abs(target-current)>.0001)raf=requestAnimationFrame(frame);}
