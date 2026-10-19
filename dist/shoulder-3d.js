@@ -13,7 +13,7 @@ if(section){
   {at:[0,2.06,.3],title:'Il passaggio del gancio',text:'La giacca entra dal fondo; il gancio rimane libero.'},
   {at:[1.1,.9,.3],title:'46 cm di larghezza',text:'La lunghezza si sceglie in funzione del capo.'},
   {at:[.6,1.05,.3],title:'La linea certificata',text:'Le specifiche sono raccolte nel certificato PSV.'},
-  {at:[.65,1.02,.3],title:'Il passaggio per il bar-code',text:'Il taglio rende accessibile l’etichetta del capo.'}
+  {at:[0,1.02,.35],title:'Il passaggio per il bar-code',text:'Il taglio rende accessibile l’etichetta del capo.'}
  ];
  let renderer,raf=0,visible=false,target=0,current=0,last=0,resize=true,ready=false,active=-1;
  let stageW=1,stageH=1;
@@ -61,12 +61,25 @@ if(section){
 float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
      diffuseColor.a *= 1.0-0.97*concealed*bodyMask;`;
     if(isFilm&&!back)fragment+=`
-     float slitY=smoothstep(.604,.615,vMapUv.y)*(1.-smoothstep(.745,.756,vMapUv.y));
-     float slitWidth=.0025+.0015*sin(clamp((vMapUv.y-.61)/.14,0.,1.)*3.14159);
-     float slit=1.-smoothstep(slitWidth,slitWidth+.0018,abs(vMapUv.x-.68));
-     float rim=1.-smoothstep(.001,.003,abs(vMapUv.x-.686));
-     diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.11,.16,.13),slit*slitY*slitStrength*.85);
-     diffuseColor.rgb=mix(diffuseColor.rgb,vec3(1.),rim*slitY*slitStrength*.8);`;
+     // A fine incision with closed tips, unequal flexible lips and a soft inner shadow.
+     float t=clamp((vMapUv.y-.61)/.14,0.,1.);
+     float span=smoothstep(.607,.613,vMapUv.y)*(1.-smoothstep(.747,.753,vMapUv.y));
+     float bow=pow(max(0.,sin(t*3.14159265)),.85);
+     float center=.5+.0012*sin(t*6.28318)*bow;
+     float x=vMapUv.x-center;
+     float aa=max(fwidth(vMapUv.x),.00018);
+     float left=-.00035-.0011*bow;
+     float right=.00035+.0022*bow;
+     float opening=smoothstep(left-aa,left+aa,x)*(1.-smoothstep(right-aa,right+aa,x))*span;
+     float depth=clamp((x-left)/max(right-left,.0001),0.,1.);
+     vec3 inside=mix(vec3(.16,.17,.165),vec3(.43,.45,.43),depth);
+     diffuseColor.rgb=mix(diffuseColor.rgb,inside,opening*slitStrength*.84);
+     float lip=exp(-pow((x-right-.0010)/(.0007+aa),2.))*span*bow;
+     float edgeShadow=exp(-pow((x-left+.0017)/.0022,2.))*span*bow;
+     float fold=exp(-pow((x-right-.0048)/.0035,2.))*span*bow;
+     diffuseColor.rgb*=1.-slitStrength*(edgeShadow*.12+fold*.045);
+     diffuseColor.rgb=mix(diffuseColor.rgb,vec3(1.),lip*slitStrength*.65);
+`;
     shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',fragment);
    };
    mat.customProgramCacheKey=()=>isFilm?(back?'product-film-back':'product-film-slit'):'product-cubic-cloth';
@@ -130,6 +143,7 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    const insert=smooth(0,.82,current);
    const reveal=smooth(0,.25,current)*(1-smooth(.80,1,current));
    concealed.value=smooth(.82,1,insert)*(1-reveal);deform(insert);
+   clothMeshes.forEach(mesh=>{mesh.material.opacity=1-smooth(.88,1,current);});
    filmMeshes.forEach(mesh=>{mesh.material.opacity=1-(stageW<=700?.32:.58)*reveal;});
    // A composed sequence: settle for insertion, tilt towards the viewer, then pull back.
    const turn=track([-.025,0,.035,-.06,.015]);

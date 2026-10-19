@@ -176,3 +176,7 @@ Stage sticky ancorato all’altezza responsive dell’header, con altezza viewpo
 2. Posa target discreta per capitolo; animazione smorzata solo al cambio di capitolo, ferma a fine transizione. Inserimento giacca nel passaggio al secondo capitolo.
 3. Quinto capitolo con taglio verticale illustrativo sul film e schema SVG del passaggio etichetta. Funzione e misura 13,5 cm confermate nelle pagine 1, 3, 4 di schede-coprispalla.pdf. Altezza petto e carattere distintivo indicati dal cliente; grafica dichiarata illustrativa e dipendente dal modello. Nessuna dichiarazione comparativa “pochi produttori”: ricerca web senza riscontri adeguati.
 4. Fallback nascosto escluso dal layout per evitare overflow mobile; annotazioni duplicate nascoste su mobile per non sovrapporle ai testi.
+
+
+## Revisione 42 — gruccia e incisione centrale
+Gruccia e giacca sfumano al termine dell’inserimento. Taglio centrato sulla mezzeria, alla stessa altezza: estremità chiuse, labbri asimmetrici, ombra interna neutra e riflesso sottile del film. Annotazione spostata al centro.
