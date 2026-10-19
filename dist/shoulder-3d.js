@@ -3,16 +3,17 @@ import * as THREE from './vendor/three.module.min.js';
 const section=document.querySelector('.shoulder-story');
 if(section){
  const stage=section.querySelector('.shoulder-visual'),canvas=section.querySelector('canvas');
+ const chapters=[...section.querySelectorAll('.shoulder-chapter')];
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const label=section.querySelector('[data-shoulder-label]');
  const annotation=section.querySelector('.shoulder-annotation'),note=annotation.querySelector('.shoulder-note');
  const dot=annotation.querySelector('circle'),leader=annotation.querySelector('line');
  const points=[
   {at:[.92,1.35,.3],title:'La forma della spalla',text:'Il taglio sagomato segue il profilo del supporto.'},
-  {at:[.75,-1.45,.3],title:'Dal fondo aperto',text:'La giacca sale sulla gruccia, all’interno del film.'},
-  {at:[0,2.06,.3],title:'Il passaggio del gancio',text:'L’apertura superiore lascia libera la gruccia.'},
-  {at:[-.8,.1,.3],title:'Un velo protettivo',text:'Il film si dispone intorno al capo e ne segue il volume.'},
-  {at:[.8,-.9,.3],title:'46 cm di larghezza',text:'Lunghezze e finiture si scelgono nella scheda tecnica.'}
+  {at:[0,2.06,.3],title:'Il passaggio del gancio',text:'La giacca entra dal fondo; il gancio rimane libero.'},
+  {at:[1.1,.9,.3],title:'46 cm di larghezza',text:'La lunghezza si sceglie in funzione del capo.'},
+  {at:[.6,1.05,.3],title:'La linea certificata',text:'Le specifiche sono raccolte nel certificato PSV.'},
+  {at:[.65,1.02,.3],title:'Il passaggio per il bar-code',text:'Il taglio rende accessibile l’etichetta del capo.'}
  ];
  let renderer,raf=0,visible=false,target=0,current=0,last=0,resize=true,ready=false,active=-1;
  let stageW=1,stageH=1;
@@ -23,7 +24,7 @@ if(section){
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(34,1,.1,50);camera.position.set(0,0,7.8);
   const model=new THREE.Group(),garment=new THREE.Group();scene.add(model);model.add(garment);
   const filmMeshes=[],clothMeshes=[],loader=new THREE.TextureLoader();
-  const concealed={value:0};
+  const concealed={value:0},slitStrength={value:0};
   const vec=new THREE.Vector3();
   function prepare(map){map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=renderer.capabilities.getMaxAnisotropy();return map;}
   function surface(map,back,isFilm){
@@ -34,9 +35,11 @@ if(section){
    // Preserve the lossless source. Cubic filtering avoids a visible texel grid in close-ups.
    mat.onBeforeCompile=shader=>{
     shader.uniforms.concealed=concealed;
+    shader.uniforms.slitStrength=slitStrength;
     shader.uniforms.sourceSize={value:new THREE.Vector2(map.image.width,map.image.height)};
     shader.fragmentShader=`uniform float concealed;
      uniform vec2 sourceSize;
+     uniform float slitStrength;
      vec4 cubicWeights(float t){
       float t2=t*t,t3=t2*t;
       return vec4(-.5*t+t2-.5*t3,1.-2.5*t2+1.5*t3,.5*t+2.*t2-1.5*t3,-.5*t2+.5*t3);
@@ -57,9 +60,16 @@ if(section){
     if(!isFilm)fragment+=`
 float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
      diffuseColor.a *= 1.0-0.97*concealed*bodyMask;`;
+    if(isFilm&&!back)fragment+=`
+     float slitY=smoothstep(.604,.615,vMapUv.y)*(1.-smoothstep(.745,.756,vMapUv.y));
+     float slitWidth=.0025+.0015*sin(clamp((vMapUv.y-.61)/.14,0.,1.)*3.14159);
+     float slit=1.-smoothstep(slitWidth,slitWidth+.0018,abs(vMapUv.x-.68));
+     float rim=1.-smoothstep(.001,.003,abs(vMapUv.x-.686));
+     diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.11,.16,.13),slit*slitY*slitStrength*.85);
+     diffuseColor.rgb=mix(diffuseColor.rgb,vec3(1.),rim*slitY*slitStrength*.8);`;
     shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',fragment);
    };
-   mat.customProgramCacheKey=()=>isFilm?'product-cubic-film':'product-cubic-cloth';
+   mat.customProgramCacheKey=()=>isFilm?(back?'product-film-back':'product-film-slit'):'product-cubic-cloth';
    const mesh=new THREE.Mesh(geo,mat);mesh.userData={bases,back};
    (isFilm?model:garment).add(mesh);(isFilm?filmMeshes:clothMeshes).push(mesh);
   }
@@ -68,15 +78,19 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    surface(maps[1],false,false);surface(maps[2],true,false);
    ready=true;configure();
   }).catch(()=>{renderer.dispose();});
-  function measure(){const r=section.getBoundingClientRect();target=clamp(-r.top/Math.max(1,r.height-innerHeight),0,1);}
+  function measure(){
+   const trigger=innerHeight*(stageW<=700?.76:.62);
+   let next=0;
+   chapters.forEach((chapter,i)=>{if(chapter.getBoundingClientRect().top<=trigger)next=i;});
+   target=next;section.dataset.chapter=String(next);
+  }
   function track(values){
-   const beats=[0,.12,.36,.52,.70,.86,1];let i=0;
-   while(i<beats.length-2&&current>beats[i+1])i++;
-   return THREE.MathUtils.lerp(values[i],values[i+1],smooth(beats[i],beats[i+1],current));
+   const i=Math.min(values.length-2,Math.floor(current));
+   return THREE.MathUtils.lerp(values[i],values[i+1],smooth(i,i+1,current));
   }
   function deform(insert){
    // The collar and shoulders follow the hanger; lower fabric lags slightly while lifted.
-   const travel=smooth(.12,.35,current);
+   const travel=smooth(0,1,current);
    const sway=Math.sin(travel*Math.PI*2)*Math.sin(travel*Math.PI)*.055;
    garment.position.y=-5.55*(1-insert);garment.rotation.z=0;
    for(const mesh of clothMeshes){
@@ -97,7 +111,7 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    }
   }
   function annotate(turn){
-   const index=current<.12?0:current<.34?1:current<.51?2:current<.8?3:4;
+   const index=target;
    if(index!==active){active=index;note.querySelector('strong').textContent=points[index].title;note.querySelector('p').textContent=points[index].text;label.textContent=points[index].title;}
    const back=Math.cos(turn*Math.PI*2)<0;
    const p=points[index].at;vec.set(p[0],p[1],back?-p[2]:p[2]);model.localToWorld(vec);vec.project(camera);
@@ -112,22 +126,31 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
   }
   function paint(){
    if(resize){stageW=stage.clientWidth;stageH=stage.clientHeight;renderer.setSize(stageW,stageH,false);camera.aspect=stageW/stageH;camera.updateProjectionMatrix();resize=false;}
-   const insert=smooth(.12,.35,current);
-   const reveal=smooth(.12,.21,current)*(1-smooth(.36,.44,current));
+   slitStrength.value=.16+.84*smooth(3,4,current);
+   const insert=smooth(0,.82,current);
+   const reveal=smooth(0,.25,current)*(1-smooth(.80,1,current));
    concealed.value=smooth(.82,1,insert)*(1-reveal);deform(insert);
    filmMeshes.forEach(mesh=>{mesh.material.opacity=1-(stageW<=700?.32:.58)*reveal;});
    // A composed sequence: settle for insertion, tilt towards the viewer, then pull back.
-   const turn=track([-.025,0,0,.035,-.06,.025,-.025]);
-   model.rotation.set(track([.06,0,0,.09,-.04,.03,.06]),turn*Math.PI*2,
-    THREE.MathUtils.degToRad(track([-19,-10,-10,3,-24,-6,-19])));
+   const turn=track([-.025,0,.035,-.06,.015]);
+   model.rotation.set(track([.06,0,.09,-.04,0]),turn*Math.PI*2,
+    THREE.MathUtils.degToRad(track([-19,-10,3,-24,-4])));
    const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.position.z;
    const narrow=stageW<=700;
-   model.position.set(-viewHeight*camera.aspect*.215+track([-1.4,-1.5,-1.5,-1.75,-1.1,-1.55,-1.4]),
-    track([-1.75,-1.1,-1.1,-1.50,-.65,-1.2,-1.75]),0);
-   if(narrow)model.position.x=track([-1.25,-1.0,-1.0,-1.4,-.85,-1.1,-1.25]);
+   model.position.set(-viewHeight*camera.aspect*.215+track([-1.4,-1.5,-1.75,-1.1,-1.25]),
+    track([-1.75,-1.1,-1.5,-.65,-.8]),0);
+   if(narrow)model.position.x=track([-1.25,-1.,-1.4,-.85,-.9]);
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
-   const fill=track([2.60,2.22,2.22,2.48,2.04,2.38,2.60]);
+   const fill=track([2.60,2.22,2.48,2.04,2.30]);
    model.scale.setScalar(viewHeight*fill/tiltedHeight);
+   // Keep the hook and both shoulders physically inside the stage, below the header.
+   model.updateMatrixWorld(true);
+   let highest=-Infinity;
+   for(const [x,y] of [[0,2.75],[-1.4,1.5],[1.4,1.5]]){
+    vec.set(x,y,.25);model.localToWorld(vec);vec.project(camera);highest=Math.max(highest,vec.y);
+   }
+   const ceiling=1-48/stageH;
+   if(highest>ceiling){model.position.y-=(highest-ceiling)*viewHeight*.5;model.updateMatrixWorld(true);}
    const front=Math.cos(turn*Math.PI*2)>=0;
    filmMeshes.forEach(mesh=>{mesh.renderOrder=(mesh.userData.back===!front)?3:0;});
    clothMeshes.forEach(mesh=>{mesh.renderOrder=1;});
@@ -135,7 +158,7 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    stage.dataset.reveal=reveal.toFixed(3);stage.dataset.progress=current.toFixed(3);
    stage.dataset.rotation=String(Math.round(turn*360));stage.dataset.insertion=insert.toFixed(3);
   }
-  function frame(now){raf=0;const dt=Math.min(.05,(now-last)/1000||.016);last=now;current+=(target-current)*(1-Math.exp(-10*dt));if(Math.abs(target-current)<.0001)current=target;paint();if(visible&&Math.abs(target-current)>.0001)raf=requestAnimationFrame(frame);}
+  function frame(now){raf=0;const dt=Math.min(.05,(now-last)/1000||.016);last=now;current+=(target-current)*(1-Math.exp(-4.5*dt));if(Math.abs(target-current)<.0001)current=target;paint();if(visible&&Math.abs(target-current)>.0001)raf=requestAnimationFrame(frame);}
   function wake(){if(!ready||reduced.matches||document.hidden||!visible)return;measure();if(!raf){last=performance.now();raf=requestAnimationFrame(frame);}}
   function configure(){cancelAnimationFrame(raf);raf=0;section.classList.toggle('shoulder-ready',ready&&!reduced.matches);annotation.hidden=true;if(ready&&!reduced.matches){resize=true;measure();current=target;paint();wake();}}
   new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(raf);raf=0;}},{rootMargin:'150px'}).observe(stage);

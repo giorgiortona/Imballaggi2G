@@ -169,3 +169,10 @@ Rotazioni composte e variazioni di ingrandimento 2,04–2,60, con pausa durante 
 
 ## Revisione 40 — limite superiore sotto header
 Stage sticky ancorato all’altezza responsive dell’header, con altezza viewport residua e ritaglio solo superiore. Nessun ritaglio laterale reintrodotto.
+
+
+## Revisione 41 — posa a capitoli e taglio per bar-code
+1. Rimosso il ritaglio CSS superiore; margine di 20 px sotto header e vincolo geometrico che abbassa il modello per mantenere gancio e spalle dentro il canvas.
+2. Posa target discreta per capitolo; animazione smorzata solo al cambio di capitolo, ferma a fine transizione. Inserimento giacca nel passaggio al secondo capitolo.
+3. Quinto capitolo con taglio verticale illustrativo sul film e schema SVG del passaggio etichetta. Funzione e misura 13,5 cm confermate nelle pagine 1, 3, 4 di schede-coprispalla.pdf. Altezza petto e carattere distintivo indicati dal cliente; grafica dichiarata illustrativa e dipendente dal modello. Nessuna dichiarazione comparativa “pochi produttori”: ricerca web senza riscontri adeguati.
+4. Fallback nascosto escluso dal layout per evitare overflow mobile; annotazioni duplicate nascoste su mobile per non sovrapporle ai testi.

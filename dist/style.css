@@ -1111,5 +1111,15 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 
 /* Reserve the actual responsive header height above the product stage. */
 @media(prefers-reduced-motion:no-preference){
- .shoulder-visual{top:var(--header);height:calc(100svh - var(--header));clip-path:inset(0 -100vmax -100vmax)}
+ .shoulder-visual{top:calc(var(--header) + 20px);height:calc(100svh - var(--header) - 20px)}
 }
+
+.cut-diagram{margin:6px 0 20px;max-width:530px;width:100%}
+.cut-diagram svg{display:block;width:100%;height:auto}
+.cut-diagram figcaption{font-size:14px;line-height:1.5;color:#526459;margin-top:12px}
+.shoulder-cut-chapter{min-height:125svh}
+@media(max-width:700px){.cut-diagram{margin:0;padding-bottom:24px}.cut-diagram figcaption{font-size:13px}}
+/* The hidden fallback must not create overflow behind the full-width canvas. */
+.shoulder-ready .shoulder-object{display:none}
+.shoulder-object img{max-width:100%;object-fit:contain}
+@media(max-width:700px){.shoulder-annotation{display:none}}
