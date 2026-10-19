@@ -165,3 +165,7 @@ Aggiunta deriva dolce legata allo scroll attorno alla composizione macro: piccol
 
 ## Revisione 39 — rotazioni, zoom e rendering
 Rotazioni composte e variazioni di ingrandimento 2,04–2,60, con pausa durante inserimento giacca. Ripristinata sorgente PNG originale lossless (1024 × 1536, non una nuova sorgente 4K), filtro cubico con alpha premoltiplicato negli ingrandimenti, anisotropia massima supportata e DPR fino a 3. Variante generata non integrata per preservare aspetto originale. Verifica desktop 1440 × 900 e mobile 390 × 844 senza errori shader.
+
+
+## Revisione 40 — limite superiore sotto header
+Stage sticky ancorato all’altezza responsive dell’header, con altezza viewport residua e ritaglio solo superiore. Nessun ritaglio laterale reintrodotto.

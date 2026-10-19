@@ -1108,3 +1108,8 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
  .shoulder-copy{grid-row:auto}
  @media(max-width:700px){.shoulder-copy{grid-column:1}.shoulder-visual{height:65svh}}
 }
+
+/* Reserve the actual responsive header height above the product stage. */
+@media(prefers-reduced-motion:no-preference){
+ .shoulder-visual{top:var(--header);height:calc(100svh - var(--header));clip-path:inset(0 -100vmax -100vmax)}
+}
