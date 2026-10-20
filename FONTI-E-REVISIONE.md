@@ -180,3 +180,12 @@ Stage sticky ancorato all’altezza responsive dell’header, con altezza viewpo
 
 ## Revisione 42 — gruccia e incisione centrale
 Gruccia e giacca sfumano al termine dell’inserimento. Taglio centrato sulla mezzeria, alla stessa altezza: estremità chiuse, labbri asimmetrici, ombra interna neutra e riflesso sottile del film. Annotazione spostata al centro.
+
+## v43 — coprispalla in pluriball e formati
+- Continuazione speculare della sequenza: testo a sinistra e prodotto a destra, con tre inquadrature ferme fra i passaggi di testo, animazione al cambio di capitolo e alternativa senza movimento.
+- Pluriball: ricostruzione illustrativa con Imagegen dalla fotografia fornita dall’utente. Nessuna misura o certificazione del film attribuita al pluriball.
+- Formati in film: 46×60, 46×95, 46×145 cm sagomati e 46×120 cm retto, come denominazioni nelle schede tecniche ricevute. La scheda del 95 riporta anche altezza interna 94 cm; si parla quindi di formati nominali.
+- Immagini generate (strumento integrato Imagegen): `dist/assets/realistic/coprispalla-pluriball.png` e `dist/assets/realistic/coprispalla-formati.png`. Composizioni illustrative, non nuove fotografie di produzione.
+- Prompt pluriball: ricostruzione fotografica frontale del coprispalla corto in pluriball della foto, gruccia nera e gancio metallico, bolle trasparenti dettagliate, sfondo alpha, nessuna scritta.
+- Prompt formati: tre coprispalla in film bianco traslucido, stessa larghezza e lunghezze diverse, spalle sagomate, bordi inferiori completi, sfondo alpha, materiale coerente con l’immagine originale.
+- Verifica: build delle nove pagine, sintassi JS, diff, controllo visivo desktop e mobile 390 px senza overflow orizzontale.

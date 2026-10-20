@@ -16,7 +16,7 @@ from section_motion import section_motion
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "42"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "43"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -110,7 +110,7 @@ def shell(current, title, description, body, body_class=""):
 <script src="app.js?v={VERSION}" defer></script>
 {'<script type="module" src="reel-3d.js?v='+VERSION+'"></script>' if current == 'bobine' else ''}
 {'<script type="module" src="bag-3d.js?v='+VERSION+'"></script>' if current == 'buste' else ''}
-{'<script type="module" src="shoulder-3d.js?v='+VERSION+'"></script>' if current == 'coprispalla' else ''}
+{'<script type="module" src="shoulder-3d.js?v='+VERSION+'"></script><script src="shoulder-variants.js?v='+VERSION+'" defer></script>' if current == 'coprispalla' else ''}
 </head>
 <body{cls}>
 <a class="skip" href="#main">Vai ai contenuti</a>
