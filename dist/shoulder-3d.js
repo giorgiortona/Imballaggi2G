@@ -10,13 +10,11 @@ if(section){
  const dot=annotation.querySelector('circle'),leader=annotation.querySelector('line');
  const points=[
   {at:[.92,1.35,.3],title:'La forma della spalla',text:'Il taglio sagomato segue il profilo del supporto.'},
-  {at:[0,2.06,.3],title:'Il passaggio del gancio',text:'La giacca entra dal fondo; il gancio rimane libero.'},
-  {at:[1.1,.9,.3],title:'46 cm di larghezza',text:'La lunghezza si sceglie in funzione del capo.'},
   {at:[.6,1.05,.3],title:'La linea certificata',text:'Le specifiche sono raccolte nel certificato PSV.'},
   {at:[0,1.02,.35],title:'Il passaggio per il bar-code',text:'Il taglio rende accessibile l’etichetta del capo.'}
  ];
  let renderer,raf=0,visible=false,target=0,current=0,last=0,resize=true,ready=false,active=-1;
- let stageW=1,stageH=1;
+ let stageW=1,stageH=1,insertion=0,insertionTarget=0;
  const clamp=THREE.MathUtils.clamp,smooth=(a,b,p)=>{const t=clamp((p-a)/(b-a),0,1);return t*t*(3-2*t);};
  try{
   renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
@@ -95,9 +93,9 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    const trigger=innerHeight*(stageW<=700?.76:.62);
    let next=0;
    chapters.forEach((chapter,i)=>{if(chapter.getBoundingClientRect().top<=trigger)next=i;});
-   target=[0,3,4][next];
-   // The merged opening includes one insertion cue, without an extra reading chapter.
-   if(next===0&&chapters[0].getBoundingClientRect().top<innerHeight*.12)target=1;
+   target=next;
+   // Insertion has its own timeline: it never changes the editorial pose.
+   insertionTarget=next>0||chapters[0].getBoundingClientRect().top<innerHeight*.2?1:0;
    section.dataset.chapter=String(next);
   }
   function track(values){
@@ -106,7 +104,7 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
   }
   function deform(insert){
    // The collar and shoulders follow the hanger; lower fabric lags slightly while lifted.
-   const travel=smooth(0,1,current);
+   const travel=insertion;
    const sway=Math.sin(travel*Math.PI*2)*Math.sin(travel*Math.PI)*.055;
    garment.position.y=-5.55*(1-insert);garment.rotation.z=0;
    for(const mesh of clothMeshes){
@@ -142,23 +140,23 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
   }
   function paint(){
    if(resize){stageW=stage.clientWidth;stageH=stage.clientHeight;renderer.setSize(stageW,stageH,false);camera.aspect=stageW/stageH;camera.updateProjectionMatrix();resize=false;}
-   slitStrength.value=.16+.84*smooth(3,4,current);
-   const insert=smooth(0,.82,current);
-   const reveal=smooth(0,.25,current)*(1-smooth(.80,1,current));
+   slitStrength.value=.16+.84*smooth(1,2,current);
+   const insert=smooth(0,.82,insertion);
+   const reveal=smooth(0,.25,insertion)*(1-smooth(.80,1,insertion));
    concealed.value=smooth(.82,1,insert)*(1-reveal);deform(insert);
-   clothMeshes.forEach(mesh=>{mesh.material.opacity=1-smooth(.88,1,current);});
+   clothMeshes.forEach(mesh=>{mesh.material.opacity=1-smooth(.88,1,insertion);});
    filmMeshes.forEach(mesh=>{mesh.material.opacity=1-(stageW<=700?.32:.58)*reveal;});
    // A composed sequence: settle for insertion, tilt towards the viewer, then pull back.
-   const turn=track([-.025,0,.035,-.06,.015]);
-   model.rotation.set(track([.06,0,.09,-.04,0]),turn*Math.PI*2,
-    THREE.MathUtils.degToRad(track([-19,-10,3,-24,-4])));
+   const turn=track([-.02,.025,.01]);
+   model.rotation.set(track([.03,.07,0]),turn*Math.PI*2,
+    THREE.MathUtils.degToRad(track([-12,6,-4])));
    const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.position.z;
    const narrow=stageW<=700;
-   model.position.set(-viewHeight*camera.aspect*.215+track([-1.4,-1.5,-1.75,-1.1,-1.25]),
-    track([-1.75,-1.1,-1.5,-.65,-.8]),0);
-   if(narrow)model.position.x=track([-1.25,-1.,-1.4,-.85,-.9]);
+   model.position.set(-viewHeight*camera.aspect*.215+track([-1.3,-1.4,-1.2]),
+    track([-1.1,-1.25,-.8]),0);
+   if(narrow)model.position.x=track([-1.,-1.15,-.9]);
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
-   const fill=track([2.60,2.22,2.48,2.04,2.30]);
+   const fill=track([2.25,2.4,2.15]);
    model.scale.setScalar(viewHeight*fill/tiltedHeight);
    // Keep the hook and both shoulders physically inside the stage, below the header.
    model.updateMatrixWorld(true);
@@ -175,9 +173,9 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    stage.dataset.reveal=reveal.toFixed(3);stage.dataset.progress=current.toFixed(3);
    stage.dataset.rotation=String(Math.round(turn*360));stage.dataset.insertion=insert.toFixed(3);
   }
-  function frame(now){raf=0;const dt=Math.min(.05,(now-last)/1000||.016);last=now;current+=(target-current)*(1-Math.exp(-4.5*dt));if(Math.abs(target-current)<.0001)current=target;paint();if(visible&&Math.abs(target-current)>.0001)raf=requestAnimationFrame(frame);}
+  function frame(now){raf=0;const dt=Math.min(.05,(now-last)/1000||.016);last=now;current+=(target-current)*(1-Math.exp(-4.1*dt));insertion+=(insertionTarget-insertion)*(1-Math.exp(-2.8*dt));if(Math.abs(target-current)<.0001)current=target;if(Math.abs(insertionTarget-insertion)<.0001)insertion=insertionTarget;paint();if(visible&&(current!==target||insertion!==insertionTarget))raf=requestAnimationFrame(frame);}
   function wake(){if(!ready||reduced.matches||document.hidden||!visible)return;measure();if(!raf){last=performance.now();raf=requestAnimationFrame(frame);}}
-  function configure(){cancelAnimationFrame(raf);raf=0;section.classList.toggle('shoulder-ready',ready&&!reduced.matches);annotation.hidden=true;if(ready&&!reduced.matches){resize=true;measure();current=target;paint();wake();}}
+  function configure(){cancelAnimationFrame(raf);raf=0;section.classList.toggle('shoulder-ready',ready&&!reduced.matches);annotation.hidden=true;if(ready&&!reduced.matches){resize=true;measure();current=target;insertion=target>0?insertionTarget:0;paint();wake();}}
   new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(raf);raf=0;}},{rootMargin:'150px'}).observe(stage);
   new ResizeObserver(()=>{resize=true;wake();}).observe(stage);
   addEventListener('scroll',wake,{passive:true});addEventListener('resize',()=>{resize=true;wake();},{passive:true});

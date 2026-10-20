@@ -194,3 +194,9 @@ Gruccia e giacca sfumano al termine dell’inserimento. Taglio centrato sulla me
 - Prima sequenza ridotta da cinque capitoli a tre: uniti apertura e gruccia, eliminato il capitolo duplicato sui formati. Inserimento della giacca mantenuto all’interno del primo capitolo.
 - Rimossi gli otto occhielli numerati dalla sorgente; verifica delle nove pagine generate senza occhielli. Titoli, spiegazioni e informazioni tecniche restano disponibili.
 - Vista dei formati limitata anche in base all’altezza dello schermo; contenitori più alti per mostrare il bordo completo del modello lungo. Tolta la didascalia sovrapposta e ridondante.
+
+## v45 — animazione coerente con i tre capitoli
+- Rimossa la mappatura 0/3/4 alle vecchie cinque pose. Ora ogni capitolo corrisponde direttamente a una delle tre pose, senza attraversare inquadrature eliminate.
+- Inserimento della giacca su una progressione indipendente: trasparenza e scomparsa della gruccia non alterano più la posa del coprispalla.
+- Rotazioni e zoom moderati; arresto del rendering a posa raggiunta, anche mentre si continua a scorrere nello stesso capitolo.
+- Verificati sintassi, build e stabilità della seconda posa prima e dopo lo scroll interno al capitolo.
