@@ -200,3 +200,8 @@ Gruccia e giacca sfumano al termine dell’inserimento. Taglio centrato sulla me
 - Inserimento della giacca su una progressione indipendente: trasparenza e scomparsa della gruccia non alterano più la posa del coprispalla.
 - Rotazioni e zoom moderati; arresto del rendering a posa raggiunta, anche mentre si continua a scorrere nello stesso capitolo.
 - Verificati sintassi, build e stabilità della seconda posa prima e dopo lo scroll interno al capitolo.
+
+## v46 — centraggio e movimento più leggibile
+- Eliminato lo spostamento aggiuntivo verso sinistra; prodotto centrato nella metà visiva, con centraggio dedicato mobile.
+- Rotazioni e zoom più distinti fra le tre pose; breve assestamento anche all’ingresso con la giacca. Pause conservate durante la lettura.
+- Didascalie ancorate al prodotto limitate alla colonna visiva per non sovrapporsi al testo.

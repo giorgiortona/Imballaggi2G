@@ -133,7 +133,7 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    annotation.hidden=x<12||x>stageW-12||y<75||y>stageH-35||Math.abs(Math.cos(turn*Math.PI*2))<.18;
    if(annotation.hidden)return;
    const mobile=stageW<500,w=mobile?170:220;
-   const nx=clamp(x+(x<stageW*.5?40:-w-40),18,stageW-w-18),ny=clamp(y-65,90,stageH-155);
+   const nx=clamp(x+(x<stageW*.5?40:-w-40),18,(stageW<=700?stageW:stageW*.56)-w-18),ny=clamp(y-65,90,stageH-155);
    note.style.transform=`translate(${nx}px,${ny}px)`;
    dot.setAttribute('cx',x);dot.setAttribute('cy',y);
    leader.setAttribute('x1',x);leader.setAttribute('y1',y);leader.setAttribute('x2',nx+(x<nx?0:w));leader.setAttribute('y2',ny+35);
@@ -147,16 +147,17 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    clothMeshes.forEach(mesh=>{mesh.material.opacity=1-smooth(.88,1,insertion);});
    filmMeshes.forEach(mesh=>{mesh.material.opacity=1-(stageW<=700?.32:.58)*reveal;});
    // A composed sequence: settle for insertion, tilt towards the viewer, then pull back.
-   const turn=track([-.02,.025,.01]);
+   const arrival=(1-insertion)*(1-smooth(0,.8,current));
+   const turn=track([-.045,.055,-.02]);
    model.rotation.set(track([.03,.07,0]),turn*Math.PI*2,
-    THREE.MathUtils.degToRad(track([-12,6,-4])));
+    THREE.MathUtils.degToRad(track([-17,11,-7])-7*arrival));
    const viewHeight=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.position.z;
    const narrow=stageW<=700;
-   model.position.set(-viewHeight*camera.aspect*.215+track([-1.3,-1.4,-1.2]),
+   model.position.set(-viewHeight*camera.aspect*.215+track([-.12,.12,-.08]),
     track([-1.1,-1.25,-.8]),0);
-   if(narrow)model.position.x=track([-1.,-1.15,-.9]);
+   if(narrow)model.position.x=track([-.25,.05,-.15]);
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
-   const fill=track([2.25,2.4,2.15]);
+   const fill=track([2.15,1.92,2.28])+.10*arrival;
    model.scale.setScalar(viewHeight*fill/tiltedHeight);
    // Keep the hook and both shoulders physically inside the stage, below the header.
    model.updateMatrixWorld(true);
@@ -173,7 +174,7 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    stage.dataset.reveal=reveal.toFixed(3);stage.dataset.progress=current.toFixed(3);
    stage.dataset.rotation=String(Math.round(turn*360));stage.dataset.insertion=insert.toFixed(3);
   }
-  function frame(now){raf=0;const dt=Math.min(.05,(now-last)/1000||.016);last=now;current+=(target-current)*(1-Math.exp(-4.1*dt));insertion+=(insertionTarget-insertion)*(1-Math.exp(-2.8*dt));if(Math.abs(target-current)<.0001)current=target;if(Math.abs(insertionTarget-insertion)<.0001)insertion=insertionTarget;paint();if(visible&&(current!==target||insertion!==insertionTarget))raf=requestAnimationFrame(frame);}
+  function frame(now){raf=0;const dt=Math.min(.05,(now-last)/1000||.016);last=now;current+=(target-current)*(1-Math.exp(-3.2*dt));insertion+=(insertionTarget-insertion)*(1-Math.exp(-2.8*dt));if(Math.abs(target-current)<.0001)current=target;if(Math.abs(insertionTarget-insertion)<.0001)insertion=insertionTarget;paint();if(visible&&(current!==target||insertion!==insertionTarget))raf=requestAnimationFrame(frame);}
   function wake(){if(!ready||reduced.matches||document.hidden||!visible)return;measure();if(!raf){last=performance.now();raf=requestAnimationFrame(frame);}}
   function configure(){cancelAnimationFrame(raf);raf=0;section.classList.toggle('shoulder-ready',ready&&!reduced.matches);annotation.hidden=true;if(ready&&!reduced.matches){resize=true;measure();current=target;insertion=target>0?insertionTarget:0;paint();wake();}}
   new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(raf);raf=0;}},{rootMargin:'150px'}).observe(stage);
