@@ -1181,3 +1181,16 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
  .shoulder-variants:not(.variants-ready) .variant-chapter{min-height:0;padding:40px 0}
 }
 @media(prefers-reduced-motion:reduce){.variant-chapter{min-height:0;padding:80px 0}.variant-pin{display:none}.bubble-product{transform:none}}
+
+/* Compact opening and complete format silhouettes, sized to the viewport height. */
+.shoulder-chapter{min-height:95svh}
+.shoulder-cut-chapter{min-height:110svh}
+.film-family{left:auto;right:4%;width:min(45vw,calc(105svh - var(--header) - 190px))}
+.format-short>div{aspect-ratio:1/1.7}.format-medium>div{aspect-ratio:1/2.28}.format-long>div{aspect-ratio:1/3}
+.eyebrow,.shoulder-eyebrow{display:none}
+@media(max-width:700px){
+ .shoulder-chapter{min-height:95svh}
+ .film-family{left:5%;right:auto;width:90%}
+}
+/* The adjacent product text already explains the illustrative format view. */
+.variant-visual-caption{display:none}

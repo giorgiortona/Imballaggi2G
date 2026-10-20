@@ -95,7 +95,10 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    const trigger=innerHeight*(stageW<=700?.76:.62);
    let next=0;
    chapters.forEach((chapter,i)=>{if(chapter.getBoundingClientRect().top<=trigger)next=i;});
-   target=next;section.dataset.chapter=String(next);
+   target=[0,3,4][next];
+   // The merged opening includes one insertion cue, without an extra reading chapter.
+   if(next===0&&chapters[0].getBoundingClientRect().top<innerHeight*.12)target=1;
+   section.dataset.chapter=String(next);
   }
   function track(values){
    const i=Math.min(values.length-2,Math.floor(current));

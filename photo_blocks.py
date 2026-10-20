@@ -123,35 +123,18 @@ AFTER["coprispalla"] = """
   </figure>
   <div class="shoulder-copy">
    <article class="shoulder-chapter" id="shoulder-detail-0">
-    <p class="shoulder-eyebrow">01 — IL COPRISPALLA, DA VICINO</p>
     <h2 class="display small" id="shoulder-title">La cura prende<br><em>forma.</em></h2>
-    <p>Il taglio sagomato segue la linea della spalla e si dispone sulla gruccia. Il film prende volume intorno al supporto e lo lascia intravedere attraverso la superficie traslucida.</p>
-    <p>Una protezione dedicata all’abbigliamento, con una forma studiata per accompagnare il capo quando viene appeso e movimentato.</p>
+    <p>Il taglio sagomato segue la linea della spalla. Il gancio passa attraverso l’apertura superiore, mentre il film si dispone intorno alla gruccia e al capo.</p>
+    <p>Una protezione dedicata all’abbigliamento: il capo rimane pronto da appendere e da movimentare.</p>
     <div class="shoulder-fact"><span>Profilo</span><strong>Sagomato o retto</strong></div>
    </article>
-   <article class="shoulder-chapter" id="shoulder-detail-1">
-    <p class="shoulder-eyebrow">02 — INTORNO ALLA GRUCCIA</p>
-    <h3>Un gesto semplice.<br><em>Ogni volta.</em></h3>
-    <p>Il gancio passa attraverso l’apertura superiore, mentre il coprispalla si appoggia sul profilo della gruccia. Il capo rimane pronto da appendere.</p>
-    <p>L’apertura del gancio e il profilo della spalla lavorano insieme: il supporto trova il suo posto all’interno, mentre il film si dispone lungo il capo.</p>
-    <div class="shoulder-fact"><span>Dettaglio</span><strong>Apertura superiore</strong></div>
-   </article>
-   <article class="shoulder-chapter" id="shoulder-detail-2">
-    <p class="shoulder-eyebrow">03 — IL FORMATO GIUSTO</p>
-    <h3>46 cm.<br><em>La tua lunghezza.</em></h3>
-    <p>Le schede indicano una larghezza comune di 46 cm, con varianti di lunghezza e taglio. La scelta parte dal tipo di capo e dal formato necessario alla tua produzione.</p>
-    <p>Taglio sagomato o retto, lunghezze diverse e finiture dedicate: ogni variante risponde a un’esigenza di confezionamento. Le schede tecniche ti aiutano a scegliere il formato.</p>
-    <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Confronta le schede tecniche ↗</a>
-   </article>
    <article class="shoulder-chapter" id="shoulder-detail-3">
-    <p class="shoulder-eyebrow">04 — LA LINEA CERTIFICATA</p>
     <h3>La cura continua.<br><em>Anche nel materiale.</em></h3>
     <p>Il certificato PSV n. 3433/2026 comprende la produzione di coprispalla mediante taglio e saldatura, con MPS da sottoprodotto esterno.</p>
     <p>La certificazione si riferisce ai prodotti e alle lavorazioni indicati nel documento. Ti aiutiamo a individuare il formato e la linea adatti alla tua esigenza.</p>
     <a class="text-link" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato PSV ↗</a>
    </article>
    <article class="shoulder-chapter shoulder-cut-chapter" id="shoulder-detail-4">
-    <p class="shoulder-eyebrow">05 — IL DETTAGLIO 2G</p>
     <h3>Un piccolo taglio.<br><em>Una funzione precisa.</em></h3>
     <p>Il taglio verticale permette il passaggio dell’etichetta con bar-code: il codice resta accessibile senza dover sfilare la protezione dal capo.</p>
     <p>È un dettaglio a cui dedichiamo attenzione nella lavorazione dei nostri coprispalla. Sulle varianti indicate in scheda, l’apertura misura 13,5 cm.</p>
@@ -194,21 +177,18 @@ AFTER["coprispalla"] += """
  </div>
  <div class="variants-copy">
   <article class="variant-chapter" id="pluriball-forma">
-   <p class="shoulder-eyebrow">06 — CAMBIA IL MATERIALE</p>
    <h2 id="variants-title">La stessa cura.<br><em>Un’altra<br>consistenza.</em></h2>
    <p>Il coprispalla esiste anche in pluriball. Il profilo accompagna la gruccia, mentre la superficie a bolle aggiunge uno strato di protezione intorno alle spalle.</p>
    <p>Una forma compatta, un materiale da guardare da vicino.</p>
    <div class="variant-material"><span>Pluriball</span><span>Protezione a bolle d’aria</span></div>
   </article>
   <article class="variant-chapter" id="pluriball-dettaglio">
-   <p class="shoulder-eyebrow">07 — DENTRO LA SUPERFICIE</p>
    <h3>È l’aria<br>che fa<br><em>la differenza.</em></h3>
    <p>Le piccole celle d’aria separano il capo dal contatto diretto con l’esterno. Il materiale segue il profilo della spalla e lascia intravedere la gruccia attraverso la sua trama.</p>
    <p>Parliamoci del capo da proteggere: ti aiutiamo a scegliere il materiale e il formato adatti.</p>
    <a class="text-link" href="contatti.html">Troviamo la tua protezione ↗</a>
   </article>
   <article class="variant-chapter" id="coprispalla-formati">
-   <p class="shoulder-eyebrow">08 — A OGNI CAPO, IL SUO FORMATO</p>
    <h3>Una larghezza.<br><em>Più possibilità.</em></h3>
    <p>Per i coprispalla in film, le schede riportano una larghezza di <strong>46 cm</strong>. Il taglio sagomato è disponibile nei formati nominali da <strong>60, 95 e 145 cm</strong>; il taglio retto è indicato nel formato da <strong>120 cm</strong>.</p>
    <p>Materiale, lunghezza e finitura si scelgono insieme. Per il modello in pluriball, chiedici i formati disponibili.</p>

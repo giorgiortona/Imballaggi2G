@@ -189,3 +189,8 @@ Gruccia e giacca sfumano al termine dell’inserimento. Taglio centrato sulla me
 - Prompt pluriball: ricostruzione fotografica frontale del coprispalla corto in pluriball della foto, gruccia nera e gancio metallico, bolle trasparenti dettagliate, sfondo alpha, nessuna scritta.
 - Prompt formati: tre coprispalla in film bianco traslucido, stessa larghezza e lunghezze diverse, spalle sagomate, bordi inferiori completi, sfondo alpha, materiale coerente con l’immagine originale.
 - Verifica: build delle nove pagine, sintassi JS, diff, controllo visivo desktop e mobile 390 px senza overflow orizzontale.
+
+## v44 — ritmo più breve e testi essenziali
+- Prima sequenza ridotta da cinque capitoli a tre: uniti apertura e gruccia, eliminato il capitolo duplicato sui formati. Inserimento della giacca mantenuto all’interno del primo capitolo.
+- Rimossi gli otto occhielli numerati dalla sorgente; verifica delle nove pagine generate senza occhielli. Titoli, spiegazioni e informazioni tecniche restano disponibili.
+- Vista dei formati limitata anche in base all’altezza dello schermo; contenitori più alti per mostrare il bordo completo del modello lungo. Tolta la didascalia sovrapposta e ridondante.
