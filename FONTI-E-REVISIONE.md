@@ -205,3 +205,8 @@ Gruccia e giacca sfumano al termine dell’inserimento. Taglio centrato sulla me
 - Eliminato lo spostamento aggiuntivo verso sinistra; prodotto centrato nella metà visiva, con centraggio dedicato mobile.
 - Rotazioni e zoom più distinti fra le tre pose; breve assestamento anche all’ingresso con la giacca. Pause conservate durante la lettura.
 - Didascalie ancorate al prodotto limitate alla colonna visiva per non sovrapporsi al testo.
+
+## v47 — pluriball dietro ai testi su mobile
+- Rimossa la maschera opaca sotto le descrizioni: il pluriball rimane visibile dietro al testo.
+- Inquadratura mobile più ampia, senza ritaglio verticale del contenitore; contenimento solo orizzontale ai bordi dello schermo.
+- Testi con ombra morbida per la leggibilità, senza pannello rettangolare. Desktop e alternativa a movimento ridotto conservati.

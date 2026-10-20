@@ -16,7 +16,7 @@ from section_motion import section_motion
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "46"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "47"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
