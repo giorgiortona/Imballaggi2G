@@ -1266,3 +1266,14 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
  .cut-diagram{margin:28px 0}
 }
 @media(prefers-reduced-motion:reduce){.mobile-product-motion{will-change:auto}}
+
+/* One mobile illustration per material, with related copy grouped together. */
+.mobile-story-copy{display:none!important}
+@media(max-width:700px){
+ .mobile-story-copy{display:block!important}
+ .desktop-story-copy,#pluriball-dettaglio{display:none!important}
+ #shoulder-detail-3,#shoulder-detail-4{padding-top:24px}
+ #shoulder-detail-3 h3,#shoulder-detail-4 h3{font-size:28px;line-height:1.12;margin-bottom:18px}
+ #shoulder-detail-3 h3 br,#shoulder-detail-4 h3 br{display:none}
+ #shoulder-detail-3 h3 em::before,#shoulder-detail-4 h3 em::before{content:' '}
+}
