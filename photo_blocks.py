@@ -57,7 +57,7 @@ def split(img, alt, title, text, link=None, flip=False):
     cta = ""
     if link:
         href, label = link
-        cta = f'<a class="text-link" href="{href}">{label} <span aria-hidden="true">↗</span></a>'
+        cta = f'<a class="text-link" href="{href}">{label} </a>'
     side = "shot-split flip" if flip else "shot-split"
     return f"""
 <section class="block">
@@ -121,18 +121,21 @@ AFTER["coprispalla"] = """
    <article class="shoulder-chapter" id="shoulder-detail-0">
     <h2 class="display small" id="shoulder-title">La cura prende<br><em>forma.</em></h2>
     <p>Il taglio sagomato segue la linea della spalla. Il gancio passa attraverso l’apertura superiore, mentre il film si dispone intorno alla gruccia e al capo.</p>
+    <figure class="mobile-product mobile-product-0" data-mobile-product="0"><span aria-hidden="true">2G</span><div class="mobile-product-motion"><img class="mobile-jacket" src="assets/realistic/giacca-fronte.webp" alt="" loading="lazy"><img class="mobile-cover" src="assets/realistic/coprispalla-originale-lossless.png" alt="Coprispalla in film sagomato" loading="lazy"></div></figure>
     <p>Una protezione dedicata all’abbigliamento: il capo rimane pronto da appendere e da movimentare.</p>
     <div class="shoulder-fact"><span>Profilo</span><strong>Sagomato o retto</strong></div>
    </article>
    <article class="shoulder-chapter" id="shoulder-detail-3">
     <h3>La cura continua.<br><em>Anche nel materiale.</em></h3>
     <p>Il certificato PSV n. 3433/2026 comprende la produzione di coprispalla mediante taglio e saldatura, con MPS da sottoprodotto esterno.</p>
+    <figure class="mobile-product mobile-product-1" data-mobile-product="1"><span aria-hidden="true">2G</span><div class="mobile-product-motion"><img class="mobile-cover" src="assets/realistic/coprispalla-originale-lossless.png" alt="Coprispalla in film sagomato" loading="lazy"></div></figure>
     <p>La certificazione si riferisce ai prodotti e alle lavorazioni indicati nel documento. Ti aiutiamo a individuare il formato e la linea adatti alla tua esigenza.</p>
-    <a class="text-link" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato PSV ↗</a>
+    <a class="text-link" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato PSV</a>
    </article>
    <article class="shoulder-chapter shoulder-cut-chapter" id="shoulder-detail-4">
     <h3>Un piccolo taglio.<br><em>Una funzione precisa.</em></h3>
     <p>Il taglio verticale permette il passaggio dell’etichetta con bar-code: il codice resta accessibile senza dover sfilare la protezione dal capo.</p>
+    <figure class="mobile-product mobile-product-2" data-mobile-product="2"><span aria-hidden="true">2G</span><div class="mobile-product-motion"><img class="mobile-cover" src="assets/realistic/coprispalla-originale-lossless.png" alt="Coprispalla in film sagomato" loading="lazy"></div></figure>
     <p>È un dettaglio a cui dedichiamo attenzione nella lavorazione dei nostri coprispalla. Sulle varianti indicate in scheda, l’apertura misura 13,5 cm.</p>
     <figure class="cut-diagram">
      <svg viewBox="0 0 460 180" role="img" aria-label="Schema illustrativo: un’etichetta con codice a barre passa attraverso il taglio verticale del film">
@@ -150,7 +153,7 @@ AFTER["coprispalla"] = """
      </svg>
      <figcaption>Schema illustrativo. Posizione e finiture dipendono dal modello.</figcaption>
     </figure>
-    <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Il dettaglio nella scheda tecnica ↗</a>
+    <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Il dettaglio nella scheda tecnica</a>
    </article>
   </div>
  </div>
@@ -175,20 +178,23 @@ AFTER["coprispalla"] += """
   <article class="variant-chapter" id="pluriball-forma">
    <h2 id="variants-title">La stessa cura.<br><em>Un’altra<br>consistenza.</em></h2>
    <p>Il coprispalla esiste anche in pluriball. Il profilo accompagna la gruccia, mentre la superficie a bolle aggiunge uno strato di protezione intorno alle spalle.</p>
+    <figure class="mobile-product mobile-product-3" data-mobile-product="3"><span aria-hidden="true">Aria.</span><div class="mobile-product-motion"><img class="mobile-cover" src="assets/realistic/coprispalla-pluriball.png" alt="Coprispalla in pluriball" loading="lazy"></div></figure>
    <p>Una forma compatta, un materiale da guardare da vicino.</p>
    <div class="variant-material"><span>Pluriball</span><span>Protezione a bolle d’aria</span></div>
   </article>
   <article class="variant-chapter" id="pluriball-dettaglio">
    <h3>È l’aria<br>che fa<br><em>la differenza.</em></h3>
    <p>Le piccole celle d’aria separano il capo dal contatto diretto con l’esterno. Il materiale segue il profilo della spalla e lascia intravedere la gruccia attraverso la sua trama.</p>
+    <figure class="mobile-product mobile-product-4" data-mobile-product="4"><span aria-hidden="true">Aria.</span><div class="mobile-product-motion"><img class="mobile-cover" src="assets/realistic/coprispalla-pluriball.png" alt="Coprispalla in pluriball" loading="lazy"></div></figure>
    <p>Parliamoci del capo da proteggere: ti aiutiamo a scegliere il materiale e il formato adatti.</p>
-   <a class="text-link" href="contatti.html">Troviamo la tua protezione ↗</a>
+   <a class="text-link" href="contatti.html">Troviamo la tua protezione</a>
   </article>
   <article class="variant-chapter" id="coprispalla-formati">
    <h3>Una larghezza.<br><em>Più possibilità.</em></h3>
    <p>Per i coprispalla in film, le schede riportano una larghezza di <strong>46 cm</strong>. Il taglio sagomato è disponibile nei formati nominali da <strong>60, 95 e 145 cm</strong>; il taglio retto è indicato nel formato da <strong>120 cm</strong>.</p>
+    <figure class="mobile-product mobile-product-5" data-mobile-product="5"><div class="mobile-product-motion"><img class="mobile-cover" src="assets/realistic/coprispalla-formati.png" alt="Tre lunghezze di coprispalla in film" loading="lazy"></div></figure>
    <p>Materiale, lunghezza e finitura si scelgono insieme. Per il modello in pluriball, chiedici i formati disponibili.</p>
-   <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Esplora le schede dei formati ↗</a>
+   <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Esplora le schede dei formati</a>
    <p class="variant-size-note">Le immagini illustrano le proporzioni dei formati in film. Misure e dettagli sono riportati nelle schede tecniche.</p>
   </article>
  </div>

@@ -16,7 +16,7 @@ from section_motion import section_motion
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "49"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "50"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -40,7 +40,7 @@ def menu_links(current):
         cls = ' class="is-current"' if key == current else ""
         out.append(
             f'      <a href="{href}"{cls} style="--i:{i}"><i>{num}</i>'
-            f'<span>{label}</span><em aria-hidden="true">↗</em></a>'
+            f'<span>{label}</span></a>'
         )
     return "\n".join(out)
 
@@ -66,7 +66,7 @@ def page_footer(current):
 <footer class="site-footer">
   <a href="index.html" class="footer-brand" aria-label="Imballaggi 2G, pagina iniziale"><img src="assets/logo-ink.webp" alt="Imballaggi 2G" width="240" height="69"></a>
   <p>&copy; <span id="year">2026</span> Imballaggi 2G S.r.l. &middot; Via dei Cavamonti, Z.I. &middot; 73017 Sannicola (LE)</p>
-  <a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram ↗</a>
+  <a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram</a>
   {replay}
 </footer>"""
 
@@ -110,7 +110,7 @@ def shell(current, title, description, body, body_class=""):
 <script src="app.js?v={VERSION}" defer></script>
 {'<script type="module" src="reel-3d.js?v='+VERSION+'"></script>' if current == 'bobine' else ''}
 {'<script type="module" src="bag-3d.js?v='+VERSION+'"></script>' if current == 'buste' else ''}
-{'<script type="module" src="shoulder-3d.js?v='+VERSION+'"></script><script src="shoulder-variants.js?v='+VERSION+'" defer></script>' if current == 'coprispalla' else ''}
+{'<script type="module" src="shoulder-3d.js?v='+VERSION+'"></script><script src="shoulder-variants.js?v='+VERSION+'" defer></script><script src="shoulder-mobile.js?v='+VERSION+'" defer></script>' if current == 'coprispalla' else ''}
 </head>
 <body{cls}>
 <a class="skip" href="#main">Vai ai contenuti</a>
@@ -124,7 +124,7 @@ def shell(current, title, description, body, body_class=""):
     <img class="brand-light" src="assets/logo-light.webp" width="260" height="75" alt="" aria-hidden="true">
   </a>
   <div class="header-actions">
-    <a class="pill" href="contatti.html">Parliamone <span aria-hidden="true">↗</span></a>
+    <a class="pill" href="contatti.html">Parliamone </a>
     <button class="burger" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="menu">
       <span class="burger-box" aria-hidden="true"><span></span><span></span><span></span></span>
       <span class="burger-label" aria-hidden="true">Menu</span>
@@ -141,8 +141,8 @@ def shell(current, title, description, body, body_class=""):
     <div class="menu-side">
       <div class="menu-block" style="--i:0"><span>Scrivici</span><a href="mailto:info@imballaggi2g.it">info@imballaggi2g.it</a></div>
       <div class="menu-block" style="--i:1"><span>Chiamaci</span><a href="tel:+390833861000">0833 861000</a></div>
-      <div class="menu-block" style="--i:2"><span>Dove siamo</span><a href="https://www.google.com/maps/place/IMBALLAGGI+2G+s.r.l./@40.0911849,18.0653234,17z/data=!3m1!4b1!4m6!3m5!1s0x13441f7b57c7b16f:0xfc850e22ba05aec7!8m2!3d40.0911849!4d18.0678983!16s%2Fg%2F11jyjc4qhs" target="_blank" rel="noopener">Via dei Cavamonti, Z.I.<br>73017 Sannicola (LE) ↗</a></div>
-      <div class="menu-block" style="--i:3"><span>Seguici</span><a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram ↗</a></div>
+      <div class="menu-block" style="--i:2"><span>Dove siamo</span><a href="https://www.google.com/maps/place/IMBALLAGGI+2G+s.r.l./@40.0911849,18.0653234,17z/data=!3m1!4b1!4m6!3m5!1s0x13441f7b57c7b16f:0xfc850e22ba05aec7!8m2!3d40.0911849!4d18.0678983!16s%2Fg%2F11jyjc4qhs" target="_blank" rel="noopener">Via dei Cavamonti, Z.I.<br>73017 Sannicola (LE)</a></div>
+      <div class="menu-block" style="--i:3"><span>Seguici</span><a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram</a></div>
     </div>
   </div>
 </div>
@@ -201,7 +201,7 @@ def navigator():
         <span class="slat-name-v" aria-hidden="true">{label}</span>
         <span class="slat-open">
           <span class="slat-name">{label}</span>
-          <span class="slat-go">Entra <i aria-hidden="true">↗</i></span>
+          <span class="slat-go">Entra </span>
         </span>
       </a>""")
     return "\n".join(slats)
@@ -245,11 +245,11 @@ HOME = f"""
 
 <section class="home-cta" aria-labelledby="cta-title">
   <div class="wrap">
-    <a class="contact-headline" id="cta-title" href="contatti.html">Diamo forma<br>alla tua <em>soluzione.</em><span aria-hidden="true">↗</span></a>
+    <a class="contact-headline" id="cta-title" href="contatti.html">Diamo forma<br>alla tua <em>soluzione.</em></a>
     <div class="contact-grid" data-stagger>
       <div><span>Scrivici</span><a href="mailto:info@imballaggi2g.it">info@imballaggi2g.it</a></div>
       <div><span>Chiamaci</span><a href="tel:+390833861000">0833 861000</a></div>
-      <div><span>Vieni a trovarci</span><a href="https://www.google.com/maps/place/IMBALLAGGI+2G+s.r.l./@40.0911849,18.0653234,17z/data=!3m1!4b1!4m6!3m5!1s0x13441f7b57c7b16f:0xfc850e22ba05aec7!8m2!3d40.0911849!4d18.0678983!16s%2Fg%2F11jyjc4qhs" target="_blank" rel="noopener">Via dei Cavamonti, Z.I.<br>73017 Sannicola (LE) ↗</a></div>
+      <div><span>Vieni a trovarci</span><a href="https://www.google.com/maps/place/IMBALLAGGI+2G+s.r.l./@40.0911849,18.0653234,17z/data=!3m1!4b1!4m6!3m5!1s0x13441f7b57c7b16f:0xfc850e22ba05aec7!8m2!3d40.0911849!4d18.0678983!16s%2Fg%2F11jyjc4qhs" target="_blank" rel="noopener">Via dei Cavamonti, Z.I.<br>73017 Sannicola (LE)</a></div>
     </div>
   </div>
 </section>
@@ -266,7 +266,7 @@ COPRISPALLA = page_hero(
     <div>
       <h2 id="draw-title" class="display small" data-lines>Larghezza 46 cm.<br>Il resto lo decidi <em>tu.</em></h2>
       <p class="lead">Una larghezza comune, finiture diverse. Il taglio sagomato segue la spalla, quello retto accompagna altri formati: ogni dettaglio risponde al capo da proteggere.</p>
-      <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Apri le schede tecniche <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Apri le schede tecniche </a>
     </div>
     <div class="technical-preview">
       <svg class="garment-drawing" viewBox="0 0 600 650" role="img" aria-label="Schema tecnico del coprispalla sagomato, larghezza 46 centimetri">
@@ -304,7 +304,7 @@ COPRISPALLA = page_hero(
         <summary>La linea certificata PSV <span aria-hidden="true">+</span></summary>
         <div class="details-body">
           <p>Il certificato n. 3433/2026 riguarda la produzione di coprispalla, coprisedia, buste e fogli protettivi con MPS da sottoprodotto esterno. Il campo di applicazione è specificato nel documento.</p>
-          <a href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato ↗</a>
+          <a href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato</a>
         </div>
       </details>
     </div>
@@ -342,7 +342,7 @@ BOBINE = page_hero(
     </div>
     <a class="doc-row" href="assets/certificato-film-3040-2024.pdf" target="_blank" rel="noopener">
       <span>PSV · MixEco</span><span>Commercializzazione di film in polietilene certificato</span>
-      <span>N. 3040/2024</span><span class="round-arrow" aria-label="Apri PDF">↗</span>
+      <span>N. 3040/2024</span>
     </a>
   </div>
 </section>
@@ -356,7 +356,7 @@ BOBINE = page_hero(
     <div>
       <h2 id="reels-photo" class="display small" data-lines>Le nostre bobine.</h2>
       <p class="lead">Formati e spessori diversi per il confezionamento manuale e per le macchine avvolgitrici. Raccontaci il carico da fasciare: troviamo la bobina giusta.</p>
-      <a class="text-link" href="contatti.html">Chiedi un formato <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="contatti.html">Chiedi un formato </a>
     </div>
   </div>
 </section>
@@ -373,7 +373,7 @@ PROTEZIONI = page_hero(
     <div>
       <h2 id="pr-title" class="display small" data-lines>Materiali diversi,<br>lo stesso <em>compito.</em></h2>
       <p class="lead">Ogni prodotto ha un punto debole: uno spigolo, una superficie lucida, un peso mal distribuito. Scegliamo insieme il materiale che lo copre.</p>
-      <a class="text-link" href="assets/brochure-foam.pdf" target="_blank" rel="noopener">Sfoglia la brochure Foam <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="assets/brochure-foam.pdf" target="_blank" rel="noopener">Sfoglia la brochure Foam </a>
     </div>
     <div class="details-list" data-stagger>
       <details open>
@@ -396,7 +396,7 @@ PROTEZIONI = page_hero(
   <div class="wrap narrow center">
     <h2 id="pr-psv" class="display small" data-lines>Proteggere non deve<br>voler dire <em>sprecare.</em></h2>
     <p class="lead">Le nostre linee certificate Plastica Seconda Vita portano il riciclo dentro il mondo dell’imballaggio.</p>
-    <a class="button magnetic" href="sostenibilita.html">Vai alla sostenibilità <span aria-hidden="true">↗</span></a>
+    <a class="button magnetic" href="sostenibilita.html">Vai alla sostenibilità </a>
   </div>
 </section>
 """
@@ -419,7 +419,7 @@ BUSTE = page_hero(
  <div><h2 id="bag-real-title" class="display small" data-lines>La protezione,<br><em>da vicino.</em></h2><p class="lead">Una busta leggera, una trama di bolle d’aria, un oggetto da custodire. Il campione reale mostra la trasparenza del materiale e il dettaglio dell’aletta.</p>
  <div class="bag-detail"><svg viewBox="0 0 240 95" aria-hidden="true"><g fill="#d9e9e0" stroke="#6a9f85" stroke-width="1.2"><ellipse cx="30" cy="25" rx="18" ry="17"/><ellipse cx="74" cy="25" rx="18" ry="17"/><ellipse cx="118" cy="25" rx="18" ry="17"/><ellipse cx="162" cy="25" rx="18" ry="17"/><ellipse cx="206" cy="25" rx="18" ry="17"/><ellipse cx="30" cy="68" rx="18" ry="17"/><ellipse cx="74" cy="68" rx="18" ry="17"/><ellipse cx="118" cy="68" rx="18" ry="17"/><ellipse cx="162" cy="68" rx="18" ry="17"/><ellipse cx="206" cy="68" rx="18" ry="17"/></g><path d="M20 22Q22 13 31 13M64 22Q66 13 75 13M108 22Q110 13 119 13" fill="none" stroke="white" stroke-width="3"/></svg><div><h3>La trama a bolle</h3><p>Il materiale avvolge il contenuto lasciandolo visibile.</p></div></div>
  <div class="bag-detail"><svg viewBox="0 0 240 95" fill="none" aria-hidden="true"><path d="M30 25L208 25L208 83L30 83Z M30 25L51 8L191 8L208 25" stroke="#6a9f85" stroke-width="1.4" fill="#edf3ef"/><path d="M43 34H195" stroke="#2f8661" stroke-width="3"/><path d="M110 3Q155 5 151 43M144 37L151 44L158 36" stroke="#233e31" stroke-width="2"/></svg><div><h3>L’aletta di chiusura</h3><p>Il dettaglio del campione che completa il confezionamento.</p></div></div>
- <a class="text-link" href="contatti.html">Parliamo del tuo formato <span>↗</span></a></div>
+ <a class="text-link" href="contatti.html">Parliamo del tuo formato </a></div>
 </div></section>
 <section class="block" aria-labelledby="bu-title">
   <div class="wrap">
@@ -439,7 +439,7 @@ BUSTE = page_hero(
   <div class="wrap narrow center">
     <h2 id="bu-psv" class="display small" data-lines>Buste e fogli protettivi<br>nel campo del <em>certificato PSV.</em></h2>
     <p class="lead">Il certificato n. 3433/2026 riguarda la produzione di coprispalla, coprisedia, buste e fogli protettivi con MPS da sottoprodotto esterno. Il campo di applicazione è specificato nel documento.</p>
-    <a class="button magnetic" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato <span aria-hidden="true">↗</span></a>
+    <a class="button magnetic" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato </a>
   </div>
 </section>
 """
@@ -468,7 +468,7 @@ MACCHINE = page_hero(
   <div class="wrap narrow center">
     <h2 id="ma-cta" class="display small" data-lines>Non solo forniture.<br><em>Affiancamento.</em></h2>
     <p class="lead">Affianchiamo le imprese con attenzione, competenza e flessibilità: dal formato giusto alla macchina adatta al ritmo del tuo magazzino.</p>
-    <a class="button magnetic" href="contatti.html">Parliamone <span aria-hidden="true">↗</span></a>
+    <a class="button magnetic" href="contatti.html">Parliamone </a>
   </div>
 </section>
 """
@@ -487,7 +487,7 @@ SOSTENIBILITA = page_hero(
       <h2 id="so-turtle" class="display small" data-lines>Lenta,<br>ma <em>va lontano.</em></h2>
       <p class="lead">La tartaruga è il simbolo del progetto Puglia Plastic Second Life presentato dall’azienda: un invito a dare continuità al valore della materia.</p>
       <div class="circular-words" data-stagger>
-        <span>Materia</span><i aria-hidden="true">↗</i><span>Protezione</span><i aria-hidden="true">↗</i><span>Nuova vita</span>
+        <span>Materia</span><span>Protezione</span><span>Nuova vita</span>
       </div>
     </div>
     <div class="turtle-stage">
@@ -514,15 +514,15 @@ SOSTENIBILITA = page_hero(
     <div data-stagger class="cert-list">
       <a class="doc-row" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">
         <span>PSV · Sottoprodotto</span><span>Coprispalla, coprisedia, buste e fogli protettivi</span>
-        <span>N. 3433/2026</span><span class="round-arrow" aria-label="Apri PDF">↗</span>
+        <span>N. 3433/2026</span>
       </a>
       <a class="doc-row" href="assets/certificato-film-3040-2024.pdf" target="_blank" rel="noopener">
         <span>PSV · MixEco</span><span>Commercializzazione di film in polietilene certificato</span>
-        <span>N. 3040/2024</span><span class="round-arrow" aria-label="Apri PDF">↗</span>
+        <span>N. 3040/2024</span>
       </a>
       <a class="doc-row" href="assets/presentazione-plastica-seconda-vita.pdf" target="_blank" rel="noopener">
         <span>Presentazione</span><span>Plastica Seconda Vita e allegato prodotti</span>
-        <span>PDF</span><span class="round-arrow" aria-label="Apri PDF">↗</span>
+        <span>PDF</span>
       </a>
     </div>
   </div>
@@ -571,12 +571,12 @@ AZIENDA = page_hero(
 CONTATTI = """
 <section class="contact-page" aria-labelledby="co-title">
   <div class="wrap">
-    <a class="contact-headline" id="co-title" href="mailto:info@imballaggi2g.it">Diamo forma<br>alla tua <em>soluzione.</em><span aria-hidden="true">↗</span></a>
+    <a class="contact-headline" id="co-title" href="mailto:info@imballaggi2g.it">Diamo forma<br>alla tua <em>soluzione.</em></a>
     <div class="contact-grid" data-stagger>
       <div><span>Scrivici</span><a href="mailto:info@imballaggi2g.it">info@imballaggi2g.it</a></div>
       <div><span>Chiamaci</span><a href="tel:+390833861000">0833 861000</a></div>
-      <div><span>Vieni a trovarci</span><a href="https://www.google.com/maps/place/IMBALLAGGI+2G+s.r.l./@40.0911849,18.0653234,17z/data=!3m1!4b1!4m6!3m5!1s0x13441f7b57c7b16f:0xfc850e22ba05aec7!8m2!3d40.0911849!4d18.0678983!16s%2Fg%2F11jyjc4qhs" target="_blank" rel="noopener">Via dei Cavamonti, Z.I.<br>73017 Sannicola (LE) ↗</a></div>
-      <div><span>Seguici</span><a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram ↗</a></div>
+      <div><span>Vieni a trovarci</span><a href="https://www.google.com/maps/place/IMBALLAGGI+2G+s.r.l./@40.0911849,18.0653234,17z/data=!3m1!4b1!4m6!3m5!1s0x13441f7b57c7b16f:0xfc850e22ba05aec7!8m2!3d40.0911849!4d18.0678983!16s%2Fg%2F11jyjc4qhs" target="_blank" rel="noopener">Via dei Cavamonti, Z.I.<br>73017 Sannicola (LE)</a></div>
+      <div><span>Seguici</span><a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram</a></div>
     </div>
     <p class="contact-note">Nessun modulo da compilare: scrivici o chiamaci, ti risponde una persona.</p>
   </div>
