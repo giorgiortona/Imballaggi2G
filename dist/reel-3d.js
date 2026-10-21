@@ -15,28 +15,15 @@ if(section){
   scene.add(new T.HemisphereLight(0xffffff,0x6a736c,.9));
   const key=new T.DirectionalLight(0xfffaf0,2.2);key.position.set(-3,5,5);scene.add(key);
   const rim=new T.DirectionalLight(0xd7eee3,2.4);rim.position.set(4,2,-4);scene.add(rim);
-  // Fine, deterministic manufacturing texture; no photographic billboard.
+  // Photographic reconstruction from the supplied product references.
+  // The cutout follows the winding route while the transparent ribbon remains dimensional.
   let seed=23;const random=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
-  const grain=texture(512,512,(g,w,h)=>{g.fillStyle='#b49a75';g.fillRect(0,0,w,h);for(let i=0;i<16000;i++){const v=Math.floor(110+random()*85);g.fillStyle=`rgba(${v+30},${v+10},${v-20},.22)`;g.fillRect(random()*w,random()*h,1+random()*3,1);}g.strokeStyle='#8c7454';g.lineWidth=2;g.beginPath();g.moveTo(0,h);g.lineTo(w,0);g.stroke();});
-  grain.wrapS=grain.wrapT=T.RepeatWrapping;grain.repeat.set(2,1);
   const striae=texture(1024,512,(g,w,h)=>{g.fillStyle='#808080';g.fillRect(0,0,w,h);for(let i=0;i<900;i++){g.strokeStyle=`rgba(255,255,255,${random()*.18})`;g.beginPath();const y=random()*h;g.moveTo(0,y);g.bezierCurveTo(w*.3,y+random()*2,w*.7,y-2,w,y);g.stroke();}});
   const roll=new T.Group();world.add(roll);
-  const bodyMat=new T.MeshPhysicalMaterial({color:0xb5bfb1,metalness:.48,roughness:.17,clearcoat:1,clearcoatRoughness:.09,envMapIntensity:2.2,bumpMap:striae,bumpScale:.018});
-  const body=new T.Mesh(new T.CylinderGeometry(.48,.48,1.76,128,1,true),bodyMat);roll.add(body);
-  const layerMat=new T.LineBasicMaterial({color:0xf2f3e5,transparent:true,opacity:.25});
-  for(let i=0;i<44;i++){
-   const radius=.214+i*.006,points=[];
-   for(let j=0;j<=128;j++){const a=j/128*Math.PI*2;points.push(new T.Vector3(Math.cos(a)*radius,.883,Math.sin(a)*radius));}
-   roll.add(new T.Line(new T.BufferGeometry().setFromPoints(points),layerMat));
-  }
-  const outer=new T.Mesh(new T.CylinderGeometry(.482,.482,1.762,128,1,true),new T.MeshPhysicalMaterial({color:0xffffff,transparent:true,opacity:.16,roughness:.08,metalness:.25,clearcoat:1,depthWrite:false,envMapIntensity:2}));roll.add(outer);
-  const kraft=new T.MeshStandardMaterial({map:grain,roughness:.87,side:T.DoubleSide});
-  roll.add(new T.Mesh(new T.CylinderGeometry(.19,.19,1.88,80,1,true),kraft));
-  const rings=texture(1024,1024,(g,w,h)=>{g.fillStyle='#dce0d3';g.fillRect(0,0,w,h);for(let r=200;r<515;r+=1.1){g.strokeStyle=`rgba(80,98,83,${.05+random()*.13})`;g.lineWidth=.6;g.beginPath();g.arc(w/2,h/2,r,0,Math.PI*2);g.stroke();}});
-  for(const sign of [-1,1]){
-   const face=new T.Mesh(new T.RingGeometry(.205,.48,128),new T.MeshStandardMaterial({map:rings,color:0xc8cebd,roughness:.4,side:T.DoubleSide}));face.rotation.x=sign*Math.PI/2;face.position.y=sign*.88;roll.add(face);
-   const lip=new T.Mesh(new T.RingGeometry(.19,.212,96),kraft);lip.rotation.x=sign*Math.PI/2;lip.position.y=sign*.94;roll.add(lip);
-  }
+  const rollMap=new T.TextureLoader().load('assets/realistic/roll-reference-v54.png',wake);
+  rollMap.colorSpace=T.SRGBColorSpace;rollMap.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  const rollPhoto=new T.Mesh(new T.PlaneGeometry(1.65,2.475),new T.MeshBasicMaterial({map:rollMap,transparent:true,alphaTest:.025,depthWrite:true,toneMapped:false}));
+  roll.add(rollPhoto);
   // The mark is printed on a solid object, giving the film real edges to turn around.
   const brand=new T.Group();world.add(brand);
   const block=new T.Mesh(new T.BoxGeometry(2.9,1.15,.86),new T.MeshPhysicalMaterial({color:0xf4f2e9,roughness:.38,clearcoat:.3}));brand.add(block);
@@ -58,8 +45,8 @@ if(section){
   function normal(t){const tangent=path.getTangentAt(clamp(t,0,1));return new T.Vector3(tangent.z,0,-tangent.x).normalize();}
   function update(p){
    const reveal=smooth(.04,.28,p),wind=smooth(.24,.88,p),finish=smooth(.88,1,p),q=route(wind),n=normal(wind);
-   roll.position.copy(q).addScaledVector(n,.49);roll.rotation.y=-wind*path.getLength()/.48;
-   roll.position.x+=finish*.55;roll.rotation.z=-.035*(1-reveal);
+   roll.position.copy(q).addScaledVector(n,.49);
+   roll.position.x+=finish*.55;
    brand.scale.setScalar(.85+.15*reveal);brand.position.y=-.25*(1-reveal);brand.visible=reveal>.001;
    const pos=geometry.attributes.position;
    for(let j=0;j<=12;j++)for(let i=0;i<=180;i++){
@@ -76,6 +63,9 @@ if(section){
    const mobile=innerWidth<=700,wide=mobile?10:5.7,dist=T.MathUtils.lerp(mobile?6.2:5.0,wide,reveal);
    camera.position.set(1.8,2.35,dist);camera.lookAt(T.MathUtils.lerp(roll.position.x,0,reveal),0,roll.position.z*(1-reveal));
    world.rotation.y=-.08+finish*.22;
+   world.updateMatrixWorld();camera.updateMatrixWorld();
+   roll.quaternion.copy(world.quaternion).invert().multiply(camera.quaternion);
+   roll.rotateZ(-.025*(1-reveal)+Math.sin(wind*Math.PI*2)*.018);
    const step=p<.24?0:p<.88?1:2;section.querySelectorAll('[data-reel-step]').forEach((el,i)=>el.classList.toggle('is-current',i===step));canvas.dataset.progress=p.toFixed(3);
   }
   function frame(now){raf=0;if(!visible||dead||document.hidden)return;if(dirty){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();dirty=false;}

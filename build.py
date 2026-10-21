@@ -16,7 +16,7 @@ from section_motion import section_motion
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "53"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "54"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -321,7 +321,7 @@ BOBINE = page_hero(
 <section class="reel3d-section" id="bobina" data-reel-3d aria-labelledby="reel-title">
   <div class="reel3d-pin">
     <div class="wrap reel3d-heading"><h2 class="display small" id="reel-title">La forza di<br><em>un gesto leggero.</em></h2><p>Si distende. Avvolge. Protegge.</p></div>
-    <div class="reel3d-stage" role="img" aria-label="Una bobina di film si srotola con lo scorrimento e avvolge il logo Imballaggi 2G. Visualizzazione tridimensionale illustrativa.">
+    <div class="reel3d-stage" role="img" aria-label="Una bobina di film si srotola con lo scorrimento e avvolge il logo Imballaggi 2G. Ricostruzione fotografica illustrativa animata.">
       <canvas aria-hidden="true"></canvas>
       <div class="reel3d-fallback"><span class="reel3d-fallback-roll" aria-hidden="true"></span><img src="assets/logo-ink.webp" width="1200" height="344" alt="Imballaggi 2G"><span>Il film avvolge. Il valore resta.</span></div>
     </div>
