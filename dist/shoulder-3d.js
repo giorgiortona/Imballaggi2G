@@ -5,15 +5,8 @@ if(section){
  const stage=section.querySelector('.shoulder-visual'),canvas=section.querySelector('canvas');
  const chapters=[...section.querySelectorAll('.shoulder-chapter')];
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
- const label=section.querySelector('[data-shoulder-label]');
- const annotation=section.querySelector('.shoulder-annotation'),note=annotation.querySelector('.shoulder-note');
- const dot=annotation.querySelector('circle'),leader=annotation.querySelector('line');
- const points=[
-  {at:[.92,1.35,.3],title:'La forma della spalla',text:'Il taglio sagomato segue il profilo del supporto.'},
-  {at:[.6,1.05,.3],title:'La linea certificata',text:'Le specifiche sono raccolte nel certificato PSV.'},
-  {at:[0,1.02,.35],title:'Il passaggio per il bar-code',text:'Il taglio rende accessibile l’etichetta del capo.'}
- ];
- let renderer,raf=0,visible=false,target=0,current=0,last=0,resize=true,ready=false,active=-1;
+ const word=section.querySelector('.shoulder-word');
+ let renderer,raf=0,visible=false,target=0,current=0,last=0,resize=true,ready=false;
  let stageW=1,stageH=1,insertion=0,insertionTarget=0;
  const clamp=THREE.MathUtils.clamp,smooth=(a,b,p)=>{const t=clamp((p-a)/(b-a),0,1);return t*t*(3-2*t);};
  try{
@@ -124,20 +117,6 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
     }pos.needsUpdate=true;
    }
   }
-  function annotate(turn){
-   const index=target;
-   if(index!==active){active=index;note.querySelector('strong').textContent=points[index].title;note.querySelector('p').textContent=points[index].text;label.textContent=points[index].title;}
-   const back=Math.cos(turn*Math.PI*2)<0;
-   const p=points[index].at;vec.set(p[0],p[1],back?-p[2]:p[2]);model.localToWorld(vec);vec.project(camera);
-   const x=(vec.x*.5+.5)*stageW,y=(-vec.y*.5+.5)*stageH;
-   annotation.hidden=x<12||x>stageW-12||y<75||y>stageH-35||Math.abs(Math.cos(turn*Math.PI*2))<.18;
-   if(annotation.hidden)return;
-   const mobile=stageW<500,w=mobile?170:220;
-   const nx=clamp(x+(x<stageW*.5?40:-w-40),18,(stageW<=700?stageW:stageW*.56)-w-18),ny=clamp(y-65,90,stageH-155);
-   note.style.transform=`translate(${nx}px,${ny}px)`;
-   dot.setAttribute('cx',x);dot.setAttribute('cy',y);
-   leader.setAttribute('x1',x);leader.setAttribute('y1',y);leader.setAttribute('x2',nx+(x<nx?0:w));leader.setAttribute('y2',ny+35);
-  }
   function paint(){
    if(resize){stageW=stage.clientWidth;stageH=stage.clientHeight;renderer.setSize(stageW,stageH,false);camera.aspect=stageW/stageH;camera.updateProjectionMatrix();resize=false;}
    slitStrength.value=.16+.84*smooth(1,2,current);
@@ -170,17 +149,18 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    const front=Math.cos(turn*Math.PI*2)>=0;
    filmMeshes.forEach(mesh=>{mesh.renderOrder=(mesh.userData.back===!front)?3:0;});
    clothMeshes.forEach(mesh=>{mesh.renderOrder=1;});
-   renderer.render(scene,camera);annotate(turn);
+   renderer.render(scene,camera);
+   word.style.transform=`translate3d(${track([0,18,-8])}px,${track([0,-12,6])}px,0)`;
    stage.dataset.reveal=reveal.toFixed(3);stage.dataset.progress=current.toFixed(3);
    stage.dataset.rotation=String(Math.round(turn*360));stage.dataset.insertion=insert.toFixed(3);
   }
   function frame(now){raf=0;const dt=Math.min(.05,(now-last)/1000||.016);last=now;current+=(target-current)*(1-Math.exp(-3.2*dt));insertion+=(insertionTarget-insertion)*(1-Math.exp(-2.8*dt));if(Math.abs(target-current)<.0001)current=target;if(Math.abs(insertionTarget-insertion)<.0001)insertion=insertionTarget;paint();if(visible&&(current!==target||insertion!==insertionTarget))raf=requestAnimationFrame(frame);}
   function wake(){if(!ready||reduced.matches||document.hidden||!visible)return;measure();if(!raf){last=performance.now();raf=requestAnimationFrame(frame);}}
-  function configure(){cancelAnimationFrame(raf);raf=0;section.classList.toggle('shoulder-ready',ready&&!reduced.matches);annotation.hidden=true;if(ready&&!reduced.matches){resize=true;measure();current=target;insertion=target>0?insertionTarget:0;paint();wake();}}
+  function configure(){cancelAnimationFrame(raf);raf=0;section.classList.toggle('shoulder-ready',ready&&!reduced.matches);if(ready&&!reduced.matches){resize=true;measure();current=target;insertion=target>0?insertionTarget:0;paint();wake();}}
   new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(raf);raf=0;}},{rootMargin:'150px'}).observe(stage);
   new ResizeObserver(()=>{resize=true;wake();}).observe(stage);
   addEventListener('scroll',wake,{passive:true});addEventListener('resize',()=>{resize=true;wake();},{passive:true});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;}else wake();});reduced.addEventListener('change',configure);
-  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);raf=0;ready=false;annotation.hidden=true;section.classList.remove('shoulder-ready');});
- }catch(error){section.classList.remove('shoulder-ready');annotation.hidden=true;renderer?.dispose();}
+  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);raf=0;ready=false;section.classList.remove('shoulder-ready');});
+ }catch(error){section.classList.remove('shoulder-ready');renderer?.dispose();}
 }

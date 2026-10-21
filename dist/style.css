@@ -1236,3 +1236,9 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
  .shoulder-fact,.variant-material{margin-top:8px;padding-top:16px}
  .variant-chapter p.variant-size-note{font-size:13px}
 }
+
+/* Quiet brand typography behind the animated shoulder protector. */
+.shoulder-word{position:absolute;left:7%;top:11%;font-size:clamp(130px,22vw,350px);font-weight:500;letter-spacing:-.09em;line-height:1;color:#d4d9ce;opacity:.65;pointer-events:none}
+.shoulder-canvas{z-index:1}
+.shoulder-object{position:relative;z-index:1}
+@media(max-width:700px){.shoulder-word{left:12%;top:17%;font-size:clamp(120px,42vw,210px)}}
