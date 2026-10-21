@@ -10,10 +10,10 @@
  const smooth=(a,b,p)=>{const t=clamp((p-a)/(b-a));return t*t*(3-2*t);};
  let pose=0,target=0,raf=0,last=0,visible=false;
  function track(values){const i=Math.min(values.length-2,Math.floor(pose));return values[i]+(values[i+1]-values[i])*smooth(i,i+1,pose);}
- function measure(){let n=0;const trigger=innerHeight*(innerWidth<=700?.86:.62);chapters.forEach((c,i)=>{if(c.getBoundingClientRect().top<trigger)n=i;});target=n;section.dataset.variant=String(n);}
+ function measure(){let n=0;const trigger=innerWidth<=700?stage.getBoundingClientRect().bottom+90:innerHeight*.62;chapters.forEach((c,i)=>{if((innerWidth<=700?c.querySelector("h2,h3"):c).getBoundingClientRect().top<trigger)n=i;});target=n;section.dataset.variant=String(n);}
  function paint(){
   const mobile=innerWidth<=700,leave=smooth(1.12,1.85,pose);
-  bubble.style.transform=`translate3d(${track(mobile?[0,-12,36]:[0,22,50])}%,${track(mobile?[0,3,-3]:[0,-5,2])}%,0) rotate(${track([-9,8,17])}deg) scale(${track(mobile?[1,1.16,.9]:[1,1.30,1.05])})`;
+  bubble.style.transform=`translate3d(${track(mobile?[0,0,24]:[0,22,50])}%,${track(mobile?[0,1,0]:[0,-5,2])}%,0) rotate(${track([-9,8,17])}deg) scale(${track(mobile?[.92,1.03,.88]:[1,1.30,1.05])})`;
   bubble.style.opacity=String(1-leave);bubble.style.visibility=leave===1?'hidden':'visible';
   const enter=smooth(1.3,1.95,pose);family.style.opacity=String(enter);family.style.visibility=enter>0?'visible':'hidden';
   formats.forEach((f,i)=>{const t=smooth(1.28+i*.13,1.74+i*.13,pose);f.style.transform=`translate3d(${(1-t)*(60+i*15)}%,${(1-t)*25+(mobile?0:i*8)}px,0) rotate(${(1-t)*(10-i*3)}deg)`;f.style.opacity=String(t);});

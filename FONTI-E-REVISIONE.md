@@ -210,3 +210,9 @@ Gruccia e giacca sfumano al termine dell’inserimento. Taglio centrato sulla me
 - Rimossa la maschera opaca sotto le descrizioni: il pluriball rimane visibile dietro al testo.
 - Inquadratura mobile più ampia, senza ritaglio verticale del contenitore; contenimento solo orizzontale ai bordi dello schermo.
 - Testi con ombra morbida per la leggibilità, senza pannello rettangolare. Desktop e alternativa a movimento ridotto conservati.
+
+## v48 — mobile dedicato alla lettura
+- Prodotto animato in un’area superiore dedicata, completo e centrato; descrizioni separate su fondo pulito, senza testo sovrapposto al materiale.
+- Inquadrature dimensionate per smartphone; cambi di posa legati all’ingresso del titolo successivo nell’area di lettura.
+- Tipografia mobile da 32 px per i titoli e 17 px per il corpo, con spaziatura più chiara. Layout desktop conservato.
+- Verificati visivamente film e pluriball a 390×844, senza overflow orizzontale. Sintassi dei due script e diff controllati.

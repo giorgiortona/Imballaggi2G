@@ -90,9 +90,9 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    ready=true;configure();
   }).catch(()=>{renderer.dispose();});
   function measure(){
-   const trigger=innerHeight*(stageW<=700?.76:.62);
+   const trigger=stageW<=700?stage.getBoundingClientRect().bottom+90:innerHeight*.62;
    let next=0;
-   chapters.forEach((chapter,i)=>{if(chapter.getBoundingClientRect().top<=trigger)next=i;});
+   chapters.forEach((chapter,i)=>{if((stageW<=700?chapter.querySelector("h2,h3"):chapter).getBoundingClientRect().top<=trigger)next=i;});
    target=next;
    // Insertion has its own timeline: it never changes the editorial pose.
    insertionTarget=next>0||chapters[0].getBoundingClientRect().top<innerHeight*.2?1:0;
@@ -155,9 +155,9 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    const narrow=stageW<=700;
    model.position.set(-viewHeight*camera.aspect*.215+track([-.12,.12,-.08]),
     track([-1.1,-1.25,-.8]),0);
-   if(narrow)model.position.x=track([-.25,.05,-.15]);
+   if(narrow)model.position.set(0,0,0);
    const tiltedHeight=5.4*Math.abs(Math.cos(model.rotation.z))+3.6*Math.abs(Math.sin(model.rotation.z));
-   const fill=track([2.15,1.92,2.28])+.10*arrival;
+   const fill=narrow?track([.83,.77,.86]):track([2.15,1.92,2.28])+.10*arrival;
    model.scale.setScalar(viewHeight*fill/tiltedHeight);
    // Keep the hook and both shoulders physically inside the stage, below the header.
    model.updateMatrixWorld(true);
