@@ -1277,3 +1277,14 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
  #shoulder-detail-3 h3 br,#shoulder-detail-4 h3 br{display:none}
  #shoulder-detail-3 h3 em::before,#shoulder-detail-4 h3 em::before{content:' '}
 }
+
+@media(max-width:700px){
+ /* Product overflow may cross a paragraph, but copy always paints above it. */
+ .shoulder-copy,.variants-copy{isolation:isolate}
+ .shoulder-chapter>:not(.mobile-product),.variant-chapter>:not(.mobile-product){position:relative;z-index:2}
+ .shoulder-chapter>.mobile-product,.variant-chapter>.mobile-product{z-index:0}
+ .mobile-product-motion,.mobile-product .mobile-jacket{backface-visibility:hidden;transition:none}
+ .mobile-product .mobile-jacket{will-change:transform,opacity}
+ .mobile-product .mobile-cover{will-change:opacity;transition:none}
+}
+@media(prefers-reduced-motion:reduce){.mobile-product .mobile-jacket,.mobile-product .mobile-cover{will-change:auto}}
