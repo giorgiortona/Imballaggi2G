@@ -1288,3 +1288,20 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
  .mobile-product .mobile-cover{will-change:opacity;transition:none}
 }
 @media(prefers-reduced-motion:reduce){.mobile-product .mobile-jacket,.mobile-product .mobile-cover{will-change:auto}}
+
+/* Reel studio: a contrasting stage makes the clear film readable. */
+.reel3d-ready .reel3d-pin{background:radial-gradient(ellipse at 50% 40%,#34483f,#172b22 75%);color:#f5f5ed;padding-top:calc(var(--header) + 24px)}
+.reel3d-heading h2 em{color:#b9d2b8}
+.reel3d-heading p{color:#c1cdc4;font-size:18px}
+.reel3d-steps{color:#a0b5a5}.reel3d-steps .is-current{color:#f5f5ed}
+.reel3d-skip{color:#f5f5ed;border-color:#6f8777}
+.reel3d-section.reel3d-ready{height:270svh}
+.reel3d-heading h2{font-size:clamp(36px,4.2vw,66px)}
+@media(max-width:700px){
+ .reel3d-section.reel3d-ready{height:230svh}
+ .reel3d-ready .reel3d-pin{min-height:0;height:100svh;padding:calc(var(--header) + 22px) 0 24px}
+ .reel3d-heading h2{font-size:36px}.reel3d-heading p{font-size:16px;margin-top:16px}
+ .reel3d-stage{height:auto;min-height:220px}
+ .reel3d-footer{gap:15px}.reel3d-steps{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){.reel3d-section.reel3d-ready{height:auto}.reel3d-ready .reel3d-pin{position:relative;height:auto}.reel3d-stage{height:450px;flex:none}}

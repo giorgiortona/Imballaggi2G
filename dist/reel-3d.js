@@ -1,170 +1,93 @@
-/* Photoreal product surfaces on scroll-driven deforming geometry. */
-import * as THREE from './vendor/three.module.min.js';
-
-const section = document.querySelector('[data-reel-3d]');
-if (section) {
-  const stage = section.querySelector('.reel3d-stage');
-  const canvas = section.querySelector('canvas');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const clamp = THREE.MathUtils.clamp;
-  const smooth = (a,b,x) => { const t=clamp((x-a)/(b-a),0,1); return t*t*(3-2*t); };
-  let renderer, visible=false, frame=0, current=0, target=0, last=0, disposed=false;
-  let resizePending=true, measurePending=true, start=0, travel=1, lastStep=-1;
-  const ownedTextures=[];
-  try {
-    renderer = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1,1.6));
-    renderer.outputColorSpace=THREE.SRGBColorSpace;
-    renderer.toneMapping=THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure=.95;
-    const scene=new THREE.Scene();
-    const camera=new THREE.PerspectiveCamera(33,1,.1,70);
-    const world=new THREE.Group();scene.add(world);
-    function texture(c){const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;ownedTextures.push(t);return t;}
-    function surface(w,h,paint){const c=document.createElement('canvas');c.width=w;c.height=h;paint(c.getContext('2d'),w,h);return texture(c);}
-
-    // A photographic studio expressed as light, not as a photographic background.
-    const environment=surface(1024,512,(g,w,h)=>{
-      const bg=g.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#c8d0cd');bg.addColorStop(.5,'#777f7c');bg.addColorStop(1,'#272e2b');g.fillStyle=bg;g.fillRect(0,0,w,h);
-      const panel=(x,y,pw,ph,alpha)=>{g.fillStyle=`rgba(255,255,255,${alpha})`;g.fillRect(x,y,pw,ph);};
-      panel(80,55,130,340,1);panel(480,60,50,325,.95);panel(720,0,190,220,.85);panel(270,100,18,275,.6);
-    });
-    environment.mapping=THREE.EquirectangularReflectionMapping;
-    const pmrem=new THREE.PMREMGenerator(renderer);const env=pmrem.fromEquirectangular(environment);scene.environment=env.texture;pmrem.dispose();
-    scene.add(new THREE.HemisphereLight(0xffffff,0x748277,1.35));
-    const key=new THREE.DirectionalLight(0xffffff,2.7);key.position.set(-3,6,5);scene.add(key);
-    const edge=new THREE.DirectionalLight(0xe7f1eb,2.1);edge.position.set(5,3,-3);scene.add(edge);
-
-    // Photoreal cutout composited into the deforming film scene.
-    const roll=new THREE.Group();world.add(roll);
-    const rollMap=new THREE.TextureLoader().load('assets/realistic/roll.webp',()=>wake());rollMap.colorSpace=THREE.SRGBColorSpace;rollMap.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
-    const rollPhoto=new THREE.Mesh(new THREE.PlaneGeometry(2.45,3.675),new THREE.MeshBasicMaterial({map:rollMap,transparent:true,depthWrite:false,toneMapped:false}));rollPhoto.renderOrder=8;world.add(rollPhoto);
-
-    // Floating brand plaque, later enclosed by the clear film.
-    const brand=new THREE.Group();world.add(brand);
-    const plaque=new THREE.Mesh(new THREE.BoxGeometry(3.15,1.23,.15),new THREE.MeshPhysicalMaterial({color:0xfafcf9,roughness:.3,metalness:.04,clearcoat:1}));brand.add(plaque);
-    const logoMap=new THREE.TextureLoader().load('assets/logo-ink.webp',()=>wake());logoMap.colorSpace=THREE.SRGBColorSpace;logoMap.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());ownedTextures.push(logoMap);
-    const logo=new THREE.Mesh(new THREE.PlaneGeometry(2.65,.76),new THREE.MeshBasicMaterial({map:logoMap,transparent:true,depthWrite:false}));logo.position.z=.084;brand.add(logo);
-
-    const shadowTexture=surface(256,256,(g,w,h)=>{const gradient=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);gradient.addColorStop(0,'rgba(24,40,30,.25)');gradient.addColorStop(.4,'rgba(24,40,30,.12)');gradient.addColorStop(1,'rgba(24,40,30,0)');g.fillStyle=gradient;g.fillRect(0,0,w,h);});
-    function shadow(w,h){const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:shadowTexture,transparent:true,depthWrite:false}));mesh.rotation.x=-Math.PI/2;mesh.position.y=-1.52;world.add(mesh);return mesh;}
-    const rollShadow=shadow(2.1,1.7),brandShadow=shadow(4.5,2.3);
-
-    const filmMap=new THREE.TextureLoader().load('assets/realistic/stretch-film.webp',()=>wake());filmMap.colorSpace=THREE.SRGBColorSpace;
-    function photoFilm(opacity){const m=new THREE.MeshBasicMaterial({map:filmMap,transparent:true,opacity,depthWrite:false,side:THREE.DoubleSide,toneMapped:false});m.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>','diffuseColor.a *= 0.07 + 0.93 * smoothstep(0.38,0.9,max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)));\n#include <opaque_fragment>');};return m;}
-    // A real deforming mesh: a loose leading edge straightens as the roll moves.
-    const sheetGeometry=new THREE.PlaneGeometry(1,2.84,64,16);
-    const sheetPositions=sheetGeometry.attributes.position;
-    const clear=photoFilm(.72);
-    const sheet=new THREE.Mesh(sheetGeometry,clear);sheet.renderOrder=3;world.add(sheet);
-    const highlights=new THREE.Group();world.add(highlights);
-    const filamentMaterial=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.55,depthWrite:false});
-    const filaments=[];
-    for(let i=0;i<9;i++){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(65*3),3));const line=new THREE.Line(g,filamentMaterial);line.renderOrder=4;highlights.add(line);filaments.push(line);}
-
-    // Final sleeve folds over the edges, creating recognisable layered protection.
-    const sleeveGeometry=new THREE.BoxGeometry(3.3,1.39,.39);
-    const sleeve=new THREE.Mesh(sleeveGeometry,new THREE.MeshPhysicalMaterial({color:0xffffff,transparent:true,opacity:0,roughness:.09,metalness:.13,clearcoat:1,side:THREE.FrontSide,depthWrite:false,envMapIntensity:1.8}));sleeve.renderOrder=5;world.add(sleeve);
-    const creaseMaterial=new THREE.LineBasicMaterial({color:0x427761,transparent:true,opacity:0});
-    const creasePoints=[-1.65,.69,.2,-1.39,.48,.2, 1.65,.69,.2,1.39,.48,.2, -1.65,-.69,.2,-1.39,-.48,.2, 1.65,-.69,.2,1.39,-.48,.2, -1.65,.69,.2,1.65,.69,.2, -1.65,-.69,.2,1.65,-.69,.2];
-    const creases=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(creasePoints,3)),creaseMaterial);creases.renderOrder=6;world.add(creases);
-    // Soft elongated specular reflection over the protected logo.
-    const glintTexture=surface(128,32,(g,w,h)=>{const a=g.createLinearGradient(0,0,w,0);a.addColorStop(0,'rgba(255,255,255,0)');a.addColorStop(.48,'rgba(255,255,255,.65)');a.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=a;g.fillRect(0,0,w,h);});
-    const glint=new THREE.Mesh(new THREE.PlaneGeometry(.5,1.32),new THREE.MeshBasicMaterial({map:glintTexture,transparent:true,opacity:0,depthWrite:false}));glint.position.z=.205;glint.rotation.z=-.15;glint.renderOrder=7;world.add(glint);
-
-    // A continuous ribbon follows the rounded perimeter; its free end curls
-    // before tension flattens it. Geometry is reversible at every scroll position.
-    const ribbonGeometry=new THREE.PlaneGeometry(1,1,120,12);
-    const ribbonMaterial=photoFilm(.7);
-    const ribbon=new THREE.Mesh(ribbonGeometry,ribbonMaterial);world.add(ribbon);
-    const rimMaterial=new THREE.LineBasicMaterial({color:0xe9edea,transparent:true,opacity:.28,depthWrite:false});
-    const rims=[0,1].map(()=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(121*3),3));const l=new THREE.Line(g,rimMaterial);world.add(l);return l;});
-    const movingEdge=new THREE.Line(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(new Float32Array(13*3),3)),new THREE.LineBasicMaterial({color:0xe7fff4,transparent:true,opacity:.95}));world.add(movingEdge);
-    const perimeter=new THREE.CurvePath();
-    const vec=(x,z)=>new THREE.Vector3(x,0,z);
-    const line=(ax,az,bx,bz)=>perimeter.add(new THREE.LineCurve3(vec(ax,az),vec(bx,bz)));
-    const bend=(ax,az,cx,cz,bx,bz)=>perimeter.add(new THREE.QuadraticBezierCurve3(vec(ax,az),vec(cx,cz),vec(bx,bz)));
-    line(1.55,.31,-1.55,.31);bend(-1.55,.31,-1.72,.31,-1.72,.14);
-    line(-1.72,.14,-1.72,-.14);bend(-1.72,-.14,-1.72,-.31,-1.55,-.31);
-    line(-1.55,-.31,1.55,-.31);bend(1.55,-.31,1.72,-.31,1.72,-.14);
-    line(1.72,-.14,1.72,.14);bend(1.72,.14,1.72,.31,1.55,.31);
-    const feedGeometry=new THREE.PlaneGeometry(1,1,16,8);
-    const feed=new THREE.Mesh(feedGeometry,ribbonMaterial.clone());world.add(feed);
-    function windFilm(w){
-      ribbon.visible=w>.001;rims.forEach(l=>l.visible=ribbon.visible);movingEdge.visible=ribbon.visible&&w<.999;
-      const length=perimeter.getLength(),progress=w*1.04;
-      feed.visible=w>.001&&w<.98;
-      feed.material.opacity=.7*(1-smooth(.82,.98,w));
-      const fp=feedGeometry.attributes.position;
-      for(let j=0;j<=8;j++)for(let i=0;i<=16;i++){
-        const t=i/16,v=j/8-.5;
-        fp.setXYZ(j*17+i,1.45+t*1.03,v*(1.46+t*1.38),.31+t*.34-Math.sin(t*Math.PI)*.07);
-      }
-      fp.needsUpdate=true;feedGeometry.computeVertexNormals();
-      const pos=ribbonGeometry.attributes.position;
-      for(let j=0;j<=12;j++)for(let i=0;i<=120;i++){
-        const u=i/120,v=j/12-.5,t=u*progress;
-        const q=perimeter.getPointAt(Math.min(t,1));
-        if(t>1)q.x-=(t-1)*length;
-        const tail=smooth(.8,1,u)*Math.sin(Math.PI*w);
-        const ripple=Math.sin(u*24-v*5+w*12)*.025*tail;
-        q.z+=Math.sin(u*Math.PI)*.012+tail*.32+ripple;
-        q.y=v*(1.46+.12*tail)+Math.sin(u*12+w*6)*.025*tail;
-        pos.setXYZ(j*121+i,q.x-.1,q.y,q.z);
-        if(j===0||j===12)rims[j===0?0:1].geometry.attributes.position.setXYZ(i,q.x-.1,q.y,q.z+.002);
-        if(i===120)movingEdge.geometry.attributes.position.setXYZ(j,q.x-.1,q.y,q.z+.004);
-      }
-      pos.needsUpdate=true;ribbonGeometry.computeVertexNormals();rims.forEach(l=>l.geometry.attributes.position.needsUpdate=true);movingEdge.geometry.attributes.position.needsUpdate=true;
-    }
-
-    function measure(){const r=section.getBoundingClientRect();start=r.top+scrollY;travel=Math.max(1,section.offsetHeight-section.querySelector('.reel3d-pin').offsetHeight);measurePending=false;}
-    function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;const distance=Math.max(9.6,3.35/(Math.tan(THREE.MathUtils.degToRad(16.5))*camera.aspect));camera.position.set(2.8,2.6,10).normalize().multiplyScalar(distance);camera.lookAt(0,-.05,0);camera.updateProjectionMatrix();resizePending=false;measurePending=true;}
-    function update(p){
-      const unwind=smooth(.06,.48,p),reveal=smooth(.16,.42,p),wrap=smooth(.48,.96,p);
-      const rx=THREE.MathUtils.lerp(-2.18,2.48,unwind);
-      roll.position.set(rx,0,.02);roll.rotation.y=-(unwind*4.66+wrap*7.96)/.63;roll.rotation.z=(1-unwind)*-.035;
-      rollShadow.position.x=rx;rollPhoto.position.set(rx,.03,.08);rollPhoto.quaternion.copy(camera.quaternion);rollPhoto.rotateZ((1-unwind)*-.025);
-      brand.position.set(-.1,-.25*(1-reveal),-.9*(1-reveal));brand.scale.setScalar(.86+.14*reveal);brand.visible=reveal>.001;
-      plaque.material.transparent=true;plaque.material.opacity=reveal;logo.material.opacity=reveal;brandShadow.material.opacity=reveal*.75;
-      sleeve.position.copy(brand.position);creases.position.copy(brand.position);sleeve.material.opacity=wrap*.035;creaseMaterial.opacity=wrap*.15;
-      glint.position.x=-1.8+wrap*3.6;glint.position.y=brand.position.y;glint.material.opacity=Math.sin(wrap*Math.PI)*.4;
-      sheet.visible=unwind>.005;highlights.visible=sheet.visible;
-      clear.opacity=.75*(1-smooth(0,.3,wrap));
-      windFilm(wrap);
-      const left=-2.2+wrap*.45,width=Math.max(.002,rx-left),height=2.84-wrap*1.45;
-      const point=(u,v)=>{
-        const x=left+u*width,y=v*height;
-        const loose=Math.sin(u*Math.PI)*Math.sin(v*3.4+u*5+unwind*3)*.095*(1-wrap);
-        const fold=smooth(.34,.5,Math.abs(v));
-        const z=.64-wrap*.39+loose+Math.sin(u*Math.PI)*.12*(1-wrap)-fold*wrap*.34;
-        return [x,y,z];
-      };
-      for(let j=0;j<=16;j++)for(let i=0;i<=64;i++){const idx=j*65+i;const pt=point(i/64,.5-j/16);sheetPositions.setXYZ(idx,...pt);}
-      sheetPositions.needsUpdate=true;sheetGeometry.computeVertexNormals();
-      for(let n=0;n<filaments.length;n++){const a=filaments[n].geometry.attributes.position;const v=n===0?.5:n===1?-.5:(n-5)*.105;for(let i=0;i<=64;i++){const pt=point(i/64,v);a.setXYZ(i,pt[0],pt[1],pt[2]+.003);}a.needsUpdate=true;}
-      filamentMaterial.opacity=.1*(1-smooth(0,.3,wrap));
-      const step=p<.3?0:p<.5?1:2;
-      if(step!==lastStep){lastStep=step;section.querySelectorAll('[data-reel-step]').forEach((el,i)=>el.classList.toggle('is-current',i===step));}
-      canvas.dataset.progress=p.toFixed(3);
-    }
-    function tick(now){frame=0;if(disposed||document.hidden||!visible)return;if(resizePending)resize();if(measurePending)measure();target=reduced.matches?1:clamp((scrollY-start)/travel,0,1);
-      const dt=Math.min((now-last)/1000||1/60,.05);last=now;
-      current=reduced.matches?1:current+(target-current)*(1-Math.exp(-14*dt));
-      if(Math.abs(current-target)<.00015)current=target;
-      update(current);renderer.render(scene,camera);
-      if(Math.abs(current-target)>.00015)frame=requestAnimationFrame(tick);
-    }
-    function wake(){if(!frame&&visible&&!document.hidden&&!disposed)frame=requestAnimationFrame(tick);}
-    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible){measurePending=true;last=performance.now();wake();}else if(frame){cancelAnimationFrame(frame);frame=0;}},{rootMargin:'150px'});observer.observe(section);
-    const sizes=new ResizeObserver(()=>{resizePending=true;wake();});sizes.observe(stage);
-    const scroll=()=>{measurePending=true;wake();};window.addEventListener('scroll',scroll,{passive:true});
-    const layout=()=>{measurePending=true;wake();};window.addEventListener('resize',layout,{passive:true});window.addEventListener('load',layout,{once:true});document.fonts?.ready.then(layout);
-    document.addEventListener('visibilitychange',()=>{last=performance.now();wake();});
-    reduced.addEventListener('change',()=>{measurePending=true;wake();});
-    canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();section.classList.remove('reel3d-ready');if(frame)cancelAnimationFrame(frame);disposed=true;observer.disconnect();sizes.disconnect();});
-    section.classList.add('reel3d-ready');resize();measure();update(reduced.matches?1:0);renderer.render(scene,camera);
-  } catch(error) {
-    section.classList.remove('reel3d-ready');renderer?.dispose();
-    console.warn('La scena 3D non è disponibile; visualizzazione alternativa attiva.',error);
+/* A dimensional roll lays a continuous tensioned ribbon around the brand. */
+import * as T from './vendor/three.module.min.js';
+const section=document.querySelector('[data-reel-3d]');
+if(section){
+ const stage=section.querySelector('.reel3d-stage'),canvas=stage.querySelector('canvas'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
+ const clamp=T.MathUtils.clamp,smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);};
+ let renderer,raf=0,visible=false,current=0,target=0,last=0,dirty=true,dead=false;
+ try{
+  renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=.95;
+  const scene=new T.Scene(),camera=new T.PerspectiveCamera(32,1,.1,60),world=new T.Group();scene.add(world);
+  function texture(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;return t;}
+  const studio=texture(1024,512,(g,w,h)=>{g.fillStyle='#39423e';g.fillRect(0,0,w,h);for(const [x,y,a,b] of [[60,30,110,420],[440,0,230,190],[800,80,45,350]]){const v=g.createLinearGradient(x,0,x+a,0);v.addColorStop(0,'#53645c');v.addColorStop(.25,'#ffffff');v.addColorStop(.8,'#ffffff');v.addColorStop(1,'#53645c');g.fillStyle=v;g.fillRect(x,y,a,b);}});
+  studio.mapping=T.EquirectangularReflectionMapping;const pm=new T.PMREMGenerator(renderer),env=pm.fromEquirectangular(studio);scene.environment=env.texture;pm.dispose();
+  scene.add(new T.HemisphereLight(0xffffff,0x6a736c,.9));
+  const key=new T.DirectionalLight(0xfffaf0,2.2);key.position.set(-3,5,5);scene.add(key);
+  const rim=new T.DirectionalLight(0xd7eee3,2.4);rim.position.set(4,2,-4);scene.add(rim);
+  // Fine, deterministic manufacturing texture; no photographic billboard.
+  let seed=23;const random=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+  const grain=texture(512,512,(g,w,h)=>{g.fillStyle='#b49a75';g.fillRect(0,0,w,h);for(let i=0;i<16000;i++){const v=Math.floor(110+random()*85);g.fillStyle=`rgba(${v+30},${v+10},${v-20},.22)`;g.fillRect(random()*w,random()*h,1+random()*3,1);}g.strokeStyle='#8c7454';g.lineWidth=2;g.beginPath();g.moveTo(0,h);g.lineTo(w,0);g.stroke();});
+  grain.wrapS=grain.wrapT=T.RepeatWrapping;grain.repeat.set(2,1);
+  const striae=texture(1024,512,(g,w,h)=>{g.fillStyle='#808080';g.fillRect(0,0,w,h);for(let i=0;i<900;i++){g.strokeStyle=`rgba(255,255,255,${random()*.18})`;g.beginPath();const y=random()*h;g.moveTo(0,y);g.bezierCurveTo(w*.3,y+random()*2,w*.7,y-2,w,y);g.stroke();}});
+  const roll=new T.Group();world.add(roll);
+  const bodyMat=new T.MeshPhysicalMaterial({color:0xb5bfb1,metalness:.48,roughness:.17,clearcoat:1,clearcoatRoughness:.09,envMapIntensity:2.2,bumpMap:striae,bumpScale:.018});
+  const body=new T.Mesh(new T.CylinderGeometry(.48,.48,1.76,128,1,true),bodyMat);roll.add(body);
+  const layerMat=new T.LineBasicMaterial({color:0xf2f3e5,transparent:true,opacity:.25});
+  for(let i=0;i<44;i++){
+   const radius=.214+i*.006,points=[];
+   for(let j=0;j<=128;j++){const a=j/128*Math.PI*2;points.push(new T.Vector3(Math.cos(a)*radius,.883,Math.sin(a)*radius));}
+   roll.add(new T.Line(new T.BufferGeometry().setFromPoints(points),layerMat));
   }
+  const outer=new T.Mesh(new T.CylinderGeometry(.482,.482,1.762,128,1,true),new T.MeshPhysicalMaterial({color:0xffffff,transparent:true,opacity:.16,roughness:.08,metalness:.25,clearcoat:1,depthWrite:false,envMapIntensity:2}));roll.add(outer);
+  const kraft=new T.MeshStandardMaterial({map:grain,roughness:.87,side:T.DoubleSide});
+  roll.add(new T.Mesh(new T.CylinderGeometry(.19,.19,1.88,80,1,true),kraft));
+  const rings=texture(1024,1024,(g,w,h)=>{g.fillStyle='#dce0d3';g.fillRect(0,0,w,h);for(let r=200;r<515;r+=1.1){g.strokeStyle=`rgba(80,98,83,${.05+random()*.13})`;g.lineWidth=.6;g.beginPath();g.arc(w/2,h/2,r,0,Math.PI*2);g.stroke();}});
+  for(const sign of [-1,1]){
+   const face=new T.Mesh(new T.RingGeometry(.205,.48,128),new T.MeshStandardMaterial({map:rings,color:0xc8cebd,roughness:.4,side:T.DoubleSide}));face.rotation.x=sign*Math.PI/2;face.position.y=sign*.88;roll.add(face);
+   const lip=new T.Mesh(new T.RingGeometry(.19,.212,96),kraft);lip.rotation.x=sign*Math.PI/2;lip.position.y=sign*.94;roll.add(lip);
+  }
+  // The mark is printed on a solid object, giving the film real edges to turn around.
+  const brand=new T.Group();world.add(brand);
+  const block=new T.Mesh(new T.BoxGeometry(2.9,1.15,.86),new T.MeshPhysicalMaterial({color:0xf4f2e9,roughness:.38,clearcoat:.3}));brand.add(block);
+  const logoMap=new T.TextureLoader().load('assets/logo-ink.webp',wake);logoMap.colorSpace=T.SRGBColorSpace;logoMap.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  const logo=new T.Mesh(new T.PlaneGeometry(2.45,.70),new T.MeshBasicMaterial({map:logoMap,transparent:true,toneMapped:false}));logo.position.z=.436;brand.add(logo);
+  // Rounded rectangular winding route. Positive z is the face of the package.
+  const path=new T.CurvePath(),v=(x,z)=>new T.Vector3(x,0,z);
+  function line(a,b,c,d){path.add(new T.LineCurve3(v(a,b),v(c,d)));}
+  function bend(a,b,c,d,e,f){path.add(new T.QuadraticBezierCurve3(v(a,b),v(c,d),v(e,f)));}
+  line(1.45,.49,-1.45,.49);bend(-1.45,.49,-1.58,.49,-1.58,.36);line(-1.58,.36,-1.58,-.36);bend(-1.58,-.36,-1.58,-.49,-1.45,-.49);line(-1.45,-.49,1.45,-.49);bend(1.45,-.49,1.58,-.49,1.58,-.36);line(1.58,-.36,1.58,.36);bend(1.58,.36,1.58,.49,1.45,.49);
+  const filmMat=new T.MeshPhysicalMaterial({color:0xf0fff8,metalness:.08,roughness:.13,transparent:true,opacity:.14,clearcoat:1,clearcoatRoughness:.06,side:T.DoubleSide,depthWrite:false,envMapIntensity:2.1,bumpMap:striae,bumpScale:.025});
+  const geometry=new T.PlaneGeometry(1,1,180,12),film=new T.Mesh(geometry,filmMat);world.add(film);
+  const edgeMat=new T.LineBasicMaterial({color:0xe4fff1,transparent:true,opacity:.6});
+  const edges=[0,1].map(()=>{const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(new Float32Array(181*3),3));const m=new T.Line(g,edgeMat);world.add(m);return m;});
+  const feedGeo=new T.PlaneGeometry(1,1,20,12),feed=new T.Mesh(feedGeo,filmMat);world.add(feed);
+  const shadowMap=texture(128,128,(g,w,h)=>{const a=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);a.addColorStop(0,'rgba(0,0,0,.4)');a.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=a;g.fillRect(0,0,w,h);});
+  const shadow=new T.Mesh(new T.PlaneGeometry(7,4),new T.MeshBasicMaterial({map:shadowMap,transparent:true,depthWrite:false}));shadow.rotation.x=-Math.PI/2;shadow.position.y=-1.04;world.add(shadow);
+  function route(t){return path.getPointAt(clamp(t,0,1));}
+  function normal(t){const tangent=path.getTangentAt(clamp(t,0,1));return new T.Vector3(tangent.z,0,-tangent.x).normalize();}
+  function update(p){
+   const reveal=smooth(.04,.28,p),wind=smooth(.24,.88,p),finish=smooth(.88,1,p),q=route(wind),n=normal(wind);
+   roll.position.copy(q).addScaledVector(n,.49);roll.rotation.y=-wind*path.getLength()/.48;
+   roll.position.x+=finish*.55;roll.rotation.z=-.035*(1-reveal);
+   brand.scale.setScalar(.85+.15*reveal);brand.position.y=-.25*(1-reveal);brand.visible=reveal>.001;
+   const pos=geometry.attributes.position;
+   for(let j=0;j<=12;j++)for(let i=0;i<=180;i++){
+    const u=i/180,t=u*wind,a=route(t),out=normal(t),y=(.5-j/12)*1.52;
+    const wrinkle=(Math.sin(t*115+y*8)*.003+Math.sin(t*41-y*11)*.004)*Math.pow(Math.abs(y)/.76,3);
+    a.addScaledVector(out,wrinkle);pos.setXYZ(j*181+i,a.x,y,a.z);
+    if(j===0||j===12)edges[j===0?0:1].geometry.attributes.position.setXYZ(i,a.x,y,a.z);
+   }
+   pos.needsUpdate=true;geometry.computeVertexNormals();edges.forEach(e=>{e.geometry.attributes.position.needsUpdate=true;e.visible=wind>.002;});film.visible=wind>.002;
+   // Short, tensioned span remains attached to the outside of the rotating roll.
+   const end=q.clone().addScaledVector(n,.05),feedPos=feedGeo.attributes.position;
+   for(let j=0;j<=12;j++)for(let i=0;i<=20;i++){const u=i/20,a=q.clone().lerp(end,u);a.y=(.5-j/12)*1.52;feedPos.setXYZ(j*21+i,a.x,a.y,a.z);}
+   feedPos.needsUpdate=true;feedGeo.computeVertexNormals();feed.visible=wind>.002&&wind<.999;
+   const mobile=innerWidth<=700,wide=mobile?10:5.7,dist=T.MathUtils.lerp(mobile?6.2:5.0,wide,reveal);
+   camera.position.set(1.8,2.35,dist);camera.lookAt(T.MathUtils.lerp(roll.position.x,0,reveal),0,roll.position.z*(1-reveal));
+   world.rotation.y=-.08+finish*.22;
+   const step=p<.24?0:p<.88?1:2;section.querySelectorAll('[data-reel-step]').forEach((el,i)=>el.classList.toggle('is-current',i===step));canvas.dataset.progress=p.toFixed(3);
+  }
+  function frame(now){raf=0;if(!visible||dead||document.hidden)return;if(dirty){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();dirty=false;}
+   const r=section.getBoundingClientRect(),pin=section.querySelector('.reel3d-pin');target=reduced.matches?1:clamp(-r.top/Math.max(1,section.offsetHeight-pin.offsetHeight),0,1);
+   const dt=Math.min(.05,(now-last)/1000||1/60);last=now;current+=(target-current)*(1-Math.exp(-9*dt));if(Math.abs(target-current)<.0001)current=target;
+   update(current);renderer.render(scene,camera);if(current!==target)raf=requestAnimationFrame(frame);
+  }
+  function wake(){if(!raf&&visible&&!dead&&!document.hidden){last=performance.now();raf=requestAnimationFrame(frame);}}
+  new IntersectionObserver(e=>{visible=e[0].isIntersecting;if(visible)wake();else{cancelAnimationFrame(raf);raf=0;}},{rootMargin:'100px'}).observe(section);
+  new ResizeObserver(()=>{dirty=true;wake();}).observe(stage);
+  addEventListener('scroll',wake,{passive:true});addEventListener('resize',()=>{dirty=true;wake();},{passive:true});reduced.addEventListener('change',wake);document.addEventListener('visibilitychange',wake);
+  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();dead=true;cancelAnimationFrame(raf);section.classList.remove('reel3d-ready');});
+  section.classList.add('reel3d-ready');
+ }catch(error){renderer?.dispose();section.classList.remove('reel3d-ready');console.warn('Visualizzazione alternativa della bobina.',error);}
 }
