@@ -16,7 +16,7 @@ from section_motion import section_motion
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "60"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "73"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -44,14 +44,21 @@ MENU_IMG = {
     "sostenibilita": "azienda/nastro-psv.webp",
     "azienda": "azienda/sede-insegna.webp",
     "contatti": "azienda/sede-cancello.webp",
+    "home": "azienda/reparto-produzione.webp",
 }
+
+
+# voci del menu: la pagina iniziale in testa, poi le sezioni nell'ordine del sito
+HOME_ITEM = ("home", "index.html", "00", "Home", "PAGINA INIZIALE", None)
+MENU_ITEMS = [HOME_ITEM] + SECTIONS
 
 
 def menu_links(current):
     out = []
-    for i, (key, href, num, label, eyebrow, _img) in enumerate(SECTIONS):
-        cls = "is-current" if key == current else ""
-        cur = ' aria-current="page"' if key == current else ""
+    for i, (key, href, num, label, eyebrow, _img) in enumerate(MENU_ITEMS):
+        here = key == (current or "home")
+        cls = "is-current" if here else ""
+        cur = ' aria-current="page"' if here else ""
         out.append(
             f'      <a href="{href}" class="{cls}"{cur} style="--i:{i}" data-key="{i}" data-label="{label}">'
             f'<span>{label}</span><small>{eyebrow.title()}</small></a>'
@@ -59,10 +66,18 @@ def menu_links(current):
     return "\n".join(out)
 
 
+def header_where(current):
+    """Segnaposto editoriale al centro della testata: numero e nome della sezione."""
+    if current not in BY_KEY:
+        return '<span class="header-where" aria-hidden="true"></span>'
+    _k, _href, num, label, _e, _i = BY_KEY[current]
+    return f'<span class="header-where" aria-hidden="true"><b>{num}</b><i></i>{label}</span>'
+
+
 def menu_preview():
     imgs = "\n".join(
         f'      <img data-src="assets/{MENU_IMG[s[0]]}" alt="" width="1500" height="1000" data-cap="{s[3]}">'
-        for s in SECTIONS
+        for s in MENU_ITEMS
     )
     return f"""<figure class="menu-preview" aria-hidden="true">
 {imgs}
@@ -89,7 +104,7 @@ def page_footer(current):
     replay = '<button class="replay" type="button">Rivedi l’intro ↻</button>' if current is None else '<a href="index.html">Torna all’indice</a>'
     return f"""{onward}
 <footer class="site-footer">
-  <a href="index.html" class="footer-brand" aria-label="Imballaggi 2G, pagina iniziale"><img src="assets/logo-ink.webp" alt="Imballaggi 2G" width="240" height="69"></a>
+  <a href="index.html" class="footer-brand" aria-label="Imballaggi 2G, pagina iniziale"><img src="assets/logo-light.webp" alt="Imballaggi 2G" width="240" height="69"></a>
   <p>&copy; <span id="year">2026</span> Imballaggi 2G S.r.l. &middot; Via dei Cavamonti, Z.I. &middot; 73017 Sannicola (LE)</p>
   <a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram</a>
   {replay}
@@ -135,6 +150,7 @@ def shell(current, title, description, body, body_class=""):
 <script src="app.js?v={VERSION}" defer></script>
 {'<script type="module" src="reel-opening.js?v='+VERSION+'"></script>' if current == 'bobine' else ''}
 {'<script type="module" src="bag-3d.js?v='+VERSION+'"></script>' if current == 'buste' else ''}
+{'<script type="module" src="bubble-3d.js?v='+VERSION+'"></script>' if current == 'protezioni' else ''}
 {'<script type="module" src="shoulder-3d.js?v='+VERSION+'"></script><script src="shoulder-variants.js?v='+VERSION+'" defer></script><script src="shoulder-mobile.js?v='+VERSION+'" defer></script>' if current == 'coprispalla' else ''}
 </head>
 <body{cls}>
@@ -148,8 +164,9 @@ def shell(current, title, description, body, body_class=""):
     <img class="brand-dark" src="assets/logo-ink.webp" width="260" height="75" alt="Imballaggi 2G — Keep it safe">
     <img class="brand-light" src="assets/logo-light.webp" width="260" height="75" alt="" aria-hidden="true">
   </a>
+  {header_where(current)}
   <div class="header-actions">
-    <a class="pill" href="contatti.html">Parliamone </a>
+    <a class="pill" href="contatti.html">Parliamone <span aria-hidden="true">→</span></a>
     <button class="burger" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="menu">
       <span class="burger-box" aria-hidden="true"><span></span><span></span><span></span></span>
       <span class="burger-label" aria-hidden="true">Menu</span>

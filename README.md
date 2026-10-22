@@ -42,7 +42,7 @@ Introduce l'azienda e poi consegna il visitatore alle sezioni con un **navigator
 
 Intro su fondo carta con rivelazione del logo, alone verde e tartaruga lungo una linea sottile. Una sola volta per sessione, ripetibile dal footer senza perdere la posizione. Ogni pagina ha un ingresso breve legato al materiale; sostenibilità usa la tartaruga e una superficie che si ripulisce. Le transizioni non bloccano la navigazione nativa.
 
-La bobina usa tre fotografie animate: rotolo, pellicola, protezione. I tre controlli permettono anche la selezione manuale, senza una lunga sezione sticky. Il pluriball si apre con una maschera, un riflesso e un controllo per esplorarne la trama.
+La bobina usa tre fotografie animate: rotolo, pellicola, protezione. I tre controlli permettono anche la selezione manuale, senza una lunga sezione sticky. Il pluriball è una scena 3D (`bubble-3d.js`) che resta nel flusso della pagina: mentre la sezione scorre, un foglio di pluriball avvolge un bicchiere di cristallo.
 
 Menu con ripristino della posizione, focus da tastiera e chiusura su Escape; header con soglia antioscillazione; parallax misurato sul contenitore stabile. Indietro/avanti restano nativi. Le animazioni rispettano `prefers-reduced-motion`.
 

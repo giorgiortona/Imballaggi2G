@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "site", "runtimeExecutable": "node", "runtimeArgs": ["C:/Users/Admin/AppData/Local/Temp/claude/C--Users-Admin--claude-spares-spare-SryTEm/ffd2e32b-150e-49af-9c36-2abb70824ab2/scratchpad/serve.js", "dist", "8765"], "port": 8765 }
+  ]
+}

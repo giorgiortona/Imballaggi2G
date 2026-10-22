@@ -1369,3 +1369,86 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 @keyframes bag-photo-reveal{0%{transform:translateY(28px) rotate(-3deg)}50%{transform:translateY(0) rotate(0)}100%{transform:translateY(-28px) rotate(3deg)}}
 @media(max-width:760px){.bag-product-photo{max-width:360px}.bag-real-grid{gap:48px}}
 @media(prefers-reduced-motion:reduce){.bag-product-photo{animation:none}}
+
+/* pluriball: il foglio avvolge un cristallo mentre la sezione scorre, senza fermare la pagina */
+.bubble-study .bubble-window{height:clamp(380px,50vw,640px);background:radial-gradient(ellipse at 50% 42%,#fbfaf7 0%,#e6e5df 62%,#d5d5ce 100%);border:0}
+.bubble-window canvas{display:none;width:100%;height:100%}
+.bubble-ready .bubble-window canvas{display:block}
+.bubble-fallback{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.55) brightness(.85)}
+.bubble-ready .bubble-fallback{display:none}
+.bubble-caption [data-bubble-step]{display:none}.bubble-caption .is-current{display:inline}
+@media(max-width:760px){.bubble-study .bubble-window{height:min(100vw,440px)}}
+
+
+/* footer sempre nero, su ogni pagina: logo chiaro, testi grigio-verdi */
+.site-footer,.is-dark .site-footer{background:var(--dark);color:#93a398;border-top:1px solid rgba(255,255,255,.08)}
+.site-footer .footer-brand img,.is-dark .site-footer .footer-brand img{filter:none}
+.site-footer .replay{color:#93a398}
+
+/* ---------- testata editoriale: segnaposto di sezione al centro, capsula sospesa quando si scorre ---------- */
+.header{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;top:0;left:0;right:0;height:88px;border:1px solid transparent;border-radius:0;
+  transition:top .55s var(--ease),left .55s var(--ease),right .55s var(--ease),height .55s var(--ease),padding .55s var(--ease),border-radius .55s var(--ease),background .4s var(--ease),border-color .4s var(--ease),box-shadow .4s var(--ease),transform .5s var(--ease)}
+.header::before{content:"";position:absolute;inset:0 0 -48px;background:linear-gradient(rgba(6,10,8,.34),rgba(6,10,8,0));pointer-events:none;z-index:-1;transition:opacity .4s var(--ease)}
+.header.solid::before,.header.menu-open::before,.reel-intro-visible .header::before{opacity:0}
+.brand{justify-self:start}
+.brand,.header.solid .brand{width:172px}
+.header.solid .brand{width:148px}
+.header.solid{top:12px;left:clamp(12px,3vw,40px);right:clamp(12px,3vw,40px);height:62px;padding:0 clamp(18px,2.2vw,30px);border-radius:18px;
+  background:rgba(247,248,245,.82);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border-color:rgba(18,22,21,.08);box-shadow:0 18px 40px -26px rgba(18,22,21,.45)}
+.header.hidden{transform:translateY(calc(-100% - 24px))}
+.header.menu-open,.header.solid.menu-open{top:0;left:0;right:0;height:88px;border-radius:0;background:transparent;border-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;
+  padding:0 calc(var(--gutter) + var(--scrollbar-gap,0px)) 0 var(--gutter)}
+.header-where{justify-self:center;display:flex;align-items:center;gap:12px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.8);white-space:nowrap;transition:color .4s var(--ease),opacity .3s}
+.header-where b{font-weight:600;color:var(--green-soft)}
+.header-where i{width:26px;height:1px;background:currentColor;opacity:.5}
+.header.solid .header-where,.reel-intro-visible .header:not(.menu-open) .header-where{color:var(--muted)}
+.header.solid .header-where b,.reel-intro-visible .header:not(.menu-open) .header-where b{color:var(--green-deep)}
+.header.menu-open .header-where{opacity:0}
+.header-actions{justify-self:end;gap:34px}
+/* "Parliamone" diventa un link sottile con filo e freccia, non piu un bottone incorniciato */
+.pill,.header.solid .pill,.reel-intro-visible .header:not(.menu-open) .pill{position:relative;height:auto;padding:7px 0;border:0;border-radius:0;background:none;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.pill::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;opacity:.4;transform-origin:left;transition:opacity .3s,transform .55s var(--ease)}
+.pill span{font-size:13px;letter-spacing:0}
+.pill:hover,.header.solid .pill:hover{background:none;border:0;border-radius:0;gap:14px;color:var(--green-soft)}
+.header.solid .pill:hover{color:var(--green-deep)}
+.pill:hover::after{opacity:1}
+.pill:hover span{transform:translateX(2px)}
+/* burger: due fili senza cornice, l'etichetta a sinistra */
+.burger{flex-direction:row-reverse;gap:14px;padding:6px 0}
+.burger-label{font-size:11px;letter-spacing:.22em}
+.burger-box,.header.solid .burger-box,.header.menu-open .burger-box,.reel-intro-visible .header:not(.menu-open) .burger-box,.burger:hover .burger-box{width:26px;height:13px;padding:0;border:0;border-radius:0;background:none;gap:0;justify-content:space-between;align-items:flex-end}
+.burger-box span{width:26px;height:1.5px}
+.burger-box span:nth-child(2){display:none}
+.burger-box span:nth-child(3){width:16px}
+.burger:hover .burger-box span:nth-child(3){width:26px}
+.burger[aria-expanded=true] .burger-box span:nth-child(1){transform:translateY(5.75px) rotate(45deg)}
+.burger[aria-expanded=true] .burger-box span:nth-child(3){width:26px;transform:translateY(-5.75px) rotate(-45deg)}
+@media(max-width:900px){.header-where{display:none}.header{grid-template-columns:1fr auto}}
+@media(max-width:760px){
+  .header,.header.menu-open,.header.solid.menu-open{height:72px}
+  .header.solid{top:8px;left:10px;right:10px;height:56px;border-radius:16px;padding:0 16px}
+  .brand,.header.solid .brand{width:132px}.header.solid .brand{width:120px}
+  .burger-box,.header.solid .burger-box,.burger:hover .burger-box{width:26px;height:13px;padding:0}
+  .burger{padding:12px 0}
+}
+
+/* testata dello stesso colore del footer, in ogni stato: logo chiaro, testi e fili bianchi */
+.header,.header.solid,.header.menu-open,.header.solid.menu-open{background:var(--dark);-webkit-backdrop-filter:none;backdrop-filter:none}
+.header{border-color:transparent;border-bottom-color:rgba(255,255,255,.06)}
+.header.solid{border-color:rgba(255,255,255,.08);box-shadow:0 18px 40px -22px rgba(0,0,0,.55)}
+.header::before{display:none}
+.header .brand-dark,.header.solid .brand-dark,.reel-intro-visible .header:not(.menu-open) .brand-dark{opacity:0}
+.header .brand-light,.header.solid .brand-light,.reel-intro-visible .header:not(.menu-open) .brand-light{opacity:1}
+.header.solid .pill,.header.solid .burger-label,.reel-intro-visible .header:not(.menu-open) .pill,.reel-intro-visible .header:not(.menu-open) .burger-label{color:#fff}
+.header.solid .burger-box span,.reel-intro-visible .header:not(.menu-open) .burger-box span{background:#fff}
+.header.solid .header-where,.reel-intro-visible .header:not(.menu-open) .header-where{color:rgba(255,255,255,.72)}
+.header.solid .header-where b,.reel-intro-visible .header:not(.menu-open) .header-where b{color:var(--green-soft)}
+.header.solid .pill:hover{color:var(--green-soft)}
+
+/* pluriball: il riquadro resta fermo finche non e tutto visibile, poi si ferma al centro e lo scroll guida la sequenza */
+.bubble-study{--stage-h:min(clamp(380px,50vw,640px),calc(100svh - 160px))}
+.bubble-study .bubble-window{height:var(--stage-h)}
+.bubble-ready .bubble-track{height:calc(var(--stage-h) + 200svh)}
+.bubble-ready .bubble-window{position:sticky;top:max(96px,calc(50svh - var(--stage-h) / 2 + 36px))}
+@media(max-width:760px){.bubble-study{--stage-h:min(100vw,440px,calc(100svh - 150px))}.bubble-ready .bubble-track{height:calc(var(--stage-h) + 180svh)}.bubble-ready .bubble-window{top:max(84px,calc(50svh - var(--stage-h) / 2 + 30px))}}
+@media(prefers-reduced-motion:reduce){.bubble-ready .bubble-track{height:auto}.bubble-ready .bubble-window{position:relative;top:auto}}
