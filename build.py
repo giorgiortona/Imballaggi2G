@@ -16,7 +16,7 @@ from section_motion import section_motion
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "55"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "60"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -133,7 +133,7 @@ def shell(current, title, description, body, body_class=""):
 <link rel="preload" href="assets/manrope-regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="style.css?v={VERSION}">
 <script src="app.js?v={VERSION}" defer></script>
-{'<script type="module" src="reel-3d.js?v='+VERSION+'"></script>' if current == 'bobine' else ''}
+{'<script type="module" src="reel-opening.js?v='+VERSION+'"></script>' if current == 'bobine' else ''}
 {'<script type="module" src="bag-3d.js?v='+VERSION+'"></script>' if current == 'buste' else ''}
 {'<script type="module" src="shoulder-3d.js?v='+VERSION+'"></script><script src="shoulder-variants.js?v='+VERSION+'" defer></script><script src="shoulder-mobile.js?v='+VERSION+'" defer></script>' if current == 'coprispalla' else ''}
 </head>
@@ -346,16 +346,7 @@ BOBINE = page_hero(
     "Avvolgere.<br>Proteggere.<br><em>Ripensare.</em>",
     "Film per il confezionamento e la movimentazione. Con Tiger Film, le linee Eco Converting, Eco Manuale ed Eco Automatico danno spazio a materiale proveniente da processi di riciclo.",
 ) + """
-<section class="reel3d-section" id="bobina" data-reel-3d aria-labelledby="reel-title">
-  <div class="reel3d-pin">
-    <div class="wrap reel3d-heading"><h2 class="display small" id="reel-title">La forza di<br><em>un gesto leggero.</em></h2><p>Si distende. Avvolge. Protegge.</p></div>
-    <div class="reel3d-stage" role="img" aria-label="Una bobina di film si srotola con lo scorrimento e avvolge il logo Imballaggi 2G. Ricostruzione fotografica illustrativa animata.">
-      <canvas aria-hidden="true"></canvas>
-      <div class="reel3d-fallback"><span class="reel3d-fallback-roll" aria-hidden="true"></span><img src="assets/logo-ink.webp" width="1200" height="344" alt="Imballaggi 2G"><span>Il film avvolge. Il valore resta.</span></div>
-    </div>
-    <div class="wrap reel3d-footer"><div class="reel3d-steps" aria-hidden="true"><span class="is-current" data-reel-step>La bobina</span><span data-reel-step>Intorno a ciò che conta</span><span data-reel-step>Il valore è protetto</span></div><a class="reel3d-skip" href="#tiger-title">Continua <span aria-hidden="true">↓</span></a></div>
-  </div>
-</section>
+
 
 <section class="block" aria-labelledby="tiger-title">
   <div class="wrap">
@@ -439,12 +430,12 @@ BUSTE = page_hero(
  <div class="bag-pin">
   <div class="wrap bag-heading"><h2 class="display small" id="bag-title">Il dettaglio.<br><em>Al sicuro.</em></h2><p>Entra. Si adatta. Protegge.<br>Segui il gesto con lo scroll.</p></div>
   <div class="bag-stage" role="img" aria-label="Un occhiale da sole entra in una busta a bolle d’aria; l’aletta si ripiega sopra l’apertura. Ricostruzione illustrativa."><canvas aria-hidden="true"></canvas><img class="bag-fallback" src="assets/video/busta-occhiali.webp" alt="La busta in pluriball con l’occhiale all’interno" width="720" height="1280"></div>
-  <div class="wrap bag-footer"><div aria-hidden="true"><span data-bag-step class="is-current">Un oggetto da custodire</span><span data-bag-step>Dentro la protezione</span><span data-bag-step>Il gesto si completa</span></div><a class="text-link" href="#bag-real">Il prodotto reale <span>↓</span></a></div>
+  <div class="wrap bag-footer"><div aria-hidden="true"><span data-bag-step class="is-current">Un oggetto da custodire</span><span data-bag-step>Dentro la protezione</span><span data-bag-step>Il gesto si completa</span></div><a class="text-link" href="#bag-real">La busta da vicino <span>↓</span></a></div>
  </div>
 </section>
 <section class="block bag-real" id="bag-real" aria-labelledby="bag-real-title"><div class="wrap bag-real-grid">
- <div class="bag-video"><video controls playsinline preload="none" poster="assets/video/busta-occhiali.webp" width="720" height="1280" aria-label="Video dimostrativo della busta in pluriball con occhiali"><source src="assets/video/busta-occhiali.mp4" type="video/mp4"></video></div>
- <div><h2 id="bag-real-title" class="display small" data-lines>La protezione,<br><em>da vicino.</em></h2><p class="lead">Una busta leggera, una trama di bolle d’aria, un oggetto da custodire. Il campione reale mostra la trasparenza del materiale e il dettaglio dell’aletta.</p>
+ <figure class="bag-product-photo"><img src="assets/realistic/busta-studio-v60.png" width="1024" height="1536" loading="lazy" decoding="async" alt="Ricostruzione fotografica di una busta in pluriball: celle d’aria, saldature laterali e aletta di chiusura"></figure>
+ <div><h2 id="bag-real-title" class="display small" data-lines>La protezione,<br><em>da vicino.</em></h2><p class="lead">Una busta leggera, una trama di bolle d’aria, un oggetto da custodire. La trasparenza lascia intravedere il contenuto; le saldature laterali e l’aletta completano la protezione.</p>
  <div class="bag-detail"><svg viewBox="0 0 240 95" aria-hidden="true"><g fill="#d9e9e0" stroke="#6a9f85" stroke-width="1.2"><ellipse cx="30" cy="25" rx="18" ry="17"/><ellipse cx="74" cy="25" rx="18" ry="17"/><ellipse cx="118" cy="25" rx="18" ry="17"/><ellipse cx="162" cy="25" rx="18" ry="17"/><ellipse cx="206" cy="25" rx="18" ry="17"/><ellipse cx="30" cy="68" rx="18" ry="17"/><ellipse cx="74" cy="68" rx="18" ry="17"/><ellipse cx="118" cy="68" rx="18" ry="17"/><ellipse cx="162" cy="68" rx="18" ry="17"/><ellipse cx="206" cy="68" rx="18" ry="17"/></g><path d="M20 22Q22 13 31 13M64 22Q66 13 75 13M108 22Q110 13 119 13" fill="none" stroke="white" stroke-width="3"/></svg><div><h3>La trama a bolle</h3><p>Il materiale avvolge il contenuto lasciandolo visibile.</p></div></div>
  <div class="bag-detail"><svg viewBox="0 0 240 95" fill="none" aria-hidden="true"><path d="M30 25L208 25L208 83L30 83Z M30 25L51 8L191 8L208 25" stroke="#6a9f85" stroke-width="1.4" fill="#edf3ef"/><path d="M43 34H195" stroke="#2f8661" stroke-width="3"/><path d="M110 3Q155 5 151 43M144 37L151 44L158 36" stroke="#233e31" stroke-width="2"/></svg><div><h3>L’aletta di chiusura</h3><p>Il dettaglio del campione che completa il confezionamento.</p></div></div>
  <a class="text-link" href="contatti.html">Parliamo del tuo formato </a></div>
@@ -637,7 +628,14 @@ PAGES = [
 def main():
     DIST.mkdir(exist_ok=True)
     for key, filename, title, description, body, body_class in PAGES:
-        html = shell(key, title, description, with_photos(key, enrich(key, body)), body_class)
+        content = with_photos(key, enrich(key, body))
+        if key == "bobine":
+            hero, rest = content.split("</section>", 1)
+            content = ('<div class="reel-opening" id="bobina" data-reel-opening><div class="reel-opening-pin">'
+                       '<div class="reel-opening-content">' + hero + '</section></div>'
+                       '<div class="reel-opening-logo" aria-hidden="true"><img src="assets/logo-ink.webp" width="1200" height="344" alt=""></div><div class="reel-opening-art" aria-hidden="true"><canvas></canvas></div>'
+                       '</div></div>' + rest)
+        html = shell(key, title, description, content, body_class)
         (DIST / filename).write_text(html, encoding="utf-8")
         print(f"  {filename:22} {len(html):>7} byte")
     print(f"\n{len(PAGES)} pagine scritte in {DIST} (versione asset ?v={VERSION})")

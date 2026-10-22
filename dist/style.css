@@ -1338,3 +1338,34 @@ blockquote{margin:35px 0;font-size:clamp(26px,3vw,46px);line-height:1.15;letter-
 .burger{padding:0 0 0 4px}
 @media(max-width:1100px){.brand,.header.solid .brand{width:172px}.header.solid .brand{width:160px}}
 @media(max-width:760px){.header.solid{height:64px}.brand,.header.solid .brand{width:150px}.header.solid .brand{width:140px}.burger-box{width:44px;height:44px;padding-left:12px}}
+
+/* Bobine: a material curtain introduces the actual page after its entry animation. */
+.reel-opening{position:relative;background:#eeede8}
+.reel-opening-art{display:none}
+.reel-opening.opening-ready{height:245svh}
+.opening-ready .reel-opening-pin{position:sticky;top:0;height:100svh;overflow:hidden;isolation:isolate}
+.opening-ready .reel-opening-content{position:absolute;inset:0;opacity:0;z-index:1;will-change:opacity,transform}
+.opening-ready .reel-opening-content .page-hero{height:100svh;min-height:0;box-sizing:border-box}
+.opening-ready .reel-opening-art{display:block;position:absolute;inset:0;z-index:2;pointer-events:none;will-change:transform,opacity}
+.reel-opening-art canvas{display:block;width:100%;height:100%}
+@media(max-width:700px){.reel-opening.opening-ready{height:220svh}.opening-ready .reel-opening-content .page-hero{padding-top:calc(var(--header) + 80px);display:flex;align-items:center}}
+@media(prefers-reduced-motion:reduce){.reel-opening.opening-ready{height:auto}.opening-ready .reel-opening-pin{position:relative;height:auto;overflow:visible}.opening-ready .reel-opening-content{position:relative;opacity:1!important;transform:none!important}.opening-ready .reel-opening-art{display:none}}
+.reel-intro-visible .header:not(.menu-open) .brand-dark{opacity:1}
+.reel-intro-visible .header:not(.menu-open) .brand-light{opacity:0}
+.reel-intro-visible .header:not(.menu-open) .burger-label,.reel-intro-visible .header:not(.menu-open) .pill{color:var(--dark)}
+.reel-intro-visible .header:not(.menu-open) .burger-box,.reel-intro-visible .header:not(.menu-open) .pill{border-color:#b5c1b5}
+.reel-intro-visible .header:not(.menu-open) .burger-box span{background:var(--dark)}
+
+/* The brand is revealed by the full-height film, beneath its reflections. */
+.reel-opening-logo{display:none}
+.opening-ready .reel-opening-logo{display:flex;position:absolute;inset:0;align-items:center;justify-content:center;z-index:2;pointer-events:none;opacity:0;will-change:clip-path,opacity,transform}
+.reel-opening-logo img{width:clamp(240px,64vw,1100px);height:auto}
+.opening-ready .reel-opening-art{z-index:3}
+@media(prefers-reduced-motion:reduce){.opening-ready .reel-opening-logo{display:none}}
+
+/* Studio product photograph replaces the demonstration video. */
+.bag-product-photo{margin:0;width:100%;max-width:520px;justify-self:center;animation:bag-photo-reveal linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+.bag-product-photo img{display:block;width:100%;height:auto;object-fit:contain}
+@keyframes bag-photo-reveal{0%{transform:translateY(28px) rotate(-3deg)}50%{transform:translateY(0) rotate(0)}100%{transform:translateY(-28px) rotate(3deg)}}
+@media(max-width:760px){.bag-product-photo{max-width:360px}.bag-real-grid{gap:48px}}
+@media(prefers-reduced-motion:reduce){.bag-product-photo{animation:none}}

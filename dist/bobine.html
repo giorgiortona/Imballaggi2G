@@ -9,9 +9,9 @@
 <meta name="theme-color" content="#121615">
 <link rel="icon" href="assets/mark-ink.webp">
 <link rel="preload" href="assets/manrope-regular.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="style.css?v=55">
-<script src="app.js?v=55" defer></script>
-<script type="module" src="reel-3d.js?v=55"></script>
+<link rel="stylesheet" href="style.css?v=60">
+<script src="app.js?v=60" defer></script>
+<script type="module" src="reel-opening.js?v=60"></script>
 
 
 </head>
@@ -76,14 +76,14 @@
 </div>
 
 <main id="main">
-<section class="page-hero tone-light" aria-labelledby="ph-title">
+<div class="reel-opening" id="bobina" data-reel-opening><div class="reel-opening-pin"><div class="reel-opening-content"><section class="page-hero tone-light" aria-labelledby="ph-title">
   <div class="ph-media" data-parallax="0.04"><img src="assets/azienda/bobine-magazzino.webp" alt="" loading="eager" width="1500" height="1000"></div>
   <div class="ph-shade" aria-hidden="true"></div>
   <div class="ph-body">
     <h1 id="ph-title" class="display" data-lines>Avvolgere.<br>Proteggere.<br><em>Ripensare.</em></h1>
     <p class="ph-lead">Film per il confezionamento e la movimentazione. Con Tiger Film, le linee Eco Converting, Eco Manuale ed Eco Automatico danno spazio a materiale proveniente da processi di riciclo.</p>
   </div>
-</section>
+</section></div><div class="reel-opening-logo" aria-hidden="true"><img src="assets/logo-ink.webp" width="1200" height="344" alt=""></div><div class="reel-opening-art" aria-hidden="true"><canvas></canvas></div></div></div>
 <section class="block">
   <div class="wrap shot-split">
     <figure class="shot photo-mask " style="--ratio:3/4"><span class="shot-frame" data-parallax="0.05"><img src="assets/azienda/bobina-macchina.webp" alt="Una bobina di film montata sulla macchina, pronta a srotolarsi" loading="lazy"></span></figure>
@@ -94,16 +94,7 @@
     </div>
   </div>
 </section>
-<section class="reel3d-section" id="bobina" data-reel-3d aria-labelledby="reel-title">
-  <div class="reel3d-pin">
-    <div class="wrap reel3d-heading"><h2 class="display small" id="reel-title">La forza di<br><em>un gesto leggero.</em></h2><p>Si distende. Avvolge. Protegge.</p></div>
-    <div class="reel3d-stage" role="img" aria-label="Una bobina di film si srotola con lo scorrimento e avvolge il logo Imballaggi 2G. Ricostruzione fotografica illustrativa animata.">
-      <canvas aria-hidden="true"></canvas>
-      <div class="reel3d-fallback"><span class="reel3d-fallback-roll" aria-hidden="true"></span><img src="assets/logo-ink.webp" width="1200" height="344" alt="Imballaggi 2G"><span>Il film avvolge. Il valore resta.</span></div>
-    </div>
-    <div class="wrap reel3d-footer"><div class="reel3d-steps" aria-hidden="true"><span class="is-current" data-reel-step>La bobina</span><span data-reel-step>Intorno a ciò che conta</span><span data-reel-step>Il valore è protetto</span></div><a class="reel3d-skip" href="#tiger-title">Continua <span aria-hidden="true">↓</span></a></div>
-  </div>
-</section>
+
 
 <section class="block" aria-labelledby="tiger-title">
   <div class="wrap">

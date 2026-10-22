@@ -222,12 +222,6 @@ END["bobine"] = row(
     ], tint=True)
 
 # ---------------------------------------------------------------- protezioni
-AFTER["protezioni"] = split(
-    "pluriball-fogli.webp",
-    "La struttura a bolle dei fogli di pluriball, vista da vicino",
-    "L’aria diventa<br><em>protezione.</em>",
-    "Una superficie di piccole camere d’aria accompagna il prodotto e attutisce gli urti. In fogli o in bobina, il pluriball si adatta alla forma di ciò che vuoi proteggere.")
-
 END["protezioni"] = row(
     "Morbido fuori,<br>fermo <em>dentro.</em>",
     "L'espanso lavora dove il pluriball non arriva: superfici lucide, spigoli, pezzi che non devono rigarsi.",
@@ -295,9 +289,9 @@ END["azienda"] = band([
 # ---------------------------------------------------------------- contatti
 END["contatti"] = band([
     ("sede-insegna.webp", "L'insegna sopra l'ingresso"),
-    ("sede-edificio.webp", "La palazzina della sede"),
-    ("sede-cancello.webp", "L'ingresso dalla strada"),
-    ("magazzino-bobine.webp", "Il magazzino"),
+    ("coprispalla-linea.webp", "Il coprispalla sulla linea di lavorazione"),
+    ("magazzino-muletto.webp", "Il muletto fra le bobine in magazzino"),
+    ("nastro-psv.webp", "Dettaglio del nastro con il marchio Plastica Seconda Vita"),
 ])
 
 # ---------------------------------------------------------------- home
