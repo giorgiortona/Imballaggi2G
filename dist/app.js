@@ -52,23 +52,43 @@
   ['wheel','touchstart','pointerdown'].forEach(function(type){window.addEventListener(type,function(event){if(event.target.closest&&event.target.closest('.replay,[data-replay-entry]'))return;finishIntro();finishEntry();},{passive:true});});
   document.addEventListener('keydown',function(e){if(['Escape','Tab','PageDown','PageUp','ArrowDown','ArrowUp',' '].includes(e.key)){finishIntro();finishEntry();}});
 
-  /* Menu: compensate scrollbar, retain the exact reading position, restore focus. */
+  /* Menu: compensate scrollbar, retain the exact reading position, restore focus.
+     The panel is a small navigation console: photo preview, decoding labels, spotlight grid, number keys. */
   var burger=document.querySelector('.burger'),menu=document.querySelector('#menu'),header=document.querySelector('#header');
   var menuOpen=false,lockedY=0,focusTimer;
   var main=document.querySelector('main'),footer=document.querySelector('.site-footer'),onward=document.querySelector('.onward');
+  var burgerLabel=burger&&burger.querySelector('.burger-label');
+  var menuLinks=menu?Array.from(menu.querySelectorAll('.menu-nav a')):[];
+  var menuImgs=menu?Array.from(menu.querySelectorAll('.menu-preview img')):[];
+  var menuCap=document.querySelector('#menu-cap');
+  function loadMenuImages(){menuImgs.forEach(function(img){if(img.dataset.src){img.src=img.dataset.src;delete img.dataset.src;}});}
+  function previewSection(index){
+    var link=menuLinks[index];if(!link)return;
+    menuLinks.forEach(function(a,i){a.classList.toggle('is-active',i===index);});
+    menuImgs.forEach(function(img,i){img.classList.toggle('is-active',i===index);});
+    if(menuCap&&menuImgs[index])menuCap.textContent=menuImgs[index].dataset.cap||'';
+  }
   function setMenu(open,returnFocus){
     if(!burger||!menu||menuOpen===open)return;
     clearTimeout(focusTimer);menuOpen=open;
     burger.setAttribute('aria-expanded',String(open));burger.setAttribute('aria-label',open?'Chiudi il menu':'Apri il menu');
+    if(burgerLabel)burgerLabel.textContent=open?'Chiudi':'Menu';
     menu.classList.toggle('open',open);menu.setAttribute('aria-hidden',String(!open));menu.inert=!open;
     header.classList.toggle('menu-open',open);header.classList.remove('hidden');
     [main,footer,onward].forEach(function(el){if(el)el.inert=open;});
     if(open){lockedY=window.scrollY;root.style.setProperty('--scrollbar-gap',(innerWidth-document.documentElement.clientWidth)+'px');document.body.style.top=-lockedY+'px';document.body.classList.add('locked');
+      loadMenuImages();var current=menuLinks.findIndex(function(a){return a.classList.contains('is-current');});previewSection(current>-1?current:0);
       focusTimer=setTimeout(function(){if(menuOpen){var first=menu.querySelector('a');if(first)first.focus({preventScroll:true});}},300);
     }else{document.body.classList.remove('locked');document.body.style.top='';root.style.removeProperty('--scrollbar-gap');window.scrollTo({top:lockedY,behavior:'instant'});if(returnFocus)burger.focus({preventScroll:true});schedule();}
   }
   if(menu&&burger){menu.inert=true;burger.addEventListener('click',function(){setMenu(!menuOpen,true);});
     var bg=menu.querySelector('.menu-bg');if(bg)bg.addEventListener('click',function(){setMenu(false,true);});
+    menuLinks.forEach(function(a,i){
+      a.setAttribute('aria-label',(a.dataset.label||a.textContent));
+      a.addEventListener('mouseenter',function(){previewSection(i);});
+      a.addEventListener('focus',function(){previewSection(i);});
+    });
+    menu.addEventListener('pointermove',function(event){menu.style.setProperty('--mx',event.clientX+'px');menu.style.setProperty('--my',event.clientY+'px');},{passive:true});
     document.addEventListener('keydown',function(event){if(!menuOpen)return;if(event.key==='Escape'){setMenu(false,true);return;}
       if(event.key==='Tab'){var focusables=[burger].concat(Array.from(menu.querySelectorAll('a,button')));var index=focusables.indexOf(document.activeElement);if(event.shiftKey&&(index<=0)){event.preventDefault();focusables[focusables.length-1].focus();}else if(!event.shiftKey&&(index===focusables.length-1||index===-1)){event.preventDefault();burger.focus();}}
     });
