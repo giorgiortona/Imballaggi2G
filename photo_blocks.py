@@ -114,25 +114,25 @@ AFTER["coprispalla"] = """
  <div class="shoulder-pin">
   <figure class="shoulder-visual" aria-label="La giacca sulla gruccia entra dal fondo aperto del coprispalla; inquadrature ravvicinate che cambiano al passaggio tra i testi; dettaglio illustrativo del taglio per bar-code. Ricostruzione illustrativa.">
    <div class="shoulder-word" aria-hidden="true">2G</div>
-   <div class="shoulder-object"><img src="assets/realistic/coprispalla-studio.webp" width="1024" height="1536" loading="lazy" alt="Coprispalla in film bianco traslucido sulla gruccia, con profilo sagomato."></div>
+   <div class="shoulder-object"><img src="assets/realistic/coprispalla-opaco-v82.png" width="1024" height="1536" loading="lazy" alt="Coprispalla in film bianco traslucido sulla gruccia, con profilo sagomato."></div>
    <canvas class="shoulder-canvas" aria-hidden="true"></canvas>
   </figure>
   <div class="shoulder-copy">
    <article class="shoulder-chapter" id="shoulder-detail-0">
     <h2 class="display small" id="shoulder-title">La cura prende<br><em>forma.</em></h2>
-    <p>Il taglio sagomato segue la linea della spalla. Il gancio passa attraverso l’apertura superiore, mentre il film si dispone intorno alla gruccia e al capo.</p>
-    <figure class="mobile-product mobile-product-0" data-mobile-product="0"><span aria-hidden="true">2G</span><div class="mobile-product-motion"><img class="mobile-jacket" src="assets/realistic/giacca-fronte.webp" alt="" loading="lazy"><img class="mobile-cover" src="assets/realistic/coprispalla-originale-lossless.png" alt="Coprispalla in film sagomato" loading="lazy"></div></figure>
-    <p>Una protezione dedicata all’abbigliamento: il capo rimane pronto da appendere e da movimentare.</p>
+    <p>Il taglio segue la spalla. L’apertura superiore lascia passare il gancio.</p>
+    <figure class="mobile-product mobile-product-0" data-mobile-product="0"><span aria-hidden="true">2G</span><div class="mobile-product-motion"><img class="mobile-jacket" src="assets/realistic/giacca-fronte.webp" alt="" loading="lazy"><img class="mobile-cover" src="assets/realistic/coprispalla-opaco-v82.png" alt="Coprispalla in film sagomato" loading="lazy"></div></figure>
+
     <div class="shoulder-fact"><span>Profilo</span><strong>Sagomato o retto</strong></div>
    </article>
    <article class="shoulder-chapter" id="shoulder-detail-3">
     <h3>La cura continua.<br><em>Anche nel materiale.</em></h3>
-    <p>Il certificato PSV n. 3433/2026 comprende la produzione di coprispalla mediante taglio e saldatura, con MPS da sottoprodotto esterno. La certificazione si riferisce ai prodotti e alle lavorazioni indicati nel documento. Ti aiutiamo a individuare il formato e la linea adatti alla tua esigenza.</p>
+    <p>Coprispalla con MPS da sottoprodotto esterno. Prodotti e lavorazioni certificati sono indicati nel documento PSV n. 3433/2026.</p>
     <a class="text-link" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato PSV</a>
    </article>
    <article class="shoulder-chapter shoulder-cut-chapter" id="shoulder-detail-4">
     <h3>Un piccolo taglio.<br><em>Una funzione precisa.</em></h3>
-    <p>Il taglio verticale permette il passaggio dell’etichetta con bar-code: il codice resta accessibile senza dover sfilare la protezione dal capo. È un dettaglio a cui dedichiamo attenzione nella lavorazione dei nostri coprispalla. Sulle varianti indicate in scheda, l’apertura misura 13,5 cm.</p>
+    <p>Il taglio lascia accessibile il bar-code senza sfilare la protezione. Apertura di 13,5 cm sulle varianti indicate in scheda.</p>
     <figure class="cut-diagram">
      <svg viewBox="0 0 460 180" role="img" aria-label="Schema illustrativo: un’etichetta con codice a barre passa attraverso il taglio verticale del film">
       <defs><linearGradient id="cut-film" x2="1" y2=".4"><stop stop-color="#fff"/><stop offset=".5" stop-color="#e2e5df"/><stop offset="1" stop-color="#fafbf8"/></linearGradient></defs>
@@ -164,33 +164,34 @@ AFTER["coprispalla"] += """
   <div class="bubble-product"><img src="assets/realistic/coprispalla-pluriball.png" width="1536" height="1024" loading="lazy" alt=""></div>
   <div class="variant-pin"><span></span><p>Bolle d’aria.<br>Protezione, da vicino.</p></div>
   <div class="film-family">
-   <figure class="film-format format-short"><div><img src="assets/realistic/coprispalla-formati.png" width="1280" height="1280" loading="lazy" alt=""></div><figcaption><strong>60</strong> cm</figcaption></figure>
-   <figure class="film-format format-medium"><div><img src="assets/realistic/coprispalla-formati.png" width="1280" height="1280" loading="lazy" alt=""></div><figcaption><strong>95</strong> cm</figcaption></figure>
-   <figure class="film-format format-long"><div><img src="assets/realistic/coprispalla-formati.png" width="1280" height="1280" loading="lazy" alt=""></div><figcaption><strong>145</strong> cm</figcaption></figure>
+   <figure class="film-format format-short"><div><img src="assets/realistic/coprispalla-formati-v87.png" width="1280" height="1280" loading="lazy" alt=""></div><figcaption><strong>60</strong> cm</figcaption></figure>
+   <figure class="film-format format-medium"><div><img src="assets/realistic/coprispalla-formati-v87.png" width="1280" height="1280" loading="lazy" alt=""></div><figcaption><strong>95</strong> cm</figcaption></figure>
+   <figure class="film-format format-long"><div><img src="assets/realistic/coprispalla-formati-v87.png" width="1280" height="1280" loading="lazy" alt=""></div><figcaption><strong>145</strong> cm</figcaption></figure>
   </div>
   <p class="variant-visual-caption">Coprispalla in pluriball · ricostruzione illustrativa</p>
  </div>
  <div class="variants-copy">
   <article class="variant-chapter" id="pluriball-forma">
    <h2 id="variants-title">La stessa cura.<br><em>Un’altra<br>consistenza.</em></h2>
-   <p>Il coprispalla esiste anche in pluriball. Il profilo accompagna la gruccia, mentre la superficie a bolle aggiunge uno strato di protezione intorno alle spalle.</p>
+   <p>La versione in pluriball aggiunge una protezione a bolle intorno alle spalle.</p>
     <figure class="mobile-product mobile-product-3" data-mobile-product="3"><span aria-hidden="true">Aria.</span><div class="mobile-product-motion"><img class="mobile-cover" src="assets/realistic/coprispalla-pluriball.png" alt="Coprispalla in pluriball" loading="lazy"></div></figure>
-   <p class="desktop-story-copy">Una forma compatta, un materiale da guardare da vicino.</p><p class="mobile-story-copy">Le piccole celle d’aria separano il capo dal contatto diretto con l’esterno. Il materiale segue il profilo della spalla e lascia intravedere la gruccia attraverso la sua trama.</p><a class="text-link mobile-story-copy" href="contatti.html">Troviamo la tua protezione</a>
+   <p class="desktop-story-copy">Una forma compatta, un materiale da guardare da vicino.</p><p class="mobile-story-copy">Le celle d’aria proteggono la spalla e lasciano intravedere il capo.</p><a class="text-link mobile-story-copy" href="contatti.html">Troviamo la tua protezione</a>
    <div class="variant-material"><span>Pluriball</span><span>Protezione a bolle d’aria</span></div>
   </article>
   <article class="variant-chapter" id="pluriball-dettaglio">
    <h3>È l’aria<br>che fa<br><em>la differenza.</em></h3>
-   <p>Le piccole celle d’aria separano il capo dal contatto diretto con l’esterno. Il materiale segue il profilo della spalla e lascia intravedere la gruccia attraverso la sua trama.</p>
-   <p>Parliamoci del capo da proteggere: ti aiutiamo a scegliere il materiale e il formato adatti.</p>
+   <p>Le celle d’aria proteggono la spalla e lasciano intravedere il capo.</p>
+
    <a class="text-link" href="contatti.html">Troviamo la tua protezione</a>
   </article>
   <article class="variant-chapter" id="coprispalla-formati">
-   <h3>Una larghezza.<br><em>Più possibilità.</em></h3>
-   <p>Per i coprispalla in film, le schede riportano una larghezza di <strong>46 cm</strong>. Il taglio sagomato è disponibile nei formati nominali da <strong>60, 95 e 145 cm</strong>; il taglio retto è indicato nel formato da <strong>120 cm</strong>.</p>
-    <figure class="mobile-product mobile-product-5" data-mobile-product="5"><div class="mobile-product-motion"><img class="mobile-cover" src="assets/realistic/coprispalla-formati.png" alt="Tre lunghezze di coprispalla in film" loading="lazy"></div></figure>
-   <p>Materiale, lunghezza e finitura si scelgono insieme. Per il modello in pluriball, chiedici i formati disponibili.</p>
+   <h3>Diverse larghezze.<br><em>Più possibilità.</em></h3>
+   <p class="format-material"><strong>Foam · polietilene espanso</strong><br>Leggero e flessibile, protegge il capo dal contatto e dallo sfregamento.</p>
+   <p>Disponibili in diverse larghezze. Taglio sagomato: <strong>60, 95 e 145 cm</strong>. Taglio retto: <strong>120 cm</strong>.</p>
+    <figure class="mobile-product mobile-product-5" data-mobile-product="5"><div class="mobile-product-motion"><img class="mobile-cover" src="assets/realistic/coprispalla-formati-v87.png" alt="Coprispalla in foam, polietilene espanso, in tre lunghezze" loading="lazy"></div></figure>
+   <p>Per il pluriball, chiedici i formati disponibili.</p>
    <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Esplora le schede dei formati</a>
-   <p class="variant-size-note">Le immagini illustrano le proporzioni dei formati in film. Misure e dettagli sono riportati nelle schede tecniche.</p>
+   <p class="variant-size-note">Proporzioni illustrative. Misure nelle schede tecniche.</p>
   </article>
  </div>
 </section>
@@ -242,7 +243,50 @@ END["buste"] = row(
     ], tint=True)
 
 # ---------------------------------------------------------------- macchine
-AFTER["macchine"] = row(
+AFTER["macchine"] = """
+<section class="block noxon-partner" id="partner-noxon" aria-labelledby="noxon-title">
+  <div class="wrap">
+    <div class="noxon-intro">
+      <div>
+        <h2 id="noxon-title" class="display small">Partner <em>ufficiale.</em></h2>
+        <p class="lead">Imballaggi 2G è partner ufficiale NOXON e utilizza i suoi macchinari per l’imballaggio.</p>
+      </div>
+      <a class="noxon-brand" href="https://www.noxon.it/" aria-label="Visita il sito ufficiale NOXON">
+        <img src="assets/noxon/logo-noxon.svg" width="248" height="91" alt="NOXON — flexibility &amp; innovation" loading="lazy">
+      </a>
+    </div>
+    <div class="noxon-machines">
+      <figure class="noxon-machine noxon-machine-featured reveal">
+        <div class="noxon-image">
+          <img src="assets/noxon/robot-semoventi.jpg" width="1200" height="1200" alt="Due robot semoventi NOXON per l’avvolgimento con film estensibile" loading="lazy" decoding="async">
+        </div>
+        <figcaption>
+          <h3>Robot semoventi</h3>
+          <p>Il film estensibile avvolge il carico pallettizzato.</p>
+        </figcaption>
+      </figure>
+      <figure class="noxon-machine reveal">
+        <div class="noxon-image">
+          <img src="assets/noxon/avvolgitrice-orizzontale.jpg" width="1200" height="630" alt="Avvolgitrice orizzontale NOXON ad anello rotante" loading="lazy" decoding="async">
+        </div>
+        <figcaption>
+          <h3>Avvolgitrici orizzontali</h3>
+          <p>Un anello rotante avvolge i prodotti con il film.</p>
+        </figcaption>
+      </figure>
+      <figure class="noxon-machine noxon-machine-compact reveal">
+        <div class="noxon-image">
+          <img src="assets/noxon/tavola-rotante.jpg" width="490" height="445" alt="Macchina NOXON a tavola rotante per l’avvolgimento dei pallet" loading="lazy" decoding="async">
+        </div>
+        <figcaption>
+          <h3>Macchine a tavola rotante</h3>
+          <p>Il pallet ruota durante l’avvolgimento con il film.</p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+""" + row(
     "Macchine che<br>conosciamo <em>a memoria.</em>",
     "Le usiamo tutti i giorni: per questo sappiamo consigliare quella giusta e non quella più grande.",
     [
@@ -271,23 +315,26 @@ AFTER["sostenibilita"] = duo(
 
 # ---------------------------------------------------------------- azienda
 AFTER["azienda"] = split(
-    "sede-insegna.webp",
-    "L'insegna Imballaggi 2G sopra l'ingresso della sede",
-    "Un'insegna,<br>una <em>targa.</em>",
-    "Il resto sta dentro: il reparto, il magazzino e le persone che li tengono in piedi.",
+    "sede-sera-dettaglio.webp",
+    "Dettaglio della sede Imballaggi 2G illuminata di sera",
+    "Il nostro<br><em>punto di partenza.</em>",
+    "A Sannicola, gli spazi dove prendono forma le nostre soluzioni.",
     link=("contatti.html", "Vieni a trovarci"))
 
-END["azienda"] = band([
+END["azienda"] = ('<section class="company-night-view" id="azienda-immagini" aria-label="La sede di sera">'
+    + shot("sede-sera-piazzale.webp", "Il piazzale e la facciata illuminata della sede Imballaggi 2G", ratio="3/2")
+    + '</section>') + band([
     ("reparto-produzione.webp", "Il reparto di produzione"),
     ("magazzino-bobine.webp", "Il magazzino delle bobine"),
     ("macchina-rulli.webp", "I rulli della linea di produzione"),
-    ("sede-cancello.webp", "La sede vista dalla strada"),
     ("muletto.webp", "Il muletto in magazzino"),
     ("macchina-2g.webp", "Una macchina con il marchio Imballaggi 2G"),
 ])
 
 # ---------------------------------------------------------------- contatti
-END["contatti"] = band([
+END["contatti"] = ('<section class="company-night-view" aria-label="La nostra sede a Sannicola">'
+    + shot("sede-sera-ingresso.webp", "Vista dell’ingresso e del lato della sede illuminata", ratio="4/3")
+    + '</section>') + band([
     ("sede-insegna.webp", "L'insegna sopra l'ingresso"),
     ("coprispalla-linea.webp", "Il coprispalla sulla linea di lavorazione"),
     ("magazzino-muletto.webp", "Il muletto fra le bobine in magazzino"),
@@ -303,7 +350,7 @@ HOME_BAND = band([
     ("fogli-uscita.webp", "Fogli in uscita dai rulli"),
     ("magazzino-muletto.webp", "Il muletto fra le bobine"),
     ("espanso-macro.webp", "Macro del polietilene espanso"),
-    ("sede-insegna.webp", "L'insegna della sede"),
+    ("sede-sera-riflessi.webp", "La sede di sera e i riflessi sul piazzale"),
 ])
 
 

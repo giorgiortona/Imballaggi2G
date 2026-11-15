@@ -6,11 +6,6 @@
   var finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   var clamp = function(v,a,b){return Math.min(b,Math.max(a,v));};
   root.classList.add('js');
-  var storage;
-  try { storage = sessionStorage; } catch(e) { storage = null; }
-  function remembered(key){try{return storage && storage.getItem(key);}catch(e){return null;}}
-  function remember(key,value){try{if(storage)storage.setItem(key,value);}catch(e){}}
-
   // Clone DOM ranges rather than cutting HTML strings across emphasis tags.
   document.querySelectorAll('[data-lines]').forEach(function(el){
     var breaks=Array.from(el.querySelectorAll('br')), fragments=[], range=document.createRange();
@@ -34,22 +29,36 @@
     var start=performance.now();function step(now){var p=clamp((now-start)/1000,0,1);node.nodeValue=Math.round(target*(1-Math.pow(1-p,3)));if(p<1&&!reduced.matches)requestAnimationFrame(step);else node.nodeValue=target;}requestAnimationFrame(step);
   }
 
-  /* Intro: one cancellable timeline, no scroll lock, no delayed navigation. */
-  var intro=document.querySelector('.intro'), entry=document.querySelector('.section-entry');
-  var introTimer, entryTimer;
-  function finishIntro(){clearTimeout(introTimer);if(intro){intro.classList.remove('is-playing');intro.classList.add('finished');}root.style.setProperty('--intro','0s');}
+  /* One opening on the home page; deep links and history restoration stay native. */
+  var opening=document.querySelector('.evolution-hero'),entry=document.querySelector('.section-entry');
+  var introTimer,entryTimer,navType=performance.getEntriesByType('navigation')[0];
+  function finishIntro(){
+    clearTimeout(introTimer);
+    root.classList.remove('home-opening');
+    if(opening)opening.classList.remove('is-evolving');
+  }
+  function playIntro(){
+    if(!opening || reduced.matches)return;
+    finishIntro();
+    void opening.offsetWidth;
+    root.classList.add('home-opening');
+    var contour = opening.querySelector('#evolution-contour');
+    if (contour && contour.beginElement) contour.beginElement();
+    opening.classList.add('is-evolving');
+    introTimer=setTimeout(finishIntro,6300);
+  }
+  if(opening){
+    opening.addEventListener('animationend',function(e){if(e.animationName==='evoDown')finishIntro();});
+    if(!reduced.matches && (!location.hash || location.hash==='#home-title') && window.scrollY<4 && navType?.type!=='back_forward')playIntro();
+    window.addEventListener('hashchange',finishIntro);
+  }
   function finishEntry(){clearTimeout(entryTimer);if(entry)entry.classList.remove('is-playing');root.style.setProperty('--entry-delay','0s');}
-  function playIntro(){if(!intro||reduced.matches)return;finishIntro();intro.classList.remove('finished');void intro.offsetWidth;intro.classList.add('is-playing');introTimer=setTimeout(finishIntro,2200);}
-  var navType=performance.getEntriesByType('navigation')[0];
-  if(intro && !reduced.matches && !remembered('2g-intro-v18') && (!navType||navType.type!=='back_forward') && !location.hash){
-    remember('2g-intro-v18','1');root.style.setProperty('--intro','1.6s');playIntro();
-  }else finishIntro();
   if(entry&&!reduced.matches&&(!navType||navType.type!=='back_forward')&&!location.hash){
     entry.classList.add('is-playing');root.style.setProperty('--entry-delay','1.25s');entryTimer=setTimeout(finishEntry,1900);
   }
-  var replay=document.querySelector('.replay');if(replay)replay.addEventListener('click',playIntro);
+  var replay=document.querySelector('.replay');if(replay)replay.addEventListener('click',function(){window.scrollTo({top:0,behavior:'instant'});opening?.focus({preventScroll:true});playIntro();});
   document.querySelectorAll('[data-replay-entry]').forEach(function(button){button.addEventListener('click',function(){if(!entry||reduced.matches)return;finishEntry();void entry.offsetWidth;entry.classList.add('is-playing');entryTimer=setTimeout(finishEntry,1900);});});
-  ['wheel','touchstart','pointerdown'].forEach(function(type){window.addEventListener(type,function(event){if(event.target.closest&&event.target.closest('.replay,[data-replay-entry]'))return;finishIntro();finishEntry();},{passive:true});});
+  ['wheel','touchstart','pointerdown'].forEach(function(type){window.addEventListener(type,function(event){if(event.target.closest&&event.target.closest('.replay,[data-replay-entry]'))return;if(event.target.closest?.('a,button'))finishIntro();finishEntry();},{passive:true});});
   document.addEventListener('keydown',function(e){if(['Escape','Tab','PageDown','PageUp','ArrowDown','ArrowUp',' '].includes(e.key)){finishIntro();finishEntry();}});
 
   /* Menu: compensate scrollbar, retain the exact reading position, restore focus.
@@ -187,5 +196,53 @@
       });
     }
   }
+
+  /* A short welcome for the Dimana credit; native links work without JavaScript. */
+  (function () {
+    var chip = document.querySelector('[data-dm-chip]');
+    if (!chip || !('IntersectionObserver' in window)) return;
+    var timer = 0, raf = 0, wasIn = false, welcomed = false;
+    function reset() {
+      cancelAnimationFrame(raf);
+      chip.style.removeProperty('--x');
+      chip.style.removeProperty('--y');
+      chip.classList.remove('is-live');
+    }
+    function sweep() {
+      if (reduced.matches || document.hidden) return;
+      chip.classList.add('is-live');
+      var start;
+      function step(now) {
+        if (start === undefined) start = now;
+        var p = Math.min(1, (now - start) / 2600), a = p * Math.PI * 2;
+        // Ease in and out, returning to a flat card without a snap.
+        var amplitude = Math.sin(p * Math.PI);
+        chip.style.setProperty('--x', (2 + Math.sin(a) * 1.4 * amplitude).toFixed(3));
+        chip.style.setProperty('--y', (2 + Math.cos(a) * 1.1 * amplitude).toFixed(3));
+        if (p < 1) raf = requestAnimationFrame(step);
+        else reset();
+      }
+      raf = requestAnimationFrame(step);
+    }
+    function stop() { clearTimeout(timer); reset(); }
+    chip.addEventListener('pointerenter', stop);
+    chip.addEventListener('focus', stop);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); });
+    reduced.addEventListener('change', function () { if (reduced.matches) stop(); });
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          chip.classList.add('is-in');
+          if (!wasIn && !welcomed) {
+            welcomed = true;
+            timer = setTimeout(sweep, 350);
+          }
+          wasIn = true;
+        } else { wasIn = false; stop(); }
+      });
+    }, { threshold: .6 });
+    observer.observe(chip);
+    chip.classList.add('is-enhanced');
+  })();
 
 })();

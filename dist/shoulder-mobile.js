@@ -7,6 +7,7 @@
  }]));
  const active=new Set();let raf=0,last=0,measure=true;
  const clamp=v=>Math.max(0,Math.min(1,v));
+ const smooth=(a,b,p)=>{const t=clamp((p-a)/(b-a));return t*t*(3-2*t);};
  function frame(now){
   raf=0;if(!mobile.matches||document.hidden){last=0;return;}
   const dt=Math.min(.05,last?(now-last)/1000:1/60);last=now;
@@ -19,7 +20,14 @@
    moving ||= Math.abs(s.target-s.current)>=.0001;
    const p=s.current,t=p*p*(3-2*p),angle=reduced.matches?0:(s.index%2?-1:1)*(-8+16*t),scale=reduced.matches?1:.92+.10*Math.sin(t*Math.PI);
    s.motion.style.transform=`translate3d(0,${reduced.matches?0:14-28*t}px,0) rotate(${angle}deg) scale(${scale})`;
-   if(s.jacket){const u=clamp((p-.1)/.5),entry=u*u*(3-2*u);s.jacket.style.transform=`translate3d(0,${reduced.matches?0:25*(1-entry)}%,0)`;s.jacket.style.opacity=String(reduced.matches?1:entry);s.cover.style.opacity=String(reduced.matches?1:1-.48*Math.sin(entry*Math.PI));}
+   if(s.jacket){
+    const entry=smooth(.1,.40,p);
+    // Keep the inserted jacket readable before the cover becomes opaque again.
+    const reveal=smooth(.12,.30,p)*(1-smooth(.66,.85,p));
+    s.jacket.style.transform=`translate3d(0,${reduced.matches?0:25*(1-entry)}%,0)`;
+    s.jacket.style.opacity=String(reduced.matches?1:entry);
+    s.cover.style.opacity=String(reduced.matches?1:1-.48*reveal);
+   }
   }
   if(moving)raf=requestAnimationFrame(frame);else last=0;
  }

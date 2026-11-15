@@ -2,7 +2,7 @@
 import * as T from './vendor/three.module.min.js';
 const root=document.querySelector('[data-reel-opening]');
 if(root&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
- const canvas=root.querySelector('canvas'),art=root.querySelector('.reel-opening-art'),content=root.querySelector('.reel-opening-content'),logo=root.querySelector('.reel-opening-logo');
+ const canvas=root.querySelector('canvas'),art=root.querySelector('.reel-opening-art'),content=root.querySelector('.reel-opening-content'),logo=root.querySelector('.reel-opening-logo'),hint=root.querySelector('.reel-scroll-hint');
  let renderer,raf=0,visible=false,p=0,last=0,resize=true,ready=false;
  const smooth=(a,b,v)=>{const t=T.MathUtils.clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);};
  try{
@@ -53,6 +53,7 @@ if(root&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
    logo.style.clipPath=`inset(0 ${100-reveal}% 0 0)`;
    logo.style.opacity=String((1-exit)*smooth(.03,.15,p));
    logo.style.transform=`scale(${1+smooth(.35,.78,p)*.035})`;
+   hint.style.opacity=String(.56*(1-smooth(.72,.88,p)));
    const show=smooth(.83,1,p);
    content.style.opacity=String(show);content.style.transform=`translate3d(0,${(1-show)*35}px,0)`;
    content.style.pointerEvents=show>.8?'auto':'none';

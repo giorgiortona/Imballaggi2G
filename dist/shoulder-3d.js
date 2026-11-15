@@ -77,7 +77,7 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
    const mesh=new THREE.Mesh(geo,mat);mesh.userData={bases,back};
    (isFilm?model:garment).add(mesh);(isFilm?filmMeshes:clothMeshes).push(mesh);
   }
-  Promise.all(['coprispalla-originale-lossless.png','giacca-fronte.webp','giacca-retro.webp'].map(file=>loader.loadAsync('assets/realistic/'+file))).then(maps=>{
+  Promise.all(['coprispalla-opaco-v82.png','giacca-fronte.webp','giacca-retro.webp'].map(file=>loader.loadAsync('assets/realistic/'+file))).then(maps=>{
    surface(maps[0],false,true);surface(maps[0],true,true);
    surface(maps[1],false,false);surface(maps[2],true,false);
    ready=true;configure();
@@ -112,7 +112,7 @@ float bodyMask=1.0-smoothstep(0.89,0.93,vMapUv.y);
     const pos=mesh.geometry.attributes.position,b=mesh.userData.bases,sign=mesh.userData.back?-1:1;
     for(let i=0;i<pos.count;i++){
      const x=b[i*3],y=b[i*3+1],body=1-smooth(1.65,2.3,y),dome=Math.pow(Math.max(0,1-(x/1.8)**2),.65);
-     const wave=Math.sin(y*4+x*7-travel*4)*.018*Math.sin(travel*Math.PI)*body;
+     const wave=0; // Flat polyethylene sheet: no fabric-like ripples.
      pos.setXYZ(i,x+wave,y,sign*(.13+(.10+.10*contact)*dome*body));
     }pos.needsUpdate=true;
    }

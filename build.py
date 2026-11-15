@@ -11,12 +11,16 @@ anche modificare a mano, ma poi la parte comune va risincronizzata.
 """
 
 from pathlib import Path
+from html import escape
+from seo import metadata, write_crawl_files
+from server_redirects import apache_rules
 from brochure_sections import enrich
 from section_motion import section_motion
+from logo_evolution import EVOLUTION_DISC, EVOLUTION_G, EVOLUTION_TAIL, EVOLUTION_TWO
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "73"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "106"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -27,7 +31,7 @@ SECTIONS = [
     ("buste",        "buste.html",        "04", "Buste",              "CONFEZIONAMENTO",          "azienda/macchina-bobine.webp"),
     ("macchine",     "macchine.html",     "05", "Macchine",           "CHIUSURA E MOVIMENTAZIONE","azienda/macchina-rulli.webp"),
     ("sostenibilita","sostenibilita.html","06", "Sostenibilità",      "PLASTICA SECONDA VITA",    None),
-    ("azienda",      "azienda.html",      "07", "L’azienda",          "RADICI SALENTINE",         "azienda/sede-edificio.webp"),
+    ("azienda",      "azienda.html",      "07", "L’azienda",          "RADICI SALENTINE",         "azienda/sede-sera-frontale.webp"),
     ("contatti",     "contatti.html",     "08", "Contatti",           "PARLIAMONE",               None),
 ]
 BY_KEY = {s[0]: s for s in SECTIONS}
@@ -42,8 +46,8 @@ MENU_IMG = {
     "buste": "azienda/fogli-uscita.webp",
     "macchine": "azienda/macchina-2g.webp",
     "sostenibilita": "azienda/nastro-psv.webp",
-    "azienda": "azienda/sede-insegna.webp",
-    "contatti": "azienda/sede-cancello.webp",
+    "azienda": "azienda/sede-sera-prospettiva.webp",
+    "contatti": "logo-light.webp",
     "home": "azienda/reparto-produzione.webp",
 }
 
@@ -103,27 +107,30 @@ def page_footer(current):
   </a>"""
     replay = '<button class="replay" type="button">Rivedi l’intro ↻</button>' if current is None else '<a href="index.html">Torna all’indice</a>'
     return f"""{onward}
-<footer class="site-footer">
+<footer class="site-footer" id="site-footer">
   <a href="index.html" class="footer-brand" aria-label="Imballaggi 2G, pagina iniziale"><img src="assets/logo-light.webp" alt="Imballaggi 2G" width="240" height="69"></a>
   <p>&copy; <span id="year">2026</span> Imballaggi 2G S.r.l. &middot; Via dei Cavamonti, Z.I. &middot; 73017 Sannicola (LE)</p>
   <a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram</a>
+  <div class="footer-credit">
+    <a class="footer-credit-label" href="https://www.instagram.com/dimana.digitalcreations/" target="_blank" rel="noopener">Sito creato da Dimana</a>
+    <a class="dm-chip" href="https://www.instagram.com/dimana.digitalcreations/" target="_blank" rel="noopener" aria-label="Dimana · Digital Creations (Instagram)" data-dm-chip>
+      <span class="dm-chip__tilt">
+        <span class="dm-chip__face">
+          <span class="dm-chip__die" aria-hidden="true"></span>
+          <span class="dm-chip__mark"><img class="dm-chip__logo" src="assets/dimana-logo-v106.svg" width="524" height="266" alt="Dimana, digital creations" loading="lazy"></span>
+        </span>
+        <span class="dm-chip__spark" aria-hidden="true"></span>
+        <span class="dm-chip__spark" aria-hidden="true"></span>
+      </span>
+      <span class="dm-chip__zones" aria-hidden="true">{"<i class='dm-chip__zone'></i>" * 25}</span>
+    </a>
+    <a class="footer-credit-cta" href="https://www.instagram.com/dimana.digitalcreations/" target="_blank" rel="noopener">Clicca qui per conoscerci meglio</a>
+  </div>
   {replay}
 </footer>"""
 
 
 def shell(current, title, description, body, body_class=""):
-    intro = ""
-    if current is None:
-        intro = f"""
-<div class="intro" aria-hidden="true">
-  <div class="intro-sheet"></div>
-  <div class="intro-stage">
-    <div class="intro-lock">
-      <img class="intro-word" src="assets/logo-ink.webp" width="520" height="149" alt="">
-    </div>
-  </div>
-</div>"""
-
     entry = ""
     if current:
         section = BY_KEY[current]
@@ -141,8 +148,9 @@ def shell(current, title, description, body, body_class=""):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>{title}</title>
-<meta name="description" content="{description}">
+<title>{escape(title)}</title>
+<meta name="description" content="{escape(description, quote=True)}">
+{metadata(current, title, description)}
 <meta name="theme-color" content="#121615">
 <link rel="icon" href="assets/mark-ink.webp">
 <link rel="preload" href="assets/manrope-regular.ttf" as="font" type="font/ttf" crossorigin>
@@ -158,7 +166,6 @@ def shell(current, title, description, body, body_class=""):
 <div class="grain" aria-hidden="true"></div>
 <div class="scroll-progress" aria-hidden="true"><span></span></div>
 {entry}
-{intro}
 <header class="header" id="header">
   <a class="brand" href="index.html" aria-label="Imballaggi 2G, pagina iniziale">
     <img class="brand-dark" src="assets/logo-ink.webp" width="260" height="75" alt="Imballaggi 2G — Keep it safe">
@@ -211,9 +218,9 @@ def page_hero(key, title_html, lead, image="", tone="light"):
     image = image or img
     media = ""
     if image:
-        media = f'<div class="ph-media" data-parallax="0.04"><img src="assets/{image}" alt="" loading="eager" width="1500" height="1000"></div>'
+        media = f'<div class="ph-media" data-parallax="0.04"><img src="assets/{image}" alt="" loading="eager" fetchpriority="high" width="1500" height="1000"></div>'
     return f"""<section class="page-hero tone-{tone}" aria-labelledby="ph-title">
-  {media}
+{media}
   <div class="ph-shade" aria-hidden="true"></div>
   <div class="ph-body">
     <h1 id="ph-title" class="display" data-lines>{title_html}</h1>
@@ -223,13 +230,13 @@ def page_hero(key, title_html, lead, image="", tone="light"):
 
 # ============================================================ HOME
 NAV_ITEMS = [
-    ("coprispalla",  "Il dettaglio che veste la cura.",                 "azienda/coprispalla-linea.webp"),
+    ("coprispalla",  "La cura del dettaglio che veste la moda",                 "azienda/coprispalla-linea.webp"),
     ("bobine",       "Avvolgere, proteggere, ripensare.",               "azienda/bobina-macchina.webp"),
     ("protezioni",   "Un cuscino d’aria fra il prodotto e il viaggio.", "azienda/bobine-pluriball.webp"),
     ("buste",        "Chiudere bene, alla prima.",                      "azienda/fogli-uscita.webp"),
     ("macchine",     "Nastri, reggette, movimentazione.",               "azienda/macchina-2g.webp"),
     ("sostenibilita","La materia non finisce al primo utilizzo.",       "azienda/nastro-psv.webp"),
-    ("azienda",      "Una storia di famiglia, dal Salento.",            "azienda/sede-insegna.webp"),
+    ("azienda",      "Una storia di famiglia, dal Salento.",            "azienda/sede-sera-prospettiva.webp"),
 ]
 
 
@@ -240,34 +247,47 @@ def navigator():
         media = (f'<span class="slat-media"><img src="assets/{img}" alt="" loading="lazy" width="1500" height="1000"></span>'
                  if img else
                  '<span class="slat-media slat-green"><img src="assets/turtle-mark-light.webp" alt="" loading="lazy" width="301" height="366"></span>')
-        slats.append(f"""      <a class="slat" href="{href}" style="--i:{i}" data-claim="{claim}">
+        slats.append(f"""      <a class="slat" href="{href}" aria-label="{label}" style="--i:{i}" data-claim="{claim}">
         {media}
         <span class="slat-veil" aria-hidden="true"></span>
         <span class="slat-name-v" aria-hidden="true">{label}</span>
         <span class="slat-open">
           <span class="slat-name">{label}</span>
-          <span class="slat-go">Entra </span>
+
         </span>
       </a>""")
     return "\n".join(slats)
 
 
 HOME = f"""
-<section class="home-hero" aria-labelledby="home-title">
-  <div class="hero-media" aria-hidden="true"></div>
-  <div class="hero-shade" aria-hidden="true"></div>
-  <div class="hero-content">
-    <h1 id="home-title" data-lines>La cura,<br>in ogni <em>forma.</em></h1>
-    <p class="hero-description">Proteggiamo ciò che crei.<br>Valorizziamo ciò che sei.</p>
-    <a class="button light magnetic" href="#navigatore">Entra nelle sezioni <span aria-hidden="true">↓</span></a>
+<section class="home-hero evolution-hero" id="home-title" tabindex="-1" aria-labelledby="home-claim">
+  <div class="evolution-lockup">
+  <div class="brand-evolution" role="img" aria-label="Il cerchio si trasforma in G, si unisce al 2 e diventa il logo Imballaggi 2G">
+    <svg class="evolution-symbols" viewBox="0 0 360 200" aria-hidden="true" focusable="false">
+      <path class="evolution-two" d="{EVOLUTION_TWO}"/>
+      <g class="evolution-morph">
+        <path class="evolution-g" d="{EVOLUTION_DISC}">
+          <animate id="evolution-contour" attributeName="d" values="{EVOLUTION_DISC};{EVOLUTION_DISC};{EVOLUTION_G}"
+                   begin="indefinite" dur="2.5s" fill="freeze" calcMode="spline"
+                   keyTimes="0;.38;1" keySplines="0 0 1 1;.35 0 .25 1"/>
+        </path>
+        <path class="evolution-tail" d="{EVOLUTION_TAIL}"/>
+      </g>
+    </svg>
+    <img class="evolution-logo" src="assets/logo-ink.webp" width="1200" height="344" alt="">
   </div>
+    <h1 id="home-claim"><span>Il Packaging <span class="claim-phrase">in ogni sua</span></span> <em>evoluzione.</em></h1>
+  </div>
+  <a class="hero-down" href="#manifesto" aria-label="Scendi alla sezione successiva">
+    <svg viewBox="0 0 24 36" width="24" height="36" fill="none" aria-hidden="true"><path d="M12 2v29m-7-7 7 7 7-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 </section>
 
 <section class="manifesto" id="manifesto" aria-labelledby="manifesto-title">
   <div class="wrap">
     <h2 id="manifesto-title" class="display" data-lines>Un buon imballaggio<br>si prende cura <span>di tutto.</span></h2>
     <div class="manifesto-grid">
-      <p class="reveal">Del prodotto. Della sua presentazione. Del viaggio che lo aspetta. Realizziamo e selezioniamo soluzioni di packaging che mettono al centro le esigenze di chi le usa.</p>
+      <p class="reveal">Imballaggi a Sannicola, nel Salento: <a class="inline-link" href="coprispalla.html">coprispalla</a>, <a class="inline-link" href="bobine.html">film estensibile</a>, <a class="inline-link" href="buste.html">buste</a> e <a class="inline-link" href="protezioni.html">protezioni</a> per le imprese di Lecce, Brindisi e Taranto.</p>
       <div class="manifesto-facts" data-stagger>
         <div><strong>1980</strong><span>La tradizione familiare</span></div>
         <div><strong>2017</strong><span>Nasce Imballaggi 2G</span></div>
@@ -303,25 +323,25 @@ HOME = f"""
 # ============================================================ COPRISPALLA
 COPRISPALLA = page_hero(
     "coprispalla",
-    "Il dettaglio<br>che veste <em>la cura.</em>",
-    "Una protezione discreta, studiata per accompagnare ogni capo. Tagli sagomati e retti, con dettagli funzionali per la gestione dell’abbigliamento.",
+    "La cura del dettaglio<br>che veste <em>la moda</em>",
+    'Coprispalla protettivi per abbigliamento, in <a class="inline-link" href="protezioni.html">foam e pluriball</a>. Tagli sagomati e retti, in diverse larghezze e lunghezze, per accompagnare ogni capo.',
 ) + """
 <section class="block" aria-labelledby="draw-title">
   <div class="wrap split">
     <div>
-      <h2 id="draw-title" class="display small" data-lines>Larghezza 46 cm.<br>Il resto lo decidi <em>tu.</em></h2>
-      <p class="lead">Una larghezza comune, finiture diverse. Il taglio sagomato segue la spalla, quello retto accompagna altri formati: ogni dettaglio risponde al capo da proteggere.</p>
+      <h2 id="draw-title" class="display small" data-lines>Diverse larghezze.<br>La misura giusta per <em>ogni capo.</em></h2>
+
       <a class="text-link" href="assets/schede-coprispalla.pdf" target="_blank" rel="noopener">Apri le schede tecniche </a>
     </div>
     <div class="technical-preview">
-      <svg class="garment-drawing" viewBox="0 0 600 650" role="img" aria-label="Schema tecnico del coprispalla sagomato, larghezza 46 centimetri">
+      <svg class="garment-drawing" viewBox="0 0 600 650" role="img" aria-label="Schema illustrativo del coprispalla sagomato, disponibile in diverse larghezze">
         <defs><linearGradient id="film" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffffff" stop-opacity=".85"/><stop offset=".45" stop-color="#ffffff" stop-opacity=".2"/><stop offset="1" stop-color="#9aaca4" stop-opacity=".25"/></linearGradient></defs>
         <g class="drawing-lines">
           <path class="garment-body" pathLength="1" d="M264 88 H336 V107 L451 172 V537 H149 V172 L264 107Z" fill="url(#film)" stroke="#588371" stroke-width="1.5"/>
           <path class="draw-2" pathLength="1" d="M264 97 H336 M157 181 V529 H443 V181 M270 112 L163 176 M330 112 L437 176 M300 107 V177" fill="none" stroke="#8a9e94"/>
           <path class="draw-3" pathLength="1" d="M149 564 V592 M451 564 V592 M149 579 H451 M137 172 H102 M137 537 H102 M115 172 V537" fill="none" stroke="#749082" stroke-width="1"/>
           <path class="draw-tip" d="M149 579 l9 -4 v8 Z M451 579 l-9 -4 v8 Z M115 172 l-4 9 h8 Z M115 537 l-4 -9 h8 Z" fill="#749082"/>
-          <text class="draw-tip" x="300" y="610" text-anchor="middle">46 cm</text>
+          <text class="draw-tip" x="300" y="610" text-anchor="middle">Larghezza variabile</text>
           <circle class="draw-pin" cx="302" cy="156" r="6" fill="#2e9878"/>
           <path class="draw-4" pathLength="1" d="M315 155 H393 L465 108 H537" fill="none" stroke="#2e9878"/>
           <text class="draw-tip" x="454" y="93">Taglio sagomato</text>
@@ -339,16 +359,16 @@ COPRISPALLA = page_hero(
     <div class="details-list" data-stagger>
       <details open>
         <summary>Forme e formati <span aria-hidden="true">+</span></summary>
-        <div class="details-body"><p>Taglio sagomato e taglio retto, con larghezza di 46 cm. La scheda tecnica raccoglie le varianti per diverse lunghezze dei capi: richiedici il formato adatto alla tua produzione.</p></div>
+        <div class="details-body"><p>Diverse larghezze, taglio sagomato o retto. Scegli il formato adatto al tuo capo.</p></div>
       </details>
       <details>
         <summary>Passaggio per il bar-code <span aria-hidden="true">+</span></summary>
-        <div class="details-body"><p>Le schede di alcune varianti prevedono un taglio laterale di 13,5 cm per il passaggio del bar-code. Verifichiamo insieme il dettaglio richiesto sul formato scelto.</p></div>
+        <div class="details-body"><p>Su alcune varianti: apertura di 13,5 cm per il bar-code. Dettagli nelle schede tecniche.</p></div>
       </details>
       <details>
         <summary>La linea certificata PSV <span aria-hidden="true">+</span></summary>
         <div class="details-body">
-          <p>Il certificato n. 3433/2026 riguarda la produzione di coprispalla, coprisedia, buste e fogli protettivi con MPS da sottoprodotto esterno. Il campo di applicazione è specificato nel documento.</p>
+          <p>Coprispalla, coprisedia, buste e fogli con MPS da sottoprodotto esterno: ambito del certificato PSV n. 3433/2026.</p>
           <a href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato</a>
         </div>
       </details>
@@ -361,7 +381,7 @@ COPRISPALLA = page_hero(
 BOBINE = page_hero(
     "bobine",
     "Avvolgere.<br>Proteggere.<br><em>Ripensare.</em>",
-    "Film per il confezionamento e la movimentazione. Con Tiger Film, le linee Eco Converting, Eco Manuale ed Eco Automatico danno spazio a materiale proveniente da processi di riciclo.",
+    'Bobine per confezionamento e film estensibile per avvolgere i carichi. Tiger Film propone le linee Eco Converting, Eco Manuale ed Eco Automatico con contenuto riciclato <a class="inline-link" href="sostenibilita.html#cert-scope">certificato PSV MixEco</a>.',
 ) + """
 
 
@@ -391,7 +411,7 @@ BOBINE = page_hero(
     </div>
     <div>
       <h2 id="reels-photo" class="display small" data-lines>Le nostre bobine.</h2>
-      <p class="lead">Formati e spessori diversi per il confezionamento manuale e per le macchine avvolgitrici. Raccontaci il carico da fasciare: troviamo la bobina giusta.</p>
+      <p class="lead">Formati e spessori per confezionamento manuale e macchine avvolgitrici.</p>
       <a class="text-link" href="contatti.html">Chiedi un formato </a>
     </div>
   </div>
@@ -402,27 +422,27 @@ BOBINE = page_hero(
 PROTEZIONI = page_hero(
     "protezioni",
     "Un cuscino d’aria<br>fra il prodotto<br>e <em>il viaggio.</em>",
-    "Pluriball, polietilene espanso, angolari e cuscini d’aria: tutto ciò che assorbe gli urti e protegge le superfici delicate.",
+    "Pluriball, polietilene espanso Xtracell, angolari e cuscini d’aria per proteggere prodotti e superfici delicate.",
 ) + """
 <section class="block" aria-labelledby="pr-title">
   <div class="wrap split">
     <div>
       <h2 id="pr-title" class="display small" data-lines>Materiali diversi,<br>lo stesso <em>compito.</em></h2>
-      <p class="lead">Ogni prodotto ha un punto debole: uno spigolo, una superficie lucida, un peso mal distribuito. Scegliamo insieme il materiale che lo copre.</p>
+
       <a class="text-link" href="assets/brochure-foam.pdf" target="_blank" rel="noopener">Sfoglia la brochure Foam </a>
     </div>
     <div class="details-list" data-stagger>
       <details open>
         <summary>Pluriball <span aria-hidden="true">+</span></summary>
-        <div class="details-body"><p>Il film a bolle d’aria che assorbe gli urti durante la movimentazione. Completa la gamma insieme agli angolari e ai cuscini d’aria.</p></div>
+        <div class="details-body"><p>Film a bolle d’aria per attutire gli urti.</p></div>
       </details>
       <details>
-        <summary>Polietilene espanso <span aria-hidden="true">+</span></summary>
-        <div class="details-body"><p>Protezioni in polietilene espanso per superfici e prodotti delicati. Lavorazioni, formati e accoppiamenti per esigenze di imballaggio differenti.</p></div>
+        <summary>Xtracell · Polietilene espanso <span aria-hidden="true">+</span></summary>
+        <div class="details-body"><p>Xtracell: polietilene espanso ad alto spessore per protezione e riempimento.</p></div>
       </details>
       <details>
         <summary>Angolari e cuscini d’aria <span aria-hidden="true">+</span></summary>
-        <div class="details-body"><p>Angolari per proteggere gli spigoli e cuscini d’aria per riempire i vuoti dentro il collo, così il contenuto non si muove.</p></div>
+        <div class="details-body"><p>Angolari per gli spigoli, cuscini d’aria per stabilizzare il contenuto.</p></div>
       </details>
     </div>
   </div>
@@ -431,7 +451,7 @@ PROTEZIONI = page_hero(
 <section class="block tinted" aria-labelledby="pr-psv">
   <div class="wrap narrow center">
     <h2 id="pr-psv" class="display small" data-lines>Proteggere non deve<br>voler dire <em>sprecare.</em></h2>
-    <p class="lead">Le nostre linee certificate Plastica Seconda Vita portano il riciclo dentro il mondo dell’imballaggio.</p>
+
     <a class="button magnetic" href="sostenibilita.html">Vai alla sostenibilità </a>
   </div>
 </section>
@@ -441,7 +461,7 @@ PROTEZIONI = page_hero(
 BUSTE = page_hero(
     "buste",
     "Chiudere bene,<br><em>alla prima.</em>",
-    "Buste e confezionamento per il negozio, il magazzino e la spedizione.",
+    'Buste per imballaggio, buste protettive in <a class="inline-link" href="protezioni.html#pluriball">pluriball</a> e chiusure minigrip o strip adesiva. Per il negozio, il magazzino e la spedizione.',
 ) + """
 <section class="bag-experience" id="busta-in-movimento" data-bag-scene aria-labelledby="bag-title">
  <div class="bag-pin">
@@ -452,7 +472,7 @@ BUSTE = page_hero(
 </section>
 <section class="block bag-real" id="bag-real" aria-labelledby="bag-real-title"><div class="wrap bag-real-grid">
  <figure class="bag-product-photo"><img src="assets/realistic/busta-studio-v60.png" width="1024" height="1536" loading="lazy" decoding="async" alt="Ricostruzione fotografica di una busta in pluriball: celle d’aria, saldature laterali e aletta di chiusura"></figure>
- <div><h2 id="bag-real-title" class="display small" data-lines>La protezione,<br><em>da vicino.</em></h2><p class="lead">Una busta leggera, una trama di bolle d’aria, un oggetto da custodire. La trasparenza lascia intravedere il contenuto; le saldature laterali e l’aletta completano la protezione.</p>
+ <div><h2 id="bag-real-title" class="display small" data-lines>La protezione,<br><em>da vicino.</em></h2><p class="lead">Bolle d’aria, saldature laterali e aletta di chiusura. Il contenuto resta visibile.</p>
  <div class="bag-detail"><svg viewBox="0 0 240 95" aria-hidden="true"><g fill="#d9e9e0" stroke="#6a9f85" stroke-width="1.2"><ellipse cx="30" cy="25" rx="18" ry="17"/><ellipse cx="74" cy="25" rx="18" ry="17"/><ellipse cx="118" cy="25" rx="18" ry="17"/><ellipse cx="162" cy="25" rx="18" ry="17"/><ellipse cx="206" cy="25" rx="18" ry="17"/><ellipse cx="30" cy="68" rx="18" ry="17"/><ellipse cx="74" cy="68" rx="18" ry="17"/><ellipse cx="118" cy="68" rx="18" ry="17"/><ellipse cx="162" cy="68" rx="18" ry="17"/><ellipse cx="206" cy="68" rx="18" ry="17"/></g><path d="M20 22Q22 13 31 13M64 22Q66 13 75 13M108 22Q110 13 119 13" fill="none" stroke="white" stroke-width="3"/></svg><div><h3>La trama a bolle</h3><p>Il materiale avvolge il contenuto lasciandolo visibile.</p></div></div>
  <div class="bag-detail"><svg viewBox="0 0 240 95" fill="none" aria-hidden="true"><path d="M30 25L208 25L208 83L30 83Z M30 25L51 8L191 8L208 25" stroke="#6a9f85" stroke-width="1.4" fill="#edf3ef"/><path d="M43 34H195" stroke="#2f8661" stroke-width="3"/><path d="M110 3Q155 5 151 43M144 37L151 44L158 36" stroke="#233e31" stroke-width="2"/></svg><div><h3>L’aletta di chiusura</h3><p>Il dettaglio del campione che completa il confezionamento.</p></div></div>
  <a class="text-link" href="contatti.html">Parliamo del tuo formato </a></div>
@@ -474,7 +494,7 @@ BUSTE = page_hero(
 <section class="block tinted" aria-labelledby="bu-psv">
   <div class="wrap narrow center">
     <h2 id="bu-psv" class="display small" data-lines>Buste e fogli protettivi<br>nel campo del <em>certificato PSV.</em></h2>
-    <p class="lead">Il certificato n. 3433/2026 riguarda la produzione di coprispalla, coprisedia, buste e fogli protettivi con MPS da sottoprodotto esterno. Il campo di applicazione è specificato nel documento.</p>
+    <p class="lead">Buste e fogli con MPS da sottoprodotto esterno, nel campo del certificato PSV n. 3433/2026.</p>
     <a class="button magnetic" href="assets/certificato-coprispalla-3433-2026.pdf" target="_blank" rel="noopener">Leggi il certificato </a>
   </div>
 </section>
@@ -484,7 +504,7 @@ BUSTE = page_hero(
 MACCHINE = page_hero(
     "macchine",
     "Chiudere.<br>Reggiare.<br><em>Muovere.</em>",
-    "Nastri, reggette, corde e cinghie, accessori e macchine per l’imballaggio: la parte che tiene insieme il carico.",
+    "Macchine avvolgitrici NOXON, nastri adesivi, reggette e accessori per stabilizzare i carichi. Imballaggi 2G è partner ufficiale NOXON.",
 ) + """
 <section class="block" aria-labelledby="ma-title">
   <div class="wrap">
@@ -503,7 +523,7 @@ MACCHINE = page_hero(
 <section class="block tinted" aria-labelledby="ma-cta">
   <div class="wrap narrow center">
     <h2 id="ma-cta" class="display small" data-lines>Non solo forniture.<br><em>Affiancamento.</em></h2>
-    <p class="lead">Affianchiamo le imprese con attenzione, competenza e flessibilità: dal formato giusto alla macchina adatta al ritmo del tuo magazzino.</p>
+    <p class="lead">Dal materiale alla macchina: scegliamo insieme la soluzione adatta.</p>
     <a class="button magnetic" href="contatti.html">Parliamone </a>
   </div>
 </section>
@@ -521,7 +541,7 @@ SOSTENIBILITA = page_hero(
   <div class="wrap split middle">
     <div>
       <h2 id="so-turtle" class="display small" data-lines>Lenta,<br>ma <em>va lontano.</em></h2>
-      <p class="lead">La tartaruga è il simbolo del progetto Puglia Plastic Second Life presentato dall’azienda: un invito a dare continuità al valore della materia.</p>
+      <p class="lead">La tartaruga identifica il progetto Puglia Plastic Second Life.</p>
       <div class="circular-words" data-stagger>
         <span>Materia</span><span>Protezione</span><span>Nuova vita</span>
       </div>
@@ -540,7 +560,7 @@ SOSTENIBILITA = page_hero(
     <div class="split">
       <h2 id="so-cert" class="display small" data-lines>La fiducia.<br>Nero su <em>bianco.</em></h2>
       <div>
-        <p class="lead">Certificazioni da leggere, materiali da conoscere. Qui trovi i documenti che accompagnano le nostre linee di prodotto.</p>
+
         <div class="cert-marks">
           <img src="assets/psv.webp" alt="Marchio Plastica Seconda Vita" width="300" height="200" loading="lazy">
           <img src="assets/ippr.webp" alt="Istituto per la Promozione delle Plastiche da Riciclo" width="250" height="250" loading="lazy">
@@ -569,16 +589,17 @@ SOSTENIBILITA = page_hero(
 AZIENDA = page_hero(
     "azienda",
     "Una storia<br>di famiglia.<br><em>Una visione<br>che cresce.</em>",
-    "La nostra esperienza nasce dal lavoro di Aldo Giuri e da una passione per l’imballaggio trasmessa alla generazione successiva.",
+    "Imballaggi 2G nasce a Sannicola, nel Salento, da una tradizione familiare nel packaging. Materiali protettivi e soluzioni per le imprese di Lecce, Brindisi e Taranto.",
 ) + """
 <section class="block" aria-labelledby="az-title">
   <div class="wrap split">
     <div>
+      <figure class="company-design-photo reveal"><img src="assets/azienda/progettazione-cliente.png" alt="Disegni tecnici e materiali di imballaggio sul tavolo di progettazione Imballaggi 2G" width="1200" height="1600" loading="lazy"></figure>
       <div class="story-place">Sannicola<br><span>Salento, Puglia</span></div>
       <h2 id="az-title" class="display small" data-lines>Radici salentine.<br>Sguardo <em>aperto.</em></h2>
     </div>
     <div>
-      <p class="lead">Con Imballaggi 2G questa storia si apre a nuove esigenze: dalla protezione dei capi alla movimentazione delle merci, affianchiamo le imprese con attenzione, competenza e flessibilità.</p>
+      <p class="lead">Dalla protezione dei capi alla movimentazione delle merci: packaging al servizio delle imprese.</p>
       <div class="story-locations" data-stagger>
         <span class="locations-label">Dove operiamo</span><span>Lecce</span><span>Brindisi</span><span>Taranto</span>
       </div>
@@ -607,37 +628,37 @@ AZIENDA = page_hero(
 CONTATTI = """
 <section class="contact-page" aria-labelledby="co-title">
   <div class="wrap">
-    <a class="contact-headline" id="co-title" href="mailto:info@imballaggi2g.it">Diamo forma<br>alla tua <em>soluzione.</em></a>
+    <h1 id="co-title" class="contact-title"><a class="contact-headline" href="mailto:info@imballaggi2g.it">Diamo forma<br>alla tua <em>soluzione.</em></a></h1>
     <div class="contact-grid" data-stagger>
       <div><span>Scrivici</span><a href="mailto:info@imballaggi2g.it">info@imballaggi2g.it</a></div>
       <div><span>Chiamaci</span><a href="tel:+390833861000">0833 861000</a></div>
       <div><span>Vieni a trovarci</span><a href="https://www.google.com/maps/place/IMBALLAGGI+2G+s.r.l./@40.0911849,18.0653234,17z/data=!3m1!4b1!4m6!3m5!1s0x13441f7b57c7b16f:0xfc850e22ba05aec7!8m2!3d40.0911849!4d18.0678983!16s%2Fg%2F11jyjc4qhs" target="_blank" rel="noopener">Via dei Cavamonti, Z.I.<br>73017 Sannicola (LE)</a></div>
       <div><span>Seguici</span><a href="https://www.instagram.com/imballaggi2g/" target="_blank" rel="noopener">Instagram</a></div>
     </div>
-    <p class="contact-note">Nessun modulo da compilare: scrivici o chiamaci, ti risponde una persona.</p>
+
   </div>
 </section>
 """
 
 # ============================================================ scrittura
 PAGES = [
-    (None,           "index.html",        "Imballaggi 2G — La cura, in ogni forma.",
+    (None,           "index.html",        "Imballaggi e packaging nel Salento, Lecce | Imballaggi 2G",
      "Imballaggi 2G, Sannicola (Salento): coprispalla, bobine e film, pluriball, buste, nastri e macchine per l’imballaggio. Linee certificate Plastica Seconda Vita.", HOME, "is-home"),
-    ("coprispalla",  "coprispalla.html",  "Coprispalla protettivi — Imballaggi 2G",
-     "Coprispalla protettivi per l’abbigliamento: taglio sagomato e retto, larghezza 46 cm, schede tecniche e certificato PSV n. 3433/2026.", COPRISPALLA, ""),
-    ("bobine",       "bobine.html",       "Bobine e film — Imballaggi 2G",
+    ("coprispalla",  "coprispalla.html",  "Coprispalla in foam e pluriball per abiti | Imballaggi 2G",
+     "Coprispalla protettivi per abbigliamento in foam e pluriball, con taglio sagomato o retto e diverse misure. Scopri i formati e richiedi informazioni.", COPRISPALLA, ""),
+    ("bobine",       "bobine.html",       "Bobine e film estensibile per imballaggio | Imballaggi 2G",
      "Film per confezionamento e movimentazione e linea Tiger Film: Eco Converting, Eco Manuale ed Eco Automatico, con contenuto di riciclato certificato PSV MixEco.", BOBINE, ""),
-    ("protezioni",   "protezioni.html",   "Protezioni: pluriball e foam — Imballaggi 2G",
-     "Pluriball, polietilene espanso, angolari e cuscini d’aria per proteggere superfici e prodotti delicati durante la movimentazione.", PROTEZIONI, ""),
-    ("buste",        "buste.html",        "Buste e confezionamento — Imballaggi 2G",
+    ("protezioni",   "protezioni.html",   "Pluriball, foam e Xtracell per imballaggio | Imballaggi 2G",
+     "Pluriball, foam e polietilene espanso Xtracell: materiali per proteggere superfici e prodotti delicati. Imballaggi 2G a Sannicola, nel Salento.", PROTEZIONI, ""),
+    ("buste",        "buste.html",        "Buste per imballaggio e buste protettive | Imballaggi 2G",
      "Buste, shopping bag, chiusura minigrip o strip adesiva, buste per materassi, film e cappucci termoretraibili.", BUSTE, ""),
-    ("macchine",     "macchine.html",     "Macchine e movimentazione — Imballaggi 2G",
-     "Nastri adesivi e in carta, reggette in PP, PET e acciaio, corde e cinghie, accessori e macchine per imballaggio.", MACCHINE, ""),
-    ("sostenibilita","sostenibilita.html","Sostenibilità e certificazioni — Imballaggi 2G",
+    ("macchine",     "macchine.html",     "Macchine avvolgitrici NOXON e accessori | Imballaggi 2G",
+     "Imballaggi 2G, partner ufficiale NOXON. Macchine avvolgitrici, nastri, reggette e accessori per l’imballaggio.", MACCHINE, ""),
+    ("sostenibilita","sostenibilita.html","Packaging e certificazioni Plastica Seconda Vita | Imballaggi 2G",
      "Plastica Seconda Vita: le certificazioni PSV n. 3433/2026 e n. 3040/2024 e il nostro impegno sul riciclo nell’imballaggio.", SOSTENIBILITA, ""),
-    ("azienda",      "azienda.html",      "L’azienda — Imballaggi 2G",
+    ("azienda",      "azienda.html",      "Azienda di imballaggi a Sannicola, Lecce | Imballaggi 2G",
      "Da Aldo Giuri a Imballaggi 2G: una storia di famiglia a Sannicola, nel Salento, fra Lecce, Brindisi e Taranto.", AZIENDA, ""),
-    ("contatti",     "contatti.html",     "Contatti — Imballaggi 2G",
+    ("contatti",     "contatti.html",     "Contatti e preventivi imballaggi a Sannicola | Imballaggi 2G",
      "Scrivi a info@imballaggi2g.it, chiama lo 0833 861000 o vieni a trovarci in Via dei Cavamonti, Z.I., Sannicola (LE).", CONTATTI, "is-dark"),
 ]
 
@@ -650,12 +671,14 @@ def main():
             hero, rest = content.split("</section>", 1)
             content = ('<div class="reel-opening" id="bobina" data-reel-opening><div class="reel-opening-pin">'
                        '<div class="reel-opening-content">' + hero + '</section></div>'
-                       '<div class="reel-opening-logo" aria-hidden="true"><img src="assets/logo-ink.webp" width="1200" height="344" alt=""></div><div class="reel-opening-art" aria-hidden="true"><canvas></canvas></div>'
+                       '<div class="reel-opening-logo" aria-hidden="true"><img src="assets/logo-ink.webp" width="1200" height="344" alt=""></div><div class="reel-opening-art" aria-hidden="true"><canvas></canvas></div><div class="reel-scroll-hint"><span>Scorri per continuare</span><svg viewBox="0 0 24 32" fill="none" aria-hidden="true"><path d="M12 3v24m-6-6 6 6 6-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
                        '</div></div>' + rest)
         html = shell(key, title, description, content, body_class)
         (DIST / filename).write_text(html, encoding="utf-8")
         print(f"  {filename:22} {len(html):>7} byte")
-    print(f"\n{len(PAGES)} pagine scritte in {DIST} (versione asset ?v={VERSION})")
+    write_crawl_files(DIST, PAGES)
+    (DIST / ".htaccess").write_text(apache_rules(), encoding="utf-8")
+    print(f"\n{len(PAGES)} pagine, robots.txt e sitemap.xml scritti in {DIST} (versione asset ?v={VERSION})")
 
 
 if __name__ == "__main__":
