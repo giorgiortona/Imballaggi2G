@@ -20,7 +20,7 @@ from logo_evolution import EVOLUTION_DISC, EVOLUTION_G, EVOLUTION_TAIL, EVOLUTIO
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "108"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "109"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -117,7 +117,7 @@ def page_footer(current):
       <span class="dm-chip__tilt">
         <span class="dm-chip__face">
           <span class="dm-chip__die" aria-hidden="true"></span>
-          <span class="dm-chip__mark"><img class="dm-chip__logo" src="assets/dimana-logo-v106.svg" width="524" height="266" alt="Dimana, digital creations" loading="lazy"></span>
+          <span class="dm-chip__mark"><img class="dm-chip__logo" src="assets/dimana-logo-v109.svg" width="524" height="260" alt="Dimana, digital creations" loading="lazy"></span>
         </span>
         <span class="dm-chip__spark" aria-hidden="true"></span>
         <span class="dm-chip__spark" aria-hidden="true"></span>
