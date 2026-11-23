@@ -20,7 +20,7 @@ from logo_evolution import EVOLUTION_DISC, EVOLUTION_G, EVOLUTION_TAIL, EVOLUTIO
 from photo_blocks import with_photos, HOME_BAND
 
 DIST = Path(__file__).parent / "dist"
-VERSION = "106"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
+VERSION = "108"           # alzare a ogni pubblicazione: sblocca la cache di CSS e JS
 
 # ---------------------------------------------------------------- sezioni
 # chiave, file, numero, nome nel menu, occhiello, immagine di copertina
@@ -29,7 +29,7 @@ SECTIONS = [
     ("bobine",       "bobine.html",       "02", "Bobine e film",      "CONFEZIONAMENTO",          "azienda/bobine-magazzino.webp"),
     ("protezioni",   "protezioni.html",   "03", "Protezioni",         "PLURIBALL E FOAM",         "azienda/magazzino-pluriball.webp"),
     ("buste",        "buste.html",        "04", "Buste",              "CONFEZIONAMENTO",          "azienda/macchina-bobine.webp"),
-    ("macchine",     "macchine.html",     "05", "Macchine",           "CHIUSURA E MOVIMENTAZIONE","azienda/macchina-rulli.webp"),
+    ("macchine",     "macchine.html",     "05", "Macchine",           "PARTNER NOXON","azienda/macchina-rulli.webp"),
     ("sostenibilita","sostenibilita.html","06", "Sostenibilità",      "PLASTICA SECONDA VITA",    None),
     ("azienda",      "azienda.html",      "07", "L’azienda",          "RADICI SALENTINE",         "azienda/sede-sera-frontale.webp"),
     ("contatti",     "contatti.html",     "08", "Contatti",           "PARLIAMONE",               None),
@@ -44,7 +44,7 @@ MENU_IMG = {
     "bobine": "azienda/bobina-macchina.webp",
     "protezioni": "azienda/bobine-pluriball.webp",
     "buste": "azienda/fogli-uscita.webp",
-    "macchine": "azienda/macchina-2g.webp",
+    "macchine": "noxon/gamma-noxon-v107.jpg",
     "sostenibilita": "azienda/nastro-psv.webp",
     "azienda": "azienda/sede-sera-prospettiva.webp",
     "contatti": "logo-light.webp",
@@ -234,7 +234,7 @@ NAV_ITEMS = [
     ("bobine",       "Avvolgere, proteggere, ripensare.",               "azienda/bobina-macchina.webp"),
     ("protezioni",   "Un cuscino d’aria fra il prodotto e il viaggio.", "azienda/bobine-pluriball.webp"),
     ("buste",        "Chiudere bene, alla prima.",                      "azienda/fogli-uscita.webp"),
-    ("macchine",     "Nastri, reggette, movimentazione.",               "azienda/macchina-2g.webp"),
+    ("macchine",     "Partner Noxon",                                   "noxon/gamma-noxon-v107.jpg"),
     ("sostenibilita","La materia non finisce al primo utilizzo.",       "azienda/nastro-psv.webp"),
     ("azienda",      "Una storia di famiglia, dal Salento.",            "azienda/sede-sera-prospettiva.webp"),
 ]
@@ -244,16 +244,21 @@ def navigator():
     slats = []
     for i, (key, claim, img) in enumerate(NAV_ITEMS):
         _k, href, num, label, eyebrow, _ = BY_KEY[key]
-        media = (f'<span class="slat-media"><img src="assets/{img}" alt="" loading="lazy" width="1500" height="1000"></span>'
+        is_noxon = key == "macchine"
+        dimensions = 'width="1536" height="1024"' if is_noxon else 'width="1500" height="1000"'
+        alt = 'Gamma Noxon: robot semoventi, avvolgitrice orizzontale e macchina a tavola rotante' if is_noxon else ''
+        partner = '<span class="slat-partner">Partner Noxon</span>' if is_noxon else ''
+        slat_class = 'slat slat-noxon' if is_noxon else 'slat'
+        accessible_label = f'{label} — Partner Noxon' if is_noxon else label
+        media = (f'<span class="slat-media"><img src="assets/{img}" alt="{alt}" loading="lazy" {dimensions}></span>'
                  if img else
                  '<span class="slat-media slat-green"><img src="assets/turtle-mark-light.webp" alt="" loading="lazy" width="301" height="366"></span>')
-        slats.append(f"""      <a class="slat" href="{href}" aria-label="{label}" style="--i:{i}" data-claim="{claim}">
+        slats.append(f"""      <a class="{slat_class}" href="{href}" aria-label="{accessible_label}" style="--i:{i}" data-claim="{claim}">
         {media}
         <span class="slat-veil" aria-hidden="true"></span>
         <span class="slat-name-v" aria-hidden="true">{label}</span>
         <span class="slat-open">
-          <span class="slat-name">{label}</span>
-
+          <span class="slat-name">{label}</span>{partner}
         </span>
       </a>""")
     return "\n".join(slats)

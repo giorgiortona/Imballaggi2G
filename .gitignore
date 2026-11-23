@@ -8,3 +8,6 @@ __pycache__/
 # Materiali social locali
 output/social/
 public/media/logo-bagnomaria-bianco-ombrellone-chiuso.png
+
+# Materiali di consegna e verifiche, solo locali
+consegne/

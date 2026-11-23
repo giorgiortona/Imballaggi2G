@@ -286,14 +286,7 @@ AFTER["macchine"] = """
     </div>
   </div>
 </section>
-""" + row(
-    "Macchine che<br>conosciamo <em>a memoria.</em>",
-    "Le usiamo tutti i giorni: per questo sappiamo consigliare quella giusta e non quella più grande.",
-    [
-        shot("macchina-2g.webp", "Una macchina confezionatrice con il marchio Imballaggi 2G", ratio="4/3"),
-        shot("macchina-comandi.webp", "Il quadro comandi di una linea di confezionamento", ratio="4/3"),
-        shot("macchina-linea.webp", "La linea di produzione vista di lato, con il film in tensione", ratio="4/3"),
-    ])
+"""
 
 END["macchine"] = split(
     "nastro-psv.webp",
